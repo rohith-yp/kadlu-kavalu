@@ -3,15 +3,44 @@
  * Tactical Surveillance & Coastal Security Platform Simulation Engine
  */
 
+// Canvas 2D context roundRect polyfill for backward compatibility
+if (typeof CanvasRenderingContext2D.prototype.roundRect !== 'function') {
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+        if (!radii) radii = 0;
+        if (typeof radii === 'number') radii = [radii];
+        if (radii.length === 1) radii = [radii[0], radii[0], radii[0], radii[0]];
+        else if (radii.length === 2) radii = [radii[0], radii[1], radii[0], radii[1]];
+        else if (radii.length === 3) radii = [radii[0], radii[1], radii[2], radii[1]];
+        
+        const r1 = radii[0];
+        const r2 = radii[1];
+        const r3 = radii[2];
+        const r4 = radii[3];
+        
+        this.beginPath();
+        this.moveTo(x + r1, y);
+        this.lineTo(x + w - r2, y);
+        this.quadraticCurveTo(x + w, y, x + w, y + r2);
+        this.lineTo(x + w, y + h - r3);
+        this.quadraticCurveTo(x + w, y + h, x + w - r3, y + h);
+        this.lineTo(x + r4, y + h);
+        this.quadraticCurveTo(x, y + h, x, y + h - r4);
+        this.lineTo(x, y + r1);
+        this.quadraticCurveTo(x, y, x + r1, y);
+        this.closePath();
+        return this;
+    };
+}
+
 // ==========================================================================
 // 1. SYSTEM GEOGRAPHY & DATABASE CONFIG
 // ==========================================================================
 
 const MAP_BOUNDS = {
-    minLon: 64.0,
-    maxLon: 96.0,
-    minLat: -2.0,
-    maxLat: 26.0
+    minLon: -180.0,
+    maxLon: 180.0,
+    minLat: -90.0,
+    maxLat: 90.0
 };
 
 // Subcontinent coastal vectors (sub-selection for regional GIS mockup)
@@ -121,13 +150,146 @@ const PORTS = [
 ];
 
 const COUNTRIES = [
-    {code: "IN", flag: "ðŸ‡®ðŸ‡³", name: "India"},
-    {code: "LK", flag: "ðŸ‡±ðŸ‡°", name: "Sri Lanka"},
-    {code: "MV", flag: "ðŸ‡²ðŸ‡»", name: "Maldives"},
-    {code: "PA", flag: "ðŸ‡µðŸ‡¦", name: "Panama"},
-    {code: "CN", flag: "ðŸ‡¨ðŸ‡³", name: "China"},
-    {code: "LR", flag: "ðŸ‡±ðŸ‡·", name: "Liberia"}
+    {code: "IN", flag: "\uD83C\uDDEE\uD83C\uDDF3", name: "India"},
+    {code: "LK", flag: "\uD83C\uDDF1\uD83C\uDDF0", name: "Sri Lanka"},
+    {code: "MV", flag: "\uD83C\uDDF2\uD83C\uDDFB", name: "Maldives"},
+    {code: "PA", flag: "\uD83C\uDDF5\uD83C\uDDE6", name: "Panama"},
+    {code: "CN", flag: "\uD83C\uDDE8\uD83C\uDDF3", name: "China"},
+    {code: "LR", flag: "\uD83C\uDDF1\uD83C\uDDF7", name: "Liberia"},
+    {code: "IT", flag: "\uD83C\uDDEE\uD83C\uDDF9", name: "Italy"},
+    {code: "FR", flag: "\uD83C\uDDEB\uD83C\uDDF7", name: "France"},
+    {code: "DE", flag: "\uD83C\uDDE9\uD83C\uDDF9", name: "Germany"},
+    {code: "CH", flag: "\uD83C\uDDE8\uD83C\uDDFD", name: "Switzerland"},
+    {code: "US", flag: "\uD83C\uDDFA\uD83C\uDDF8", name: "United States"},
+    {code: "AU", flag: "\uD83C\uDDE6\uD83C\uDDFA", name: "Australia"},
+    {code: "BR", flag: "\uD83C\uDDE7\uD83C\uDDF7", name: "Brazil"},
+    {code: "ZA", flag: "\uD83C\uDDFF\uD83C\uDDE6", name: "South Africa"},
+    {code: "JP", flag: "\uD83C\uDDEF\uD83C\uDDF5", name: "Japan"}
 ];
+
+const COUNTRY_PORTS = {
+    "IN": [
+        { lon: 72.8, lat: 19.0, name: "Mumbai Port" },
+        { lon: 76.2, lat: 9.9, name: "Port of Kochi" },
+        { lon: 80.3, lat: 13.1, name: "Chennai Port" },
+        { lon: 83.3, lat: 17.7, name: "Visakhapatnam Port" },
+        { lon: 88.2, lat: 22.0, name: "Kolkata Port" }
+    ],
+    "LK": [
+        { lon: 79.8, lat: 6.9, name: "Colombo Port" }
+    ],
+    "MV": [
+        { lon: 73.5, lat: 4.2, name: "Male Port" }
+    ],
+    "CN": [
+        { lon: 121.5, lat: 31.2, name: "Shanghai Port" },
+        { lon: 114.1, lat: 22.3, name: "Shenzhen Port" }
+    ],
+    "PA": [
+        { lon: -79.5, lat: 8.9, name: "Panama City Port" }
+    ],
+    "LR": [
+        { lon: -10.8, lat: 6.3, name: "Monrovia Port" }
+    ],
+    "IT": [
+        { lon: 12.5, lat: 41.9, name: "Rome Port" },
+        { lon: 9.1, lat: 44.4, name: "Genoa Port" },
+        { lon: 14.3, lat: 40.8, name: "Naples Port" }
+    ],
+    "FR": [
+        { lon: 5.3, lat: 43.3, name: "Marseille Port" },
+        { lon: -1.6, lat: 47.2, name: "Nantes Port" }
+    ],
+    "DE": [
+        { lon: 9.9, lat: 53.5, name: "Hamburg Port" }
+    ],
+    "CH": [
+        { lon: 8.2, lat: 47.5, name: "Basel Port" }
+    ],
+    "US": [
+        { lon: -74.0, lat: 40.7, name: "New York Port" },
+        { lon: -118.2, lat: 33.7, name: "Los Angeles Port" }
+    ],
+    "AU": [
+        { lon: 151.2, lat: -33.8, name: "Sydney Port" },
+        { lon: 115.7, lat: -32.0, name: "Fremantle Port" }
+    ],
+    "BR": [
+        { lon: -43.2, lat: -22.9, name: "Rio de Janeiro Port" }
+    ],
+    "ZA": [
+        { lon: 18.4, lat: -33.9, name: "Cape Town Port" },
+        { lon: 31.0, lat: -29.9, name: "Durban Port" }
+    ],
+    "JP": [
+        { lon: 139.8, lat: 35.6, name: "Tokyo Port" }
+    ]
+};
+
+let voiceActive = true;
+let _speechQueue = [];
+let _isSpeaking = false;
+
+function _drainSpeechQueue() {
+    if (_isSpeaking || _speechQueue.length === 0) return;
+    const { text, priority } = _speechQueue.shift();
+    
+    // Keep queue short — if critical, stop current utterance and speak immediately
+    if (priority === 'critical' && window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+    }
+    
+    // Strip emoji characters and extra whitespace
+    const cleanText = text.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
+    if (!cleanText) { _drainSpeechQueue(); return; }
+    
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    
+    const voices = window.speechSynthesis.getVoices();
+    const engVoice = voices.find(v => /^en/.test(v.lang)) || voices[0];
+    if (engVoice) utterance.voice = engVoice;
+    
+    utterance.rate = 1.0;
+    utterance.pitch = 0.95;
+    utterance.volume = 1.0;
+    
+    _isSpeaking = true;
+    utterance.onend = utterance.onerror = () => {
+        _isSpeaking = false;
+        _drainSpeechQueue();
+    };
+    
+    window.speechSynthesis.speak(utterance);
+}
+
+function speakAnnouncement(text, priority = 'normal') {
+    if (!voiceActive || !window.speechSynthesis) return;
+    // Limit queue to last 5 items so old alerts don't pile up
+    if (_speechQueue.length >= 5) {
+        _speechQueue.splice(0, _speechQueue.length - 4);
+    }
+    _speechQueue.push({ text, priority });
+    _drainSpeechQueue();
+}
+
+// Pre-load voices as soon as they are available in the browser
+if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+
+function isPointInPolygon(pt, poly) {
+    let isInside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const xi = poly[i].lon, yi = poly[i].lat;
+        const xj = poly[j].lon, yj = poly[j].lat;
+        const intersect = ((yi > pt.lat) !== (yj > pt.lat))
+            && (pt.lon < (xj - xi) * (pt.lat - yi) / (yj - yi) + xi);
+        if (intersect) isInside = !isInside;
+    }
+    return isInside;
+}
 
 // Data lists for simulation populator
 const CARGO_NAMES = [
@@ -145,21 +307,32 @@ const CG_NAMES = [
 ];
 
 let vessels = [];
-
 function generateInitialVessels() {
     vessels = [];
     
-    // 1. Cargo Vessels
-    for (let i = 0; i < 95; i++) {
+    // 1. Cargo Vessels (200 global vessels)
+    for (let i = 0; i < 200; i++) {
         const country = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
-        const startPort = PORTS[Math.floor(Math.random() * PORTS.length)];
-        const destOptions = [
-            {lon: 64.5, lat: 5.0, name: "Gulf of Aden SLOC"},
-            {lon: 95.0, lat: 2.0, name: "Malacca Strait SLOC"},
-            {lon: 75.0, lat: -1.5, name: "Southern Route"}
-        ];
-        const dest = destOptions[Math.floor(Math.random() * destOptions.length)];
-        const threatScore = Math.floor(Math.random() * 20);
+        const ports = COUNTRY_PORTS[country.code] || COUNTRY_PORTS["IN"];
+        const startPort = ports[Math.floor(Math.random() * ports.length)];
+        
+        // Pick a destination port in a DIFFERENT country
+        const otherCountries = COUNTRIES.filter(c => c.code !== country.code);
+        const destCountry = otherCountries[Math.floor(Math.random() * otherCountries.length)];
+        const destPorts = COUNTRY_PORTS[destCountry.code] || COUNTRY_PORTS["IN"];
+        const destPort = destPorts[Math.floor(Math.random() * destPorts.length)];
+        
+        let threatScore = Math.floor(Math.random() * 20);
+        let anomaly = "Sailing normally within registered lane.";
+        let action = "Normal surveillance monitoring.";
+        let aisStatus = "Active";
+        
+        if (i % 12 === 0) {
+            threatScore = 65 + Math.floor(Math.random() * 25);
+            anomaly = `SUSPICIOUS ROUTE: Deviating from standard shipping lanes heading towards ${destPort.name}. Speed anomalous for cargo class.`;
+            action = "ALERT: Dispatch nearest coastal patrol to monitor and verify credentials.";
+            aisStatus = Math.random() > 0.5 ? "Lost" : "Active";
+        }
 
         vessels.push({
             id: "cargo-" + i,
@@ -171,34 +344,31 @@ function generateInitialVessels() {
             country: country.code,
             flag: country.flag,
             threatScore: threatScore,
-            lat: lerp(startPort.lat, dest.lat, Math.random()),
-            lon: lerp(startPort.lon, dest.lon, Math.random()),
+            lat: lerp(startPort.lat, destPort.lat, Math.random()),
+            lon: lerp(startPort.lon, destPort.lon, Math.random()),
             speed: parseFloat((10 + Math.random() * 8).toFixed(1)),
-            heading: Math.floor(calculateHeading(startPort.lon, startPort.lat, dest.lon, dest.lat)),
-            destination: dest.name,
+            heading: Math.floor(calculateHeading(startPort.lon, startPort.lat, destPort.lon, destPort.lat)),
+            destination: `${destPort.name} (${destCountry.name})`,
             eta: new Date(Date.now() + Math.random() * 86400000 * 2).toISOString().replace('T', ' ').slice(0, 16),
-            aisStatus: "Active",
-            anomaly: "Sailing normally within registered lane.",
-            action: "Normal surveillance monitoring.",
-            cgAsset: "ICGS VIKRAM (Patrol Grid)",
+            aisStatus: aisStatus,
+            anomaly: anomaly,
+            action: action,
+            cgAsset: "EU Border Patrol",
             route: {
                 start: {lon: startPort.lon, lat: startPort.lat},
-                end: {lon: dest.lon, lat: dest.lat}
+                end: {lon: destPort.lon, lat: destPort.lat}
             }
         });
     }
 
-    // 2. Fishing Vessels
+    // 2. Fishing Vessels (115 global vessels)
     for (let i = 0; i < 115; i++) {
-        const country = Math.random() > 0.2 ? COUNTRIES[0] : COUNTRIES[1];
-        let lat, lon;
-        if (Math.random() > 0.5) {
-            lat = 18.0 + (Math.random() - 0.5) * 3.5;
-            lon = 70.5 + (Math.random() - 0.5) * 2.2;
-        } else {
-            lat = 8.5 + (Math.random() - 0.5) * 3.0;
-            lon = 79.5 + (Math.random() - 0.5) * 3.0;
-        }
+        const country = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
+        const ports = COUNTRY_PORTS[country.code] || COUNTRY_PORTS["IN"];
+        const startPort = ports[Math.floor(Math.random() * ports.length)];
+        
+        const lat = startPort.lat + (Math.random() - 0.5) * 2.5;
+        const lon = startPort.lon + (Math.random() - 0.5) * 2.5;
         const threatScore = Math.floor(Math.random() * 25);
 
         vessels.push({
@@ -228,11 +398,15 @@ function generateInitialVessels() {
         });
     }
 
-    // 3. Coast Guard Patrols
+    // 3. Coast Guard Patrols (12 global vessels)
     for (let i = 0; i < 12; i++) {
-        const startPort = PORTS[i % PORTS.length];
+        const country = COUNTRIES[i % COUNTRIES.length];
+        const ports = COUNTRY_PORTS[country.code] || COUNTRY_PORTS["IN"];
+        const startPort = ports[Math.floor(Math.random() * ports.length)];
+        
         const lat = startPort.lat + (Math.random() - 0.5) * 1.5;
         const lon = startPort.lon + (Math.random() - 0.5) * 1.5;
+        
         vessels.push({
             id: "cg-" + i,
             mmsi: "41990" + String(i).padStart(4, '0'),
@@ -240,8 +414,8 @@ function generateInitialVessels() {
             name: CG_NAMES[i % CG_NAMES.length],
             type: "coastguard",
             class: "Offshore Patrol Vessel",
-            country: "IN",
-            flag: "ðŸ‡®ðŸ‡³",
+            country: country.code,
+            flag: country.flag,
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -252,7 +426,7 @@ function generateInitialVessels() {
             aisStatus: "Active",
             anomaly: "Security patrol sweeps.",
             action: "Command surveillance hub.",
-            cgAsset: "Command Headquarters Kochi",
+            cgAsset: "Command Headquarters",
             route: {
                 start: {lon: startPort.lon, lat: startPort.lat},
                 end: {lon: lon + (Math.random() - 0.5) * 1.5, lat: lat + (Math.random() - 0.5) * 1.5}
@@ -260,10 +434,15 @@ function generateInitialVessels() {
         });
     }
 
-    // 4. Emergency Search & Rescue
+    // 4. Emergency Search & Rescue (5 global vessels)
     for (let i = 0; i < 5; i++) {
-        const lat = 10.0 + (Math.random() - 0.5) * 6;
-        const lon = 76.0 + (Math.random() - 0.5) * 6;
+        const country = COUNTRIES[i % COUNTRIES.length];
+        const ports = COUNTRY_PORTS[country.code] || COUNTRY_PORTS["IN"];
+        const startPort = ports[Math.floor(Math.random() * ports.length)];
+        
+        const lat = startPort.lat + (Math.random() - 0.5) * 2.0;
+        const lon = startPort.lon + (Math.random() - 0.5) * 2.0;
+        
         vessels.push({
             id: "emergency-" + i,
             mmsi: "41991" + String(i).padStart(4, '0'),
@@ -271,8 +450,8 @@ function generateInitialVessels() {
             name: "SAR CUTTER VARUNA " + String(i+1),
             type: "emergency",
             class: "Rapid Response SAR Vessel",
-            country: "IN",
-            flag: "ðŸ‡®ðŸ‡³",
+            country: country.code,
+            flag: country.flag,
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -283,7 +462,7 @@ function generateInitialVessels() {
             aisStatus: "Active",
             anomaly: "Responding to emergency distress channel.",
             action: "Priority clearance of transit zones.",
-            cgAsset: "Naval Air Support (Coordinated)",
+            cgAsset: "Naval Air Support",
             route: {
                 start: {lon: lon - (Math.random() * 0.8 + 0.4), lat: lat - (Math.random() * 0.8 + 0.4)},
                 end: {lon: lon + (Math.random() * 0.8 + 0.4), lat: lat + (Math.random() * 0.8 + 0.4)}
@@ -291,8 +470,7 @@ function generateInitialVessels() {
         });
     }
 
-    // 5. Explicit Suspicious Targets
-    // Target 1: MV SHENG-HAI (Bulk carrier inside Military Zone)
+    // 5. Explicit Suspicious Targets (India, Sri Lanka, Maldives)
     vessels.push({
         id: "target-sheng-hai",
         mmsi: "563029110",
@@ -301,7 +479,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Substandard Bulk Carrier",
         country: "PA",
-        flag: "ðŸ‡µðŸ‡¦",
+        flag: "\uD83C\uDDF5\uD83C\uDDE6",
         threatScore: 82,
         lat: 19.3,
         lon: 87.2,
@@ -311,15 +489,14 @@ function generateInitialVessels() {
         eta: "2026-07-12 12:45 UTC",
         aisStatus: "Active",
         anomaly: "CRITICAL: Deviating from SLOC sea lane. Crossed boundary into Restricted Zone Alpha (Military Range). Failed to reply to port operations VHF hail.",
-        action: "IMMEDIATE ACTION: Dispatch ICGS SAMARATH offshore interceptor from Paradip base. Launch Dornier patrol aircraft CG-782 for visual profiling.",
-        cgAsset: "ICGS SAMARATH (8.4 nm, Intercept course)",
+        action: "IMMEDIATE ACTION: Dispatch offshore interceptor. Launch Dornier patrol aircraft CG-782 for visual profiling.",
+        cgAsset: "Patrol Vessel (8.4 nm, Intercept course)",
         route: {
             start: {lon: 90.0, lat: 21.0},
             end: {lon: 84.0, lat: 17.0}
         }
     });
 
-    // Target 2: FV JAL-DEV-II (AIS Lost Suspicious Trawler near Sanctuary)
     vessels.push({
         id: "target-jal-dev",
         mmsi: "419302198",
@@ -328,7 +505,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Unregulated Trawler",
         country: "IN",
-        flag: "ðŸ‡®ðŸ‡³",
+        flag: "\uD83C\uDDEE\uD83C\uDDF3",
         threatScore: 78,
         lat: 8.9,
         lon: 78.4,
@@ -336,9 +513,9 @@ function generateInitialVessels() {
         heading: 90,
         destination: "Coastal Waters",
         eta: "Overdue",
-        aisStatus: "Lost", // Blinking
+        aisStatus: "Lost",
         anomaly: "WARNING: Satellite AIS transmission lost 45 mins ago. Last tracked heading towards Marine Coral Sanctuary. Threat score elevated due to matching illegal transshipment profiling.",
-        action: "RECOMMENDED ACTION: Task nearest coastal interceptor unit C-421 from Tuticorin base to investigate last known coordinates.",
+        action: "RECOMMENDED ACTION: Task nearest coastal interceptor unit to investigate last known coordinates.",
         cgAsset: "Interceptor C-421 (14.2 nm away)",
         route: {
             start: {lon: 77.8, lat: 8.4},
@@ -346,7 +523,6 @@ function generateInitialVessels() {
         }
     });
 
-    // Target 3: UNKNOWN DHOW (Medium Risk smuggling pattern)
     vessels.push({
         id: "target-dhow",
         mmsi: "UNKNOWN-01",
@@ -355,7 +531,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Wooden Vessel",
         country: "MV",
-        flag: "ðŸ‡²ðŸ‡»",
+        flag: "\uD83C\uDDF2\uD83C\uDDFB",
         threatScore: 56,
         lat: 5.5,
         lon: 72.8,
@@ -365,7 +541,7 @@ function generateInitialVessels() {
         eta: "Unspecified",
         aisStatus: "Active",
         anomaly: "SUSPICIOUS: Running dark (no navigation lights reported by radar sweep). Radar cross-section matches smuggling profile in Minicoy channel.",
-        action: "RECOMMENDED ACTION: Coordinate with Maldives National Defence Force (MNDF) Coast Guard. Direct surveillance radar to maintain track.",
+        action: "RECOMMENDED ACTION: Coordinate with Coast Guard. Direct surveillance radar to maintain track.",
         cgAsset: "MNDF Huravee (28.4 nm away)",
         route: {
             start: {lon: 71.2, lat: 4.2},
@@ -373,7 +549,7 @@ function generateInitialVessels() {
         }
     });
 
-    // 6. Many Unknown / Unidentified Vessels (no AIS, radar-only contacts)
+    // 6. Many Unknown / Unidentified Vessels
     const UNKNOWN_POSITIONS = [
         {lon: 73.5, lat: 15.2, name: "UNKNOWN CONTACT-01"},
         {lon: 75.1, lat: 12.8, name: "UNKNOWN CONTACT-02"},
@@ -393,6 +569,11 @@ function generateInitialVessels() {
         {lon: 88.5, lat: 15.0, name: "UNKNOWN CONTACT-16"},
         {lon: 76.4, lat: 17.2, name: "UNKNOWN CONTACT-17"},
         {lon: 73.0, lat: 9.5, name: "UNKNOWN CONTACT-18"},
+        {lon: -80.0, lat: 9.0, name: "UNKNOWN CONTACT-PA"},
+        {lon: -10.5, lat: 6.0, name: "UNKNOWN CONTACT-LR"},
+        {lon: 10.5, lat: 43.0, name: "UNKNOWN CONTACT-EU1"},
+        {lon: 6.0, lat: 44.0, name: "UNKNOWN CONTACT-EU2"},
+        {lon: 115.0, lat: 23.0, name: "UNKNOWN CONTACT-CN"}
     ];
     UNKNOWN_POSITIONS.forEach((up, i) => {
         const tScore = Math.floor(35 + Math.random() * 60);
@@ -404,7 +585,7 @@ function generateInitialVessels() {
             type: "suspicious",
             class: "Unidentified Vessel",
             country: "??",
-            flag: "ðŸ´",
+            flag: "\uD83C\uDFF4",
             threatScore: tScore,
             lat: up.lat + (Math.random() - 0.5) * 0.5,
             lon: up.lon + (Math.random() - 0.5) * 0.5,
@@ -413,21 +594,21 @@ function generateInitialVessels() {
             destination: "Unknown",
             eta: "Untracked",
             aisStatus: Math.random() > 0.4 ? "Lost" : "Active",
-            anomaly: "UNKNOWN: No AIS transponder signal. Radar-only contact. Vessel class unverified. Origin unknown. Potential dark vessel operating without identification.",
-            action: `RECOMMENDED ACTION: Task nearest coast guard interceptor to investigate. Cross-reference with satellite imagery archive.`,
-            cgAsset: "Nearest Patrol Vessel",
+            anomaly: "RADAR-ONLY TARGET: No active AIS signal. Navigation pattern indicates unregistered coastal operations.",
+            action: "Monitor target trajectory. Alert nearest sector commander.",
+            cgAsset: "Coastal Surveillance Radar Network",
             route: {
-                start: {lon: up.lon - (Math.random() * 1.5 + 0.5), lat: up.lat - (Math.random() * 1.5 + 0.5)},
-                end: {lon: up.lon + (Math.random() * 1.5 + 0.5), lat: up.lat + (Math.random() * 1.5 + 0.5)}
+                start: {lon: up.lon, lat: up.lat},
+                end: {lon: up.lon + (Math.random() * 1.5 - 0.75), lat: up.lat + (Math.random() * 1.5 - 0.75)}
             }
         });
     });
 
-    // 7. Distress / Engine-Halted Vessels (stationary, distress beacon active)
+    // 7. Distress / Engine-Halted Vessels
     const DISTRESS_VESSELS = [
-        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "ðŸ‡®ðŸ‡³", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug SAMUDRA SHAKTI from Kochi port. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER VARUNA 1 (4.2 nm)"},
-        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "ðŸ‡±ðŸ‡°", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12Â° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter CG-17 on alert. Notify MRCC Chennai.", cgAsset: "SAR CUTTER VARUNA 2 (6.1 nm)"},
-        {id: "distress-03", name: "MT INDUS SPIRIT", lon: 85.7, lat: 19.4, flag: "ðŸ‡µðŸ‡¦", country: "PA", mmsi: "352001182", class: "Tanker (Engine Failure)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted military zone boundary. 31 crew aboard. Risk of grounding if not assisted within 4 hrs. Chemical cargo declared hazardous.", action: "CRITICAL: Dispatch ocean-going tug BHARAT SHAKTI from Paradip. Alert Oil Spill Response unit. Naval coordination required.", cgAsset: "ICGS SAMARATH (9.8 nm)"},
+        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "\uD83C\uDDEE\uD83C\uDDF3", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER (4.2 nm)"},
+        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "\uD83C\uDDF1\uD83C\uDDF0", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter on alert. Notify MRCC.", cgAsset: "SAR CUTTER (6.1 nm)"},
+        {id: "distress-03", name: "MT MEDITERRANEAN SOS", lon: 11.5, lat: 42.1, flag: "\uD83C\uDDEE\uD83C\uDDF9", country: "IT", mmsi: "352001182", class: "Tanker (Adrift)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted zone. 31 crew aboard. Risk of grounding if not assisted within 4 hrs.", action: "CRITICAL: Dispatch ocean-going tug. Alert Oil Spill Response unit.", cgAsset: "EU Patrol Tug (9.8 nm)"},
     ];
     DISTRESS_VESSELS.forEach(dv => {
         vessels.push({
@@ -442,7 +623,7 @@ function generateInitialVessels() {
             threatScore: 0,
             lat: dv.lat,
             lon: dv.lon,
-            speed: 0,               // HALTED â€“ no movement
+            speed: 0,
             heading: Math.floor(Math.random() * 360),
             destination: "ADRIFT",
             eta: "EMERGENCY",
@@ -450,10 +631,94 @@ function generateInitialVessels() {
             anomaly: dv.anomaly,
             action: dv.action,
             cgAsset: dv.cgAsset,
-            distress: true,         // flag for special handling
-            route: null             // no route for stationary vessels
+            distress: true,
+            route: null
         });
     });
+
+    // 8. Mediterranean / Europe Vessels (to populate Italy/Europe view)
+    for (let i = 0; i < 18; i++) {
+        const euroCountries = [
+            {code: "IT", flag: "\uD83C\uDDEE\uD83C\uDDF9", name: "Italy"},
+            {code: "FR", flag: "\uD83C\uDDEB\uD83C\uDDF7", name: "France"},
+            {code: "DE", flag: "\uD83C\uDDE9\uD83C\uDDF9", name: "Germany"},
+            {code: "CH", flag: "\uD83C\uDDE8\uD83C\uDDFD", name: "Switzerland"},
+            {code: "PA", flag: "\uD83C\uDDF5\uD83C\uDDE6", name: "Panama"},
+            {code: "CN", flag: "\uD83C\uDDE8\uD83C\uDDF3", name: "China"}
+        ];
+        const country = euroCountries[Math.floor(Math.random() * euroCountries.length)];
+        const startOptions = [
+            {lon: 12.5, lat: 41.9, name: "Rome Port"},
+            {lon: 5.3, lat: 43.3, name: "Marseille Port"},
+            {lon: 9.1, lat: 44.4, name: "Genoa Port"},
+            {lon: 14.3, lat: 40.8, name: "Naples Port"}
+        ];
+        const destOptions = [
+            {lon: -5.6, lat: 35.9, name: "Gibraltar Strait SLOC"},
+            {lon: 32.5, lat: 31.2, name: "Suez Canal SLOC"}
+        ];
+        const start = startOptions[Math.floor(Math.random() * startOptions.length)];
+        const dest = destOptions[Math.floor(Math.random() * destOptions.length)];
+        
+        let type = "cargo";
+        let vClass = "Container Vessel";
+        let threat = Math.floor(Math.random() * 15);
+        let name = "MV ROME EXPRESS " + String(200 + i);
+        let anomaly = "Normal Mediterranean transit.";
+        let action = "Standard radar logs.";
+        let cgAsset = "EU Border Patrol";
+        let speed = parseFloat((12 + Math.random() * 6).toFixed(1));
+        
+        if (i % 6 === 0) {
+            type = "suspicious";
+            vClass = "Go-Fast Speedboat";
+            threat = 75 + Math.floor(Math.random() * 20);
+            name = "UNK SPEEDBOAT " + String(10 + i);
+            anomaly = "UNIDENTIFIED CONTACT: Running without active AIS transponder. High-speed maneuver pattern near shipping lanes.";
+            action = "ALERT: Dispatch security cutter for boarding & verification.";
+            cgAsset = "EU Border Patrol Helicopter";
+            speed = parseFloat((25 + Math.random() * 10).toFixed(1));
+        } else if (i % 6 === 1) {
+            type = "fishing";
+            vClass = "Coastal Trawler";
+            name = "FV BELLA VITA " + String(100 + i);
+            anomaly = "Local fishing operations in domestic waters.";
+            speed = parseFloat((3 + Math.random() * 4).toFixed(1));
+        } else if (i % 6 === 2) {
+            type = "coastguard";
+            vClass = "Offshore Patrol Vessel";
+            name = "ITS FRANCESCO MOROSINI";
+            anomaly = "Routine sea patrol sweeps.";
+            cgAsset = "Command Headquarters Rome";
+            speed = parseFloat((18 + Math.random() * 8).toFixed(1));
+        }
+        
+        vessels.push({
+            id: "euro-" + i,
+            mmsi: "2470" + String(i).padStart(5, '0'),
+            imo: "9" + String(Math.floor(100000 + Math.random() * 900000)),
+            name: name,
+            type: type,
+            class: vClass,
+            country: country.code,
+            flag: country.flag,
+            threatScore: threat,
+            lat: lerp(start.lat, dest.lat, Math.random()),
+            lon: lerp(start.lon, dest.lon, Math.random()),
+            speed: speed,
+            heading: Math.floor(calculateHeading(start.lon, start.lat, dest.lon, dest.lat)),
+            destination: dest.name,
+            eta: "In Transit",
+            aisStatus: type === "suspicious" ? "Lost" : "Active",
+            anomaly: anomaly,
+            action: action,
+            cgAsset: cgAsset,
+            route: {
+                start: {lon: start.lon, lat: start.lat},
+                end: {lon: dest.lon, lat: dest.lat}
+            }
+        });
+    }
 }
 
 
@@ -1143,64 +1408,6 @@ class Ocean3DAnimation {
             this.ctx.fill();
             
             this.ctx.restore();
-            
-            // === "Kadlu Kavalu" title reveal ===
-            // Rises up as the boat sails in; fades in once boat.arrived
-            if (boat.titleAlpha > 0) {
-                const tx2D = pBoat.x;
-                const ty2D = pBoat.y - (75 * sc) - (boat.titleAlpha * 30);
-                
-                this.ctx.save();
-                this.ctx.globalAlpha = boat.titleAlpha;
-                
-                // Subtle glow halo behind text
-                const glowRadius = 200 * boat.titleAlpha;
-                const glowGrad = this.ctx.createRadialGradient(tx2D, ty2D, 10, tx2D, ty2D, glowRadius);
-                glowGrad.addColorStop(0, 'rgba(6, 182, 212, 0.18)');
-                glowGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
-                this.ctx.fillStyle = glowGrad;
-                this.ctx.fillRect(tx2D - glowRadius, ty2D - glowRadius, glowRadius * 2, glowRadius * 2);
-                
-                // Site tagline in small caps above
-                this.ctx.font = `${Math.round(11 * sc)}px 'Courier New', monospace`;
-                this.ctx.letterSpacing = '0.18em';
-                this.ctx.textAlign = 'center';
-                this.ctx.fillStyle = `rgba(100, 210, 230, ${boat.titleAlpha * 0.75})`;
-                this.ctx.fillText('MARITIME OPERATIONS', tx2D, ty2D - 28 * sc);
-                
-                // Main title â€” large, bright, with drop shadow
-                const fontSize = Math.max(22, Math.round(32 * sc));
-                this.ctx.font = `700 ${fontSize}px 'Segoe UI', Arial, sans-serif`;
-                this.ctx.letterSpacing = '0.06em';
-                
-                // Shadow layer
-                this.ctx.shadowColor = 'rgba(6, 182, 212, 0.9)';
-                this.ctx.shadowBlur = 22;
-                this.ctx.fillStyle = '#ffffff';
-                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
-                
-                // Second pass â€” cyan overlay for the glow effect
-                this.ctx.shadowBlur = 0;
-                this.ctx.fillStyle = `rgba(6, 200, 230, ${boat.titleAlpha * 0.35})`;
-                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
-                
-                // Decorative underline
-                const titleWidth = this.ctx.measureText('Kadlu Kavalu').width;
-                const ulY = ty2D + 8 * sc;
-                const ulGrad = this.ctx.createLinearGradient(tx2D - titleWidth / 2, ulY, tx2D + titleWidth / 2, ulY);
-                ulGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-                ulGrad.addColorStop(0.5, `rgba(6, 182, 212, ${boat.titleAlpha * 0.85})`);
-                ulGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
-                this.ctx.strokeStyle = ulGrad;
-                this.ctx.lineWidth = 1.5;
-                this.ctx.shadowBlur = 0;
-                this.ctx.beginPath();
-                this.ctx.moveTo(tx2D - titleWidth / 2, ulY);
-                this.ctx.lineTo(tx2D + titleWidth / 2, ulY);
-                this.ctx.stroke();
-                
-                this.ctx.restore();
-            }
         }
         
         // 3. Draw Wake Particles floating on waves
@@ -1402,12 +1609,282 @@ function triggerLoginFlow() {
         // Transition instantly to dashboard workstation
         document.body.className = 'view-dashboard dark-theme'; // Default workstation starts dark
         triggerMapResize();
+        
+        // Voice boot greeting after short delay to allow voices to load
+        setTimeout(() => {
+            const aisLostVessels = vessels.filter(v => v.aisStatus === 'Lost');
+            const suspiciousVessels = vessels.filter(v => v.type === 'suspicious');
+            const distressVessels = vessels.filter(v => v.type === 'distress');
+            
+            let greeting = `Kadlu Kavalu Maritime Surveillance online. `;
+            greeting += `Tracking ${vessels.length} vessels globally. `;
+            
+            if (aisLostVessels.length > 0) {
+                greeting += `Warning: ${aisLostVessels.length} vessel${aisLostVessels.length > 1 ? 's' : ''} with lost AIS signal. `;
+            }
+            if (suspiciousVessels.length > 0) {
+                greeting += `Alert: ${suspiciousVessels.length} unidentified or suspicious contact${suspiciousVessels.length > 1 ? 's' : ''} detected. `;
+            }
+            if (distressVessels.length > 0) {
+                greeting += `Critical: ${distressVessels.length} distress beacon${distressVessels.length > 1 ? 's' : ''} active. Immediate response required.`;
+            }
+            
+            speakAnnouncement(greeting, 'normal');
+        }, 800);
     });
 }
 
 // ==========================================================================
 // 4. MAP DRAWING & INTERACTION LAYER (Canvas GIS Engine)
 // ==========================================================================
+
+let worldMapSvgText = null;
+const mapImagesCache = {
+    'dark-ocean': null,
+    'dark-satellite': null,
+    'light-ocean': null,
+    'light-satellite': null
+};
+
+function cacheWorldMapImages() {
+    if (!worldMapSvgText) return;
+    
+    const styles = [
+        { key: 'dark-ocean', land: '#141e30', coast: '#1b2d4a' },
+        { key: 'dark-satellite', land: '#062f17', coast: 'rgba(16, 185, 129, 0.4)' },
+        { key: 'light-ocean', land: '#e2e8f0', coast: '#cbd5e1' },
+        { key: 'light-satellite', land: '#cbd5e1', coast: '#94a3b8' }
+    ];
+    
+    styles.forEach(style => {
+        const svgTagIndex = worldMapSvgText.indexOf('<svg');
+        if (svgTagIndex === -1) return;
+        const svgOpenIndex = worldMapSvgText.indexOf('>', svgTagIndex);
+        if (svgOpenIndex === -1) return;
+        
+        const styleTag = `<style>path { fill: ${style.land} !important; stroke: ${style.coast} !important; stroke-width: 0.5px !important; }</style>`;
+        const modifiedSvg = worldMapSvgText.slice(0, svgOpenIndex + 1) + styleTag + worldMapSvgText.slice(svgOpenIndex + 1);
+        
+        const blob = new Blob([modifiedSvg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        
+        const img = new Image();
+        img.onload = () => {
+            if (mapRenderer) mapRenderer.draw(0);
+        };
+        img.src = url;
+        mapImagesCache[style.key] = img;
+    });
+}
+
+async function loadWorldMapSvg() {
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/okviz/synoptic-panel-maps/main/geo/world.svg');
+        if (response.ok) {
+            worldMapSvgText = await response.text();
+            cacheWorldMapImages();
+        }
+    } catch (e) {
+        console.warn("Failed to fetch world map SVG, using regional fallback", e);
+    }
+}
+
+const MAP_COUNTRIES = [
+    { code: "IN", name: "INDIA", lon: 79.0, lat: 21.0 },
+    { code: "LK", name: "SRI LANKA", lon: 80.7, lat: 7.8 },
+    { code: "MV", name: "MALDIVES", lon: 73.0, lat: 3.2 },
+    { code: "CN", name: "CHINA", lon: 104.0, lat: 35.0 },
+    { code: "IT", name: "ITALY", lon: 12.5, lat: 41.8 },
+    { code: "FR", name: "FRANCE", lon: 2.2, lat: 46.2 },
+    { code: "DE", name: "GERMANY", lon: 10.4, lat: 51.1 },
+    { code: "CH", name: "SWITZERLAND", lon: 8.2, lat: 46.8 },
+    { code: "PA", name: "PANAMA", lon: -80.0, lat: 8.5 },
+    { code: "LR", name: "LIBERIA", lon: -9.5, lat: 6.4 },
+    { code: "US", name: "USA", lon: -98.0, lat: 39.5 },
+    { code: "AU", name: "AUSTRALIA", lon: 133.0, lat: -25.0 },
+    { code: "BR", name: "BRAZIL", lon: -51.9, lat: -14.2 },
+    { code: "ZA", name: "SOUTH AFRICA", lon: 25.0, lat: -30.0 },
+    { code: "JP", name: "JAPAN", lon: 138.2, lat: 36.2 }
+];
+
+function drawCountryFlag(ctx, x, y, w, h, code) {
+    ctx.save();
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.lineWidth = 0.5;
+    ctx.strokeRect(x, y, w, h);
+    
+    if (code === 'IN') {
+        const sh = h / 3;
+        ctx.fillStyle = '#FF9933';
+        ctx.fillRect(x, y, w, sh);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y + sh, w, sh);
+        ctx.fillStyle = '#138808';
+        ctx.fillRect(x, y + 2 * sh, w, sh);
+        ctx.fillStyle = '#000080';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2, sh / 3, 0, Math.PI * 2);
+        ctx.fill();
+    } 
+    else if (code === 'IT') {
+        const sw = w / 3;
+        ctx.fillStyle = '#009246';
+        ctx.fillRect(x, y, sw, h);
+        ctx.fillStyle = '#F1F2F1';
+        ctx.fillRect(x + sw, y, sw, h);
+        ctx.fillStyle = '#CE2B37';
+        ctx.fillRect(x + 2 * sw, y, sw, h);
+    }
+    else if (code === 'FR') {
+        const sw = w / 3;
+        ctx.fillStyle = '#002395';
+        ctx.fillRect(x, y, sw, h);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x + sw, y, sw, h);
+        ctx.fillStyle = '#ED2939';
+        ctx.fillRect(x + 2 * sw, y, sw, h);
+    }
+    else if (code === 'DE') {
+        const sh = h / 3;
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(x, y, w, sh);
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(x, y + sh, w, sh);
+        ctx.fillStyle = '#FFCC00';
+        ctx.fillRect(x, y + 2 * sh, w, sh);
+    }
+    else if (code === 'CH') {
+        ctx.fillStyle = '#D80027';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x + w / 2 - w / 10, y + h / 4, w / 5, h / 2);
+        ctx.fillRect(x + w / 4, y + h / 2 - h / 10, w / 2, h / 5);
+    }
+    else if (code === 'CN') {
+        ctx.fillStyle = '#DE2910';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#FFDE00';
+        ctx.beginPath();
+        ctx.arc(x + w / 4, y + h / 4, w / 8, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    else if (code === 'LK') {
+        ctx.fillStyle = '#8D153B';
+        ctx.fillRect(x, y, w, h);
+        const sw = w / 5;
+        ctx.fillStyle = '#F77F00';
+        ctx.fillRect(x, y, sw, h);
+        ctx.fillStyle = '#007A33';
+        ctx.fillRect(x + sw, y, sw, h);
+        ctx.fillStyle = '#FFBE29';
+        ctx.fillRect(x + 2 * sw, y + h / 4, w - 2.5 * sw, h / 2);
+    }
+    else if (code === 'MV') {
+        ctx.fillStyle = '#D21034';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#007E3A';
+        ctx.fillRect(x + w / 6, y + h / 6, w * 2 / 3, h * 2 / 3);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2, w / 8, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    else if (code === 'PA') {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#0052B4';
+        ctx.fillRect(x, y + h / 2, w / 2, h / 2);
+        ctx.fillStyle = '#D21034';
+        ctx.fillRect(x + w / 2, y, w / 2, h / 2);
+    }
+    else if (code === 'LR') {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#D21034';
+        const sh = h / 5;
+        ctx.fillRect(x, y, w, sh);
+        ctx.fillRect(x, y + 2 * sh, w, sh);
+        ctx.fillRect(x, y + 4 * sh, w, sh);
+        ctx.fillStyle = '#002F6C';
+        ctx.fillRect(x, y, w / 2, h / 2);
+    }
+    else if (code === 'US') {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#B22234';
+        const sh = h / 5;
+        ctx.fillRect(x, y, w, sh);
+        ctx.fillRect(x, y + 2 * sh, w, sh);
+        ctx.fillRect(x, y + 4 * sh, w, sh);
+        ctx.fillStyle = '#3C3B6E';
+        ctx.fillRect(x, y, w * 0.45, h * 0.55);
+    }
+    else if (code === 'JP') {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#BC002D';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2, h / 3.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    else if (code === 'BR') {
+        ctx.fillStyle = '#009739';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#FEDF00';
+        ctx.beginPath();
+        ctx.moveTo(x + w / 2, y + 1);
+        ctx.lineTo(x + w - 1, y + h / 2);
+        ctx.lineTo(x + w / 2, y + h - 1);
+        ctx.lineTo(x + 1, y + h / 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = '#012169';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2, h / 4.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    else if (code === 'ZA') {
+        ctx.fillStyle = '#E23D28';
+        ctx.fillRect(x, y, w, h / 2);
+        ctx.fillStyle = '#002395';
+        ctx.fillRect(x, y + h / 2, w, h / 2);
+        ctx.fillStyle = '#007A4C';
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + w / 2, y + h / 2);
+        ctx.lineTo(x, y + h);
+        ctx.closePath();
+        ctx.fill();
+    }
+    else if (code === 'AU') {
+        ctx.fillStyle = '#00008B';
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, y, w * 0.45, h * 0.5);
+        ctx.fillStyle = '#B22234';
+        ctx.fillRect(x + w * 0.18, y, w * 0.09, h * 0.5);
+        ctx.fillRect(x, y + h * 0.2, w * 0.45, h * 0.1);
+    }
+    else {
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(x, y, w, h);
+    }
+    ctx.restore();
+}
+
+function drawSternFlag(ctx, sternY, code) {
+    if (!code || code === '??') return;
+    ctx.save();
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(0, sternY);
+    ctx.lineTo(2.5, sternY + 2.5);
+    ctx.stroke();
+    
+    drawCountryFlag(ctx, 2.5, sternY + 2.5, 7.5, 5, code);
+    ctx.restore();
+}
 
 class MapSurveillanceRenderer {
     constructor() {
@@ -1416,7 +1893,7 @@ class MapSurveillanceRenderer {
         this.ctx = this.canvas.getContext('2d');
         
         // Viewport navigation parameters
-        this.zoom = 1.35;
+        this.zoom = 12.0;
         this.panX = 0;
         this.panY = 0;
         
@@ -1536,7 +2013,7 @@ class MapSurveillanceRenderer {
             
             const gpsBefore = this.screenToGps(mouseX, mouseY);
             const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-            this.zoom = Math.min(Math.max(this.zoom * zoomFactor, 0.5), 15.0);
+            this.zoom = Math.min(Math.max(this.zoom * zoomFactor, 0.4), 30.0);
             
             const screenAfter = this.gpsToScreen(gpsBefore.lon, gpsBefore.lat);
             this.panX += mouseX - screenAfter.x;
@@ -1662,6 +2139,8 @@ class MapSurveillanceRenderer {
         const isSatellite = (this.mapStyle === 'satellite');
         const mapNeedsLightText = isDark || isSatellite;
         
+        const drawnLabelRects = [];
+        
         // 1. Draw Water
         if (isSatellite) {
             // Dark satellite ocean radial gradient (deep sea trenches to lighter coasts)
@@ -1682,22 +2161,30 @@ class MapSurveillanceRenderer {
         this.ctx.fillStyle = isSatellite ? '#10b981' : (mapNeedsLightText ? '#94a3b8' : '#475569');
         this.ctx.font = '9px monospace';
         
-        for (let lon = 65; lon <= 95; lon += 5) {
-            const start = this.gpsToScreen(lon, MAP_BOUNDS.minLat);
+        // Longitude lines
+        for (let lon = -180; lon <= 180; lon += 20) {
+            const start = this.gpsToScreen(lon, 0);
             this.ctx.beginPath();
             this.ctx.moveTo(start.x, 0);
             this.ctx.lineTo(start.x, this.height);
             this.ctx.stroke();
-            this.ctx.fillText(`${lon}Â°E`, start.x + 4, this.height - 8);
+            
+            const dir = lon >= 0 ? 'E' : 'W';
+            const val = Math.abs(lon);
+            this.ctx.fillText(`${val}°${dir}`, start.x + 4, this.height - 8);
         }
         
-        for (let lat = 0; lat <= 25; lat += 5) {
-            const start = this.gpsToScreen(MAP_BOUNDS.minLon, lat);
+        // Latitude lines
+        for (let lat = -80; lat <= 80; lat += 20) {
+            const start = this.gpsToScreen(0, lat);
             this.ctx.beginPath();
             this.ctx.moveTo(0, start.y);
             this.ctx.lineTo(this.width, start.y);
             this.ctx.stroke();
-            this.ctx.fillText(`${lat}Â°N`, 8, start.y - 4);
+            
+            const dir = lat >= 0 ? 'N' : 'S';
+            const val = Math.abs(lat);
+            this.ctx.fillText(`${val}°${dir}`, 8, start.y - 4);
         }
         
         // 2.5 Draw Background SLOC (Sea Lines of Communication) Highways
@@ -1786,45 +2273,63 @@ class MapSurveillanceRenderer {
         });
         
         // 5. Draw Land coastlines
-        if (isSatellite) {
-            // High-fidelity dark satellite landmass gradient
-            const landGrad = this.ctx.createLinearGradient(0, 0, this.width, this.height);
-            landGrad.addColorStop(0, '#062f17'); // Dark pine forest
-            landGrad.addColorStop(0.35, '#052e16'); // Forest vegetation
-            landGrad.addColorStop(0.7, '#1c1917'); // Mountainous rocky soil
-            landGrad.addColorStop(1, '#292524'); // Arid desert stone
-            this.ctx.fillStyle = landGrad;
-            
-            this.ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)'; // Glowing satellite radar coastline green
-            this.ctx.lineWidth = 1.2;
-        } else {
-            this.ctx.fillStyle = mapLand;
-            this.ctx.strokeStyle = mapCoast;
-            this.ctx.lineWidth = 1.0;
+        let drawnWorldMap = false;
+        const cacheKey = `${isDark ? 'dark' : 'light'}-${this.mapStyle}`;
+        const mapImg = mapImagesCache[cacheKey];
+        if (mapImg && mapImg.complete && mapImg.naturalWidth !== 0) {
+            try {
+                const topLeft = this.gpsToScreen(-180, 90);
+                const bottomRight = this.gpsToScreen(180, -90);
+                this.ctx.drawImage(mapImg, topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+                drawnWorldMap = true;
+            } catch (e) {
+                console.warn("Failed to draw world map SVG, using fallback", e);
+                drawnWorldMap = false;
+            }
         }
         
-        // Mainland India
-        this.ctx.beginPath();
-        mainlandIndia.forEach((pt, idx) => {
-            const pos = this.gpsToScreen(pt.lon, pt.lat);
-            if (idx === 0) this.ctx.moveTo(pos.x, pos.y);
-            else this.ctx.lineTo(pos.x, pos.y);
-        });
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
+        if (!drawnWorldMap) {
+            // Regional Fallback
+            if (isSatellite) {
+                // High-fidelity dark satellite landmass gradient
+                const landGrad = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+                landGrad.addColorStop(0, '#062f17'); // Dark pine forest
+                landGrad.addColorStop(0.35, '#052e16'); // Forest vegetation
+                landGrad.addColorStop(0.7, '#1c1917'); // Mountainous rocky soil
+                landGrad.addColorStop(1, '#292524'); // Arid desert stone
+                this.ctx.fillStyle = landGrad;
+                
+                this.ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)'; // Glowing satellite radar coastline green
+                this.ctx.lineWidth = 1.2;
+            } else {
+                this.ctx.fillStyle = mapLand;
+                this.ctx.strokeStyle = mapCoast;
+                this.ctx.lineWidth = 1.0;
+            }
+            
+            // Mainland India
+            this.ctx.beginPath();
+            mainlandIndia.forEach((pt, idx) => {
+                const pos = this.gpsToScreen(pt.lon, pt.lat);
+                if (idx === 0) this.ctx.moveTo(pos.x, pos.y);
+                else this.ctx.lineTo(pos.x, pos.y);
+            });
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+            
+            // Sri Lanka
+            this.ctx.beginPath();
+            sriLanka.forEach((pt, idx) => {
+                const pos = this.gpsToScreen(pt.lon, pt.lat);
+                if (idx === 0) this.ctx.moveTo(pos.x, pos.y);
+                else this.ctx.lineTo(pos.x, pos.y);
+            });
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+        }
         
-        // Sri Lanka
-        this.ctx.beginPath();
-        sriLanka.forEach((pt, idx) => {
-            const pos = this.gpsToScreen(pt.lon, pt.lat);
-            if (idx === 0) this.ctx.moveTo(pos.x, pos.y);
-            else this.ctx.lineTo(pos.x, pos.y);
-        });
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
-
         // Draw cloud weather overlay if in Satellite view
         if (isSatellite) {
             this.ctx.save();
@@ -1850,24 +2355,26 @@ class MapSurveillanceRenderer {
         }
         
         // Islands
-        const drawIslands = (islands) => {
-            islands.forEach(isl => {
-                const pos = this.gpsToScreen(isl.lon, isl.lat);
-                this.ctx.beginPath();
-                this.ctx.arc(pos.x, pos.y, 2.2 * this.zoom, 0, Math.PI * 2);
-                this.ctx.fillStyle = mapCoast;
-                this.ctx.fill();
-                
-                if (this.zoom > 1.8) {
-                    this.ctx.fillStyle = mapNeedsLightText ? '#cbd5e1' : '#334155';
-                    this.ctx.font = '7px var(--font-body)';
-                    this.ctx.fillText(isl.label, pos.x + 5, pos.y + 2);
-                }
-            });
-        };
-        drawIslands(lakshadweep);
-        drawIslands(maldives);
-        drawIslands(andamanNicobar);
+        if (!drawnWorldMap) {
+            const drawIslands = (islands) => {
+                islands.forEach(isl => {
+                    const pos = this.gpsToScreen(isl.lon, isl.lat);
+                    this.ctx.beginPath();
+                    this.ctx.arc(pos.x, pos.y, 2.2 * this.zoom, 0, Math.PI * 2);
+                    this.ctx.fillStyle = mapCoast;
+                    this.ctx.fill();
+                    
+                    if (this.zoom > 16.0) {
+                        this.ctx.fillStyle = mapNeedsLightText ? '#cbd5e1' : '#334155';
+                        this.ctx.font = '7px var(--font-body)';
+                        this.ctx.fillText(isl.label, pos.x + 5, pos.y + 2);
+                    }
+                });
+            };
+            drawIslands(lakshadweep);
+            drawIslands(maldives);
+            drawIslands(andamanNicobar);
+        }
         
         // Ports
         PORTS.forEach(port => {
@@ -1880,12 +2387,304 @@ class MapSurveillanceRenderer {
             this.ctx.strokeStyle = accentColor;
             this.ctx.stroke();
             
-            if (this.zoom > 1.2) {
+            if (this.zoom > 10.0) {
                 this.ctx.fillStyle = mapNeedsLightText ? '#cbd5e1' : '#334155';
                 this.ctx.font = 'bold 8px var(--font-body)';
                 this.ctx.fillText(port.name, pos.x + 6, pos.y + 3);
             }
         });
+        
+        // Draw Country Name labels and Flags on the map
+        if (this.zoom > 1.5) {
+            MAP_COUNTRIES.forEach(country => {
+                const pos = this.gpsToScreen(country.lon, country.lat);
+                const fw = 14;
+                const fh = 9;
+                drawCountryFlag(this.ctx, pos.x - fw / 2, pos.y - 12, fw, fh, country.code);
+                
+                this.ctx.save();
+                this.ctx.textAlign = 'center';
+                this.ctx.font = 'bold 8px var(--font-heading)';
+                
+                if (mapNeedsLightText) {
+                    this.ctx.strokeStyle = '#000000';
+                    this.ctx.fillStyle = '#ffffff';
+                } else {
+                    this.ctx.strokeStyle = '#ffffff';
+                    this.ctx.fillStyle = '#0f172a';
+                }
+                this.ctx.lineWidth = 2.5;
+                this.ctx.strokeText(country.name, pos.x, pos.y + 4);
+                this.ctx.fillText(country.name, pos.x, pos.y + 4);
+                this.ctx.restore();
+            });
+        }
+        
+        // ── Geographic Feature Labels ──────────────────────────────────────────
+        // Continent names, Oceans, Seas, Straits, Gulfs — always drawn (zoom gated)
+        {
+            const mapText = (text, lon, lat, opts = {}) => {
+                const pos = this.gpsToScreen(lon, lat);
+                const { font = '9px var(--font-heading)', color = null, spacing = '0em', align = 'center', opacity = 1.0, italic = false } = opts;
+                this.ctx.save();
+                this.ctx.textAlign = align;
+                this.ctx.globalAlpha = 1.0; // Force full solid opacity for maximum contrast
+                
+                let fillCol, strokeCol;
+                if (mapNeedsLightText) {
+                    fillCol = '#ffffff';
+                    strokeCol = '#000000';
+                } else {
+                    fillCol = '#0f172a';
+                    strokeCol = '#ffffff';
+                }
+                
+                this.ctx.font = `${italic ? 'italic ' : ''}${font}`;
+                this.ctx.letterSpacing = spacing;
+                
+                // Draw text stroke for ultimate legibility over any background texture
+                this.ctx.strokeStyle = strokeCol;
+                this.ctx.lineWidth = 2.5;
+                this.ctx.strokeText(text, pos.x, pos.y);
+                
+                this.ctx.fillStyle = fillCol;
+                this.ctx.fillText(text, pos.x, pos.y);
+                this.ctx.restore();
+            };
+
+            // Helper for ocean / water labels (slightly italic, spaced, cyan-tinted)
+            const waterLabel = (text, lon, lat, fontSize = 11, opacity = 1.0) => {
+                const pos = this.gpsToScreen(lon, lat);
+                this.ctx.save();
+                this.ctx.textAlign = 'center';
+                this.ctx.globalAlpha = 1.0; // Force full solid opacity for maximum contrast
+                
+                let fillCol, strokeCol;
+                if (mapNeedsLightText) {
+                    fillCol = '#00f0ff';
+                    strokeCol = '#000000';
+                } else {
+                    fillCol = '#0c4a6e'; // Rich navy blue
+                    strokeCol = '#ffffff';
+                }
+                
+                this.ctx.font = `italic bold ${fontSize}px var(--font-heading)`;
+                this.ctx.letterSpacing = '0.22em';
+                
+                // Draw text stroke
+                this.ctx.strokeStyle = strokeCol;
+                this.ctx.lineWidth = 2.5;
+                this.ctx.strokeText(text, pos.x, pos.y);
+                
+                this.ctx.fillStyle = fillCol;
+                this.ctx.fillText(text, pos.x, pos.y);
+                this.ctx.restore();
+            };
+
+            // ── CONTINENT NAMES ────────────────────────────────────────────────
+            if (this.zoom > 0.45) {
+                const continentOpts = {
+                    font: 'bold 13px var(--font-heading)',
+                    spacing: '0.28em',
+                    opacity: 0.6,
+                    color: mapNeedsLightText ? 'rgba(255,255,255,0.55)' : 'rgba(15,23,42,0.5)',
+                    shadowColor: 'rgba(0,0,0,0.6)',
+                    shadowBlur: 6
+                };
+                mapText('NORTH AMERICA',   -100.0,  54.0,  continentOpts);
+                mapText('SOUTH AMERICA',    -58.0, -15.0,  continentOpts);
+                mapText('EUROPE',            14.0,  52.5,  continentOpts);
+                mapText('AFRICA',            22.0,   5.0,  continentOpts);
+                mapText('ASIA',              87.0,  47.0,  continentOpts);
+                mapText('AUSTRALIA',        133.0, -26.5,  continentOpts);
+                mapText('ANTARCTICA',         0.0, -80.0,  continentOpts);
+            }
+
+            // ── OCEAN NAMES ────────────────────────────────────────────────────
+            if (this.zoom > 0.42) {
+                waterLabel('PACIFIC  OCEAN',        -155.0,   8.0, 13, 0.7);
+                waterLabel('PACIFIC  OCEAN',        -140.0, -28.0, 11, 0.6);
+                waterLabel('ATLANTIC  OCEAN',        -35.0,  20.0, 13, 0.7);
+                waterLabel('ATLANTIC  OCEAN',        -20.0, -32.0, 11, 0.6);
+                waterLabel('INDIAN  OCEAN',           73.0, -20.0, 13, 0.7);
+                waterLabel('ARCTIC  OCEAN',            0.0,  85.0, 11, 0.6);
+                waterLabel('SOUTHERN  OCEAN',          0.0, -60.0, 11, 0.6);
+            }
+
+            // ── SEA NAMES ──────────────────────────────────────────────────────
+            if (this.zoom > 0.9) {
+                waterLabel('NORTH SEA',             3.0,  56.5,  9, 0.7);
+                waterLabel('BALTIC SEA',           19.0,  57.8,  9, 0.7);
+                waterLabel('MEDITERRANEAN SEA',    18.0,  37.5,  9, 0.7);
+                waterLabel('BLACK SEA',            33.5,  43.2,  8, 0.7);
+                waterLabel('CASPIAN SEA',          51.0,  42.5,  8, 0.7);
+                waterLabel('RED SEA',              38.5,  20.5,  8, 0.7);
+                waterLabel('ARABIAN SEA',          63.0,  15.0,  9, 0.7);
+                waterLabel('BAY OF BENGAL',        86.0,  14.0,  9, 0.7);
+                waterLabel('SOUTH CHINA SEA',     112.5,  13.5,  9, 0.7);
+                waterLabel('EAST CHINA SEA',      124.5,  29.0,  8, 0.65);
+                waterLabel('SEA OF JAPAN',        135.0,  40.5,  8, 0.65);
+                waterLabel('PHILIPPINE SEA',      133.0,  18.0,  9, 0.65);
+                waterLabel('CORAL SEA',           155.0, -18.0,  9, 0.65);
+                waterLabel('TASMAN SEA',          158.0, -37.0,  8, 0.65);
+                waterLabel('BERING SEA',         -174.0,  57.0,  9, 0.65);
+                waterLabel('CHUKCHI SEA',        -166.0,  68.5,  8, 0.65);
+                waterLabel('BEAUFORT SEA',       -143.0,  72.5,  8, 0.65);
+                waterLabel('LABRADOR SEA',        -54.0,  55.0,  8, 0.65);
+                waterLabel('HUDSON BAY',          -86.0,  58.0,  9, 0.7);
+                waterLabel('CARIBBEAN SEA',       -74.0,  15.0,  9, 0.7);
+                waterLabel('GULF OF MEXICO',      -90.0,  24.0,  9, 0.7);
+                waterLabel('NORTH ATLANTIC',      -42.0,  42.0,  9, 0.65);
+                waterLabel('BARENTS SEA',          40.0,  73.0,  8, 0.65);
+                waterLabel('NORWEGIAN SEA',        3.0,  68.0,  8, 0.65);
+                waterLabel('WEDDELL SEA',         -38.0, -72.0,  8, 0.65);
+                waterLabel('ROSS SEA',            178.0, -74.0,  8, 0.65);
+                waterLabel('SEA OF OKHOTSK',      148.0,  54.0,  8, 0.65);
+                waterLabel('ANDAMAN SEA',          96.5,  10.5,  8, 0.7);
+                waterLabel('JAVA SEA',            110.0,  -5.5,  8, 0.7);
+                waterLabel('CELEBES SEA',         122.5,   4.0,  8, 0.65);
+                waterLabel('BANDA SEA',           127.5,  -6.0,  8, 0.65);
+                waterLabel('TIMOR SEA',           128.0, -13.0,  8, 0.65);
+                waterLabel('ARAFURA SEA',         136.0, -10.0,  8, 0.65);
+                waterLabel('PERSIAN GULF',         51.5,  26.5,  8, 0.75);
+                waterLabel('GULF OF OMAN',         57.5,  22.0,  8, 0.7);
+                waterLabel('GULF OF ADEN',         48.0,  12.0,  8, 0.7);
+            }
+
+            // ── STRAITS, CHANNELS, GULFS (smaller labels) ─────────────────────
+            if (this.zoom > 1.8) {
+                const smallWater = (text, lon, lat) => waterLabel(text, lon, lat, 7, 0.58);
+                
+                smallWater('BERING STRAIT',        -168.5,  65.8);
+                smallWater('STRAIT OF MALACCA',     102.0,   2.8);
+                smallWater('STRAIT OF HORMUZ',       56.6,  26.4);
+                smallWater('STRAIT OF GIBRALTAR',   -5.5,  35.9);
+                smallWater('STRAIT OF DOVER',        1.3,  51.1);
+                smallWater('STRAIT OF MAGELLAN',   -71.0, -52.5);
+                smallWater('DRAKE PASSAGE',         -68.0, -58.0);
+                smallWater('SUEZ CANAL',             32.5,  30.5);
+                smallWater('PANAMA CANAL',          -79.9,   9.1);
+                smallWater('ENGLISH CHANNEL',        -1.2,  50.1);
+                smallWater('LUZON STRAIT',          121.5,  19.5);
+                smallWater('LOMBOK STRAIT',         115.8,  -8.8);
+                smallWater('SUNDA STRAIT',          105.8,  -6.0);
+                smallWater('BASS STRAIT',           146.0, -40.5);
+                smallWater('GULF OF ANADYR',       -179.0,  64.5);
+                smallWater('GULF OF FINLAND',        26.0,  60.0);
+                smallWater('GULF OF BOTHNIA',        22.0,  63.5);
+                smallWater('GULF OF ST. LAWRENCE',  -62.0,  47.5);
+                smallWater('GULF OF CALIFORNIA',   -109.5,  26.5);
+                smallWater('GULF OF GUINEA',          2.5,   1.5);
+                smallWater('MOZAMBIQUE CHANNEL',     40.5, -18.0);
+                smallWater('DAVIS STRAIT',          -57.0,  67.5);
+                smallWater('DENMARK STRAIT',        -25.0,  66.0);
+                smallWater('TAIWAN STRAIT',         119.5,  24.5);
+                smallWater('KOREA STRAIT',          129.5,  34.0);
+                smallWater('TSUGARU STRAIT',        140.8,  41.5);
+                smallWater('TORRES STRAIT',         142.5, -10.5);
+                smallWater('GULF OF CARPENTARIA',   137.0, -14.5);
+                smallWater('GULF OF THAILAND',      101.0,   9.5);
+                smallWater('GULF OF TONKIN',        108.5,  19.5);
+            }
+
+            // ── ADDITIONAL COUNTRY NAMES (not in MAP_COUNTRIES, no flag) ──────
+            if (this.zoom > 0.9) {
+                const cOpts = { font: 'bold 8px var(--font-heading)', spacing: '0.04em', opacity: 0.58, color: mapNeedsLightText ? 'rgba(226,232,240,0.78)' : 'rgba(30,41,59,0.72)', shadowColor: 'rgba(0,0,0,0.55)', shadowBlur: 3 };
+                
+                // Americas
+                mapText('CANADA',         -96.0,  60.0, cOpts);
+                mapText('MEXICO',         -102.0,  23.0, cOpts);
+                mapText('ARGENTINA',       -65.0, -36.0, cOpts);
+                mapText('CHILE',           -71.0, -33.5, cOpts);
+                mapText('COLOMBIA',        -73.5,   4.0, cOpts);
+                mapText('VENEZUELA',       -66.0,   8.5, cOpts);
+                mapText('PERU',            -75.5,  -9.0, cOpts);
+                mapText('BOLIVIA',         -64.5, -16.5, cOpts);
+                mapText('CUBA',            -79.5,  22.0, cOpts);
+                mapText('GREENLAND',       -42.0,  72.0, cOpts);
+                
+                // Europe (beyond DE, FR, IT, CH already drawn)
+                mapText('UNITED KINGDOM',   -2.0,  54.0, cOpts);
+                mapText('SPAIN',            -3.7,  40.4, cOpts);
+                mapText('PORTUGAL',         -8.2,  39.5, cOpts);
+                mapText('NORWAY',           14.5,  65.5, cOpts);
+                mapText('SWEDEN',           17.0,  62.0, cOpts);
+                mapText('FINLAND',          26.5,  64.0, cOpts);
+                mapText('POLAND',           20.0,  52.0, cOpts);
+                mapText('UKRAINE',          31.5,  49.0, cOpts);
+                mapText('TURKEY',           35.0,  39.0, cOpts);
+                mapText('GREECE',           22.5,  39.5, cOpts);
+                mapText('ROMANIA',          25.0,  45.5, cOpts);
+                mapText('NETHERLANDS',       5.3,  52.4, cOpts);
+                mapText('ICELAND',         -19.0,  65.0, cOpts);
+                
+                // Asia / Middle East (beyond CN, IN, JP already drawn)
+                mapText('RUSSIA',          100.0,  60.0, cOpts);
+                mapText('RUSSIA',          -158.0, 62.0, cOpts);  // Chukotka / Far East
+                mapText('KAZAKHSTAN',       67.0,  48.0, cOpts);
+                mapText('MONGOLIA',        104.0,  46.5, cOpts);
+                mapText('PAKISTAN',         68.0,  30.0, cOpts);
+                mapText('AFGHANISTAN',      65.0,  33.0, cOpts);
+                mapText('IRAN',             53.0,  32.0, cOpts);
+                mapText('IRAQ',             44.0,  33.0, cOpts);
+                mapText('SAUDI ARABIA',     45.0,  24.0, cOpts);
+                mapText('MYANMAR',          96.0,  17.0, cOpts);
+                mapText('THAILAND',        101.0,  15.5, cOpts);
+                mapText('VIETNAM',         107.5,  16.5, cOpts);
+                mapText('MALAYSIA',        109.5,   2.5, cOpts);
+                mapText('INDONESIA',       118.0,  -2.0, cOpts);
+                mapText('PHILIPPINES',     122.0,  12.5, cOpts);
+                mapText('SOUTH KOREA',     127.5,  36.5, cOpts);
+                mapText('NORTH KOREA',     127.0,  40.5, cOpts);
+                mapText('BANGLADESH',       90.5,  23.5, cOpts);
+                mapText('CAMBODIA',        104.8,  12.5, cOpts);
+                
+                // Africa (beyond ZA, LR already drawn)
+                mapText('NIGERIA',          8.5,   9.0, cOpts);
+                mapText('ETHIOPIA',        40.0,   9.5, cOpts);
+                mapText('KENYA',           37.9,   0.5, cOpts);
+                mapText('EGYPT',           30.0,  26.5, cOpts);
+                mapText('ALGERIA',          3.0,  28.0, cOpts);
+                mapText('ANGOLA',          18.5, -12.0, cOpts);
+                mapText('MOZAMBIQUE',      34.5, -18.0, cOpts);
+                mapText('MADAGASCAR',      46.5, -19.5, cOpts);
+                mapText('GHANA',           -1.2,   7.9, cOpts);
+                mapText('SOMALIA',         46.0,   6.0, cOpts);
+                mapText('TANZANIA',        34.8,  -6.0, cOpts);
+                mapText('SUDAN',           30.0,  15.0, cOpts);
+                mapText('MOROCCO',         -5.5,  31.5, cOpts);
+                
+                // Oceania (beyond AU already drawn)
+                mapText('NEW ZEALAND',    172.5, -42.0, cOpts);
+                mapText('PAPUA NEW GUINEA', 144.5, -6.5, cOpts);
+            }
+            
+            // ── ISLAND / PENINSULA NAMES ───────────────────────────────────────
+            if (this.zoom > 2.5) {
+                const islandOpts = { font: '7px var(--font-heading)', spacing: '0.02em', opacity: 0.52, italic: true };
+                mapText('Alaska',           -153.0,  64.0, islandOpts);
+                mapText('Siberia',           110.0,  65.0, islandOpts);
+                mapText('Scandinavia',        16.0,  65.0, islandOpts);
+                mapText('Iberian Peninsula',  -5.0,  40.0, islandOpts);
+                mapText('Italian Peninsula',  14.0,  42.5, islandOpts);
+                mapText('Arabian Peninsula',  45.0,  23.0, islandOpts);
+                mapText('Kamchatka',         160.5,  54.5, islandOpts);
+                mapText('Indochina',         104.0,  16.0, islandOpts);
+                mapText('Indian Subcontinent', 76.5,  20.0, islandOpts);
+                mapText('Horn of Africa',     49.5,  10.5, islandOpts);
+                mapText('Cape of Good Hope',  18.5, -34.5, islandOpts);
+                mapText('Labrador',          -61.0,  53.0, islandOpts);
+                mapText('Baja California',  -110.0,  27.0, islandOpts);
+                mapText('Yucatan',          -89.5,  19.5, islandOpts);
+                mapText('Borneo',           114.5,   0.0, islandOpts);
+                mapText('Sumatra',           103.0,  -0.5, islandOpts);
+                mapText('New Guinea',        143.0,  -6.0, islandOpts);
+                mapText('Hokkaido',          143.0,  43.5, islandOpts);
+                mapText('Honshu',            137.5,  36.5, islandOpts);
+                mapText('Kyushu',            131.0,  32.5, islandOpts);
+            }
+        }
+
         
         // 6. Draw Selected Route Path
         if (this.selectedVesselId) {
@@ -2032,6 +2831,7 @@ class MapSurveillanceRenderer {
                 return;
             }
             const pos = this.gpsToScreen(vessel.lon, vessel.lat);
+            const scale = Math.min(2.5, Math.max(0.8, this.zoom / 10.0));
             
             let markerColor = '#94a3b8';
             if (vessel.type === 'cargo') markerColor = successColor;
@@ -2052,6 +2852,7 @@ class MapSurveillanceRenderer {
             this.ctx.save();
             this.ctx.translate(pos.x, pos.y);
             this.ctx.rotate((vessel.heading * Math.PI) / 180);
+            this.ctx.scale(scale, scale);
             this.ctx.fillStyle = markerColor;
             this.ctx.strokeStyle = mapNeedsLightText ? '#070b14' : '#ffffff';
             this.ctx.lineWidth = 0.8;
@@ -2072,6 +2873,7 @@ class MapSurveillanceRenderer {
                 // Aft superstructure bridge cabin block
                 this.ctx.fillStyle = mapNeedsLightText ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.6)';
                 this.ctx.fillRect(-1.8, 3, 3.6, 3.5);
+                drawSternFlag(this.ctx, 9, vessel.country);
             } else if (vessel.type === 'fishing') {
                 // Commercial trawler silhouette (stubby wide hull, center cabin)
                 this.ctx.beginPath();
@@ -2088,6 +2890,7 @@ class MapSurveillanceRenderer {
                 // Central cabin superstructure block
                 this.ctx.fillStyle = mapNeedsLightText ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.6)';
                 this.ctx.fillRect(-2, -1, 4, 3.5);
+                drawSternFlag(this.ctx, 6, vessel.country);
             } else if (vessel.type === 'coastguard' || vessel.type === 'emergency') {
                 // Sleek patrol cutter silhouette (pointed hull, forward-center cabin)
                 this.ctx.beginPath();
@@ -2104,6 +2907,7 @@ class MapSurveillanceRenderer {
                 // Forward-center bridge cabin block
                 this.ctx.fillStyle = mapNeedsLightText ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.6)';
                 this.ctx.fillRect(-1.5, -2, 3, 4);
+                drawSternFlag(this.ctx, 8, vessel.country);
             } else if (vessel.type === 'suspicious') {
                 // Pointed skiff speedboat silhouette (sharp hull, small console, red outboard motor)
                 this.ctx.beginPath();
@@ -2123,15 +2927,16 @@ class MapSurveillanceRenderer {
                 // Outboard motor highlight
                 this.ctx.fillStyle = '#ef4444';
                 this.ctx.fillRect(-0.8, 6, 1.6, 1.2);
+                drawSternFlag(this.ctx, 6, vessel.country);
                 
                 // Pulsing hazard ring
                 this.ctx.restore();
                 this.ctx.save();
                 this.ctx.translate(pos.x, pos.y);
                 this.ctx.beginPath();
-                this.ctx.arc(0, 0, 10 + Math.sin(timestamp / 120) * 2, 0, Math.PI * 2);
+                this.ctx.arc(0, 0, (10 + Math.sin(timestamp / 120) * 2) * scale, 0, Math.PI * 2);
                 this.ctx.strokeStyle = markerColor;
-                this.ctx.lineWidth = 0.8;
+                this.ctx.lineWidth = 0.8 * scale;
                 this.ctx.stroke();
             } else if (vessel.type === 'distress') {
                 // DISTRESS VESSEL: stationary, pulsing SOS marker (orange anchor + ring)
@@ -2149,22 +2954,23 @@ class MapSurveillanceRenderer {
                 // Cabin block
                 this.ctx.fillStyle = 'rgba(0,0,0,0.4)';
                 this.ctx.fillRect(-1.8, 2, 3.6, 3.5);
+                drawSternFlag(this.ctx, 8, vessel.country);
                 this.ctx.restore();
                 
                 // Pulsing SOS ring (orange double-ring)
                 const sosPhase = (timestamp % 1200) / 1200;
-                const sosR = 11 + sosPhase * 14;
+                const sosR = (11 + sosPhase * 14) * scale;
                 const sosA = (1.0 - sosPhase) * 0.9;
                 this.ctx.beginPath();
                 this.ctx.arc(pos.x, pos.y, sosR, 0, Math.PI * 2);
                 this.ctx.strokeStyle = `rgba(249, 115, 22, ${sosA})`;
-                this.ctx.lineWidth = 2.2;
+                this.ctx.lineWidth = 2.2 * scale;
                 this.ctx.stroke();
                 // Inner solid ring
                 this.ctx.beginPath();
-                this.ctx.arc(pos.x, pos.y, 10, 0, Math.PI * 2);
+                this.ctx.arc(pos.x, pos.y, 10 * scale, 0, Math.PI * 2);
                 this.ctx.strokeStyle = '#f97316';
-                this.ctx.lineWidth = 1.5;
+                this.ctx.lineWidth = 1.5 * scale;
                 this.ctx.stroke();
                 
                 // SOS text label
@@ -2172,12 +2978,13 @@ class MapSurveillanceRenderer {
                     this.ctx.fillStyle = '#f97316';
                     this.ctx.font = 'bold 7px monospace';
                     this.ctx.textAlign = 'center';
-                    this.ctx.fillText('SOS', pos.x, pos.y + 22);
+                    this.ctx.fillText('SOS', pos.x, pos.y + 22 * scale);
                     this.ctx.textAlign = 'left';
                 }
                 this.ctx.save(); // re-save to keep ctx state consistent
                 this.ctx.translate(pos.x, pos.y);
                 this.ctx.rotate((vessel.heading * Math.PI) / 180);
+                this.ctx.scale(scale, scale);
             } else {
                 // Default skiff / small craft pointed boat
                 this.ctx.beginPath();
@@ -2189,38 +2996,75 @@ class MapSurveillanceRenderer {
                 this.ctx.closePath();
                 this.ctx.fill();
                 this.ctx.stroke();
+                drawSternFlag(this.ctx, 5, vessel.country);
             }
             this.ctx.restore();
             
             // Selector Ring
             if (isSelected) {
                 this.ctx.beginPath();
-                this.ctx.arc(pos.x, pos.y, 12, 0, Math.PI * 2);
+                this.ctx.arc(pos.x, pos.y, 12 * scale, 0, Math.PI * 2);
                 this.ctx.strokeStyle = accentColor;
-                this.ctx.lineWidth = 1.5;
-                this.ctx.setLineDash([3, 2]);
+                this.ctx.lineWidth = 1.5 * scale;
+                this.ctx.setLineDash([3 * scale, 2 * scale]);
                 this.ctx.stroke();
                 this.ctx.setLineDash([]);
                 
                 this.ctx.beginPath();
-                const rad = 12 + (timestamp % 1500) / 1500 * 20;
+                const rad = (12 + (timestamp % 1500) / 1500 * 20) * scale;
                 const alpha = 1.0 - (timestamp % 1500) / 1500;
                 this.ctx.arc(pos.x, pos.y, rad, 0, Math.PI * 2);
                 this.ctx.strokeStyle = `rgba(${mapNeedsLightText ? '6, 182, 212' : '13, 148, 136'}, ${alpha})`;
-                this.ctx.lineWidth = 1.0;
+                this.ctx.lineWidth = 1.0 * scale;
                 this.ctx.stroke();
             }
             
-            // Labels
-            if (this.zoom > 2.5 || vessel.type === 'suspicious' || isSelected) {
-                this.ctx.fillStyle = mapNeedsLightText ? '#ffffff' : '#0f172a';
+            // Labels with spatial collision detection (decluttering)
+            let showLabel = false;
+            if (isSelected || (this.hoveredVessel && vessel.id === this.hoveredVessel.id)) {
+                showLabel = true;
+            } else if (vessel.type === 'suspicious') {
+                showLabel = true;
+            } else if (this.zoom > 15.0) {
+                showLabel = true;
+            }
+            
+            if (showLabel) {
+                const labelText = vessel.name;
                 this.ctx.font = isSelected ? 'bold 9px var(--font-body)' : '8px var(--font-body)';
-                this.ctx.fillText(vessel.name, pos.x + 8, pos.y - 4);
+                const textWidth = this.ctx.measureText(labelText).width;
+                const textHeight = 9;
                 
-                if (isSelected || vessel.type === 'suspicious') {
-                    this.ctx.fillStyle = markerColor;
-                    this.ctx.font = '7px monospace';
-                    this.ctx.fillText(`T:${vessel.threatScore}% | ${vessel.speed}kn`, pos.x + 8, pos.y + 5);
+                // Try different vertical offsets to avoid overlap: -4, +8, -16, +16
+                const offsetsY = [-4, 8, -16, 16];
+                let finalOffsetY = null;
+                
+                for (let oy of offsetsY) {
+                    const lx = pos.x + 8;
+                    const ly = pos.y + oy;
+                    const rect = { x1: lx - 2, y1: ly - textHeight, x2: lx + textWidth + 2, y2: ly + 2 };
+                    
+                    // Check collision with already drawn labels
+                    const collision = drawnLabelRects.some(r => {
+                        return !(rect.x2 < r.x1 || rect.x1 > r.x2 || rect.y2 < r.y1 || rect.y1 > r.y2);
+                    });
+                    
+                    if (!collision) {
+                        finalOffsetY = oy;
+                        drawnLabelRects.push(rect);
+                        break;
+                    }
+                }
+                
+                if (finalOffsetY !== null) {
+                    this.ctx.fillStyle = mapNeedsLightText ? '#ffffff' : '#0f172a';
+                    this.ctx.fillText(labelText, pos.x + 8, pos.y + finalOffsetY);
+                    
+                    if (isSelected || vessel.type === 'suspicious') {
+                        this.ctx.fillStyle = markerColor;
+                        this.ctx.font = '7px monospace';
+                        this.ctx.fillText(`T:${vessel.threatScore}% | ${vessel.speed}kn`, pos.x + 8, pos.y + finalOffsetY + 8);
+                    }
                 }
             }
         });
@@ -3181,7 +4025,34 @@ function addEventToTimeline(eventObj = null, isInitial = false) {
     const feed = document.getElementById('timeline-feed');
     if (!feed) return;
     
-    const event = eventObj || TIMELINE_LOGS[Math.floor(Math.random() * TIMELINE_LOGS.length)];
+    let event = eventObj;
+    if (!event) {
+        if (Math.random() > 0.4 && vessels.length > 0) {
+            const alertVessels = vessels.filter(v => v.threatScore > 50 || v.type === 'suspicious' || v.type === 'distress');
+            if (alertVessels.length > 0) {
+                const target = alertVessels[Math.floor(Math.random() * alertVessels.length)];
+                if (target.type === 'distress') {
+                    event = {
+                        type: 'critical',
+                        text: `\uD83C\uDD98 DISTRESS beacon active for ${target.name} (${target.country}). Adrift near ${target.destination}.`
+                    };
+                } else if (target.type === 'suspicious') {
+                    event = {
+                        type: 'suspicious',
+                        text: `⚠️ UNIDENTIFIED contact: ${target.name} (${target.country}) traveling towards other country at ${target.speed} kn.`
+                    };
+                } else {
+                    event = {
+                        type: 'warning',
+                        text: `🚨 ALERT: Threat score escalation (${target.threatScore}%) on ${target.name} (${target.country}) sailing to ${target.destination}.`
+                    };
+                }
+            }
+        }
+        if (!event) {
+            event = TIMELINE_LOGS[Math.floor(Math.random() * TIMELINE_LOGS.length)];
+        }
+    }
     const now = new Date();
     const timeStr = now.toISOString().slice(11, 19);
     
@@ -3216,6 +4087,10 @@ function addEventToTimeline(eventObj = null, isInitial = false) {
         setTimeout(() => {
             item.classList.remove('new-update');
         }, 2500);
+        
+        if (voiceActive) {
+            speakAnnouncement(event.text);
+        }
     }
 }
 
@@ -3270,6 +4145,38 @@ function updateVesselPositions() {
             v.route.end = temp;
             v.heading = Math.floor(calculateHeading(v.lon, v.lat, v.route.end.lon, v.route.end.lat));
         }
+
+        // Real-time geofence border monitoring
+        GEOFENCES.forEach(geo => {
+            const isInsideNow = isPointInPolygon({lon: v.lon, lat: v.lat}, geo.polygon);
+            if (!v.insideGeofences) {
+                v.insideGeofences = {};
+            }
+            const wasInside = !!v.insideGeofences[geo.id];
+            
+            if (isInsideNow && !wasInside) {
+                v.insideGeofences[geo.id] = true;
+                
+                let severity = "info";
+                let speechPriority = 'normal';
+                if (geo.type === "military") {
+                    severity = "critical";
+                    speechPriority = 'critical';
+                } else if (geo.type === "ecological") {
+                    severity = "warning";
+                    speechPriority = 'normal';
+                }
+                
+                const alertMsg = `BOUNDARY VIOLATION: Vessel ${v.name} from ${v.country || 'Unknown'} has crossed the perimeter into ${geo.name}.`;
+                addEventToTimeline({
+                    type: severity,
+                    text: `🚨 ${alertMsg}`
+                });
+                speakAnnouncement(alertMsg, speechPriority);
+            } else if (!isInsideNow && wasInside) {
+                v.insideGeofences[geo.id] = false;
+            }
+        });
     });
 }
 
@@ -3304,6 +4211,31 @@ function setupThemeToggler() {
     }
 }
 
+function setupVoiceToggler() {
+    const voiceToggle = document.getElementById('voice-toggle');
+    if (!voiceToggle) return;
+    
+    voiceToggle.addEventListener('click', () => {
+        voiceActive = !voiceActive;
+        const onIcon = voiceToggle.querySelector('.voice-on-icon');
+        const offIcon = voiceToggle.querySelector('.voice-off-icon');
+        
+        if (voiceActive) {
+            voiceToggle.classList.add('active');
+            if (onIcon) onIcon.style.display = 'block';
+            if (offIcon) offIcon.style.display = 'none';
+            speakAnnouncement("Voice announcer active.");
+        } else {
+            voiceToggle.classList.remove('active');
+            if (onIcon) onIcon.style.display = 'none';
+            if (offIcon) offIcon.style.display = 'block';
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+        }
+    });
+}
+
 function setupHeaderZoomControls() {
     const zoomInBtn = document.getElementById('btn-header-zoom-in');
     const zoomOutBtn = document.getElementById('btn-header-zoom-out');
@@ -3311,7 +4243,7 @@ function setupHeaderZoomControls() {
     if (zoomInBtn && zoomOutBtn) {
         zoomInBtn.addEventListener('click', () => {
             if (mapRenderer) {
-                mapRenderer.zoom = Math.min(5, mapRenderer.zoom * 1.25);
+                mapRenderer.zoom = Math.min(30, mapRenderer.zoom * 1.25);
                 mapRenderer.draw(0);
             }
         });
@@ -3353,6 +4285,9 @@ function setupMapStyleControls() {
 // ==========================================================================
 
 window.addEventListener('DOMContentLoaded', () => {
+    // Load world map SVG
+    loadWorldMapSvg();
+    
     // 1. Generate Simulated Datasets
     generateInitialVessels();
     
@@ -3374,6 +4309,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setupKavaluAISimulation();
     setupTimeEngine();
     setupThemeToggler();
+    setupVoiceToggler();
     setupHeaderZoomControls();
     setupMapStyleControls();
     syncVisualFilterControls();
