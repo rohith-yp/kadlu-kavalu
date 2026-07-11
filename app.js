@@ -1018,6 +1018,205 @@ class Ocean3DAnimation {
         // Draw dome roof
         drawLighthouseCylinder(130, 140, 7, 0, true);
         
+        // --- Keeper's House (3D Blueprint building next to Lighthouse) ---
+        const drawKeepersHouse = () => {
+            const hx = -232;
+            const hz = -285;
+            const yBase = 35;
+            const yWall = 60;
+            const yRidge = 74;
+            
+            const v = {
+                blb: this.project3D(hx - 16, yBase, hz - 12),
+                brb: this.project3D(hx + 16, yBase, hz - 12),
+                frb: this.project3D(hx + 16, yBase, hz + 12),
+                flb: this.project3D(hx - 16, yBase, hz + 12),
+                
+                tlb: this.project3D(hx - 16, yWall, hz - 12),
+                trb: this.project3D(hx + 16, yWall, hz - 12),
+                trf: this.project3D(hx + 16, yWall, hz + 12),
+                tlf: this.project3D(hx - 16, yWall, hz + 12),
+                
+                ridgeL: this.project3D(hx - 16, yRidge, hz),
+                ridgeR: this.project3D(hx + 16, yRidge, hz)
+            };
+            
+            const allProj = Object.values(v);
+            if (allProj.some(p => p.scale <= 0)) return;
+            
+            this.ctx.fillStyle = 'rgba(12, 18, 33, 0.95)';
+            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.65)';
+            this.ctx.lineWidth = 1.0;
+            
+            const drawFace = (p1, p2, p3, p4) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(p1.x, p1.y);
+                this.ctx.lineTo(p2.x, p2.y);
+                this.ctx.lineTo(p3.x, p3.y);
+                this.ctx.lineTo(p4.x, p4.y);
+                this.ctx.closePath();
+                this.ctx.fill();
+                this.ctx.stroke();
+            };
+            
+            drawFace(v.blb, v.brb, v.trb, v.tlb); // Back
+            drawFace(v.brb, v.frb, v.trf, v.trb); // Right
+            drawFace(v.frb, v.flb, v.tlf, v.trf); // Front
+            drawFace(v.flb, v.blb, v.tlb, v.tlf); // Left
+            
+            const drawTriangle = (p1, p2, p3) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(p1.x, p1.y);
+                this.ctx.lineTo(p2.x, p2.y);
+                this.ctx.lineTo(p3.x, p3.y);
+                this.ctx.closePath();
+                this.ctx.fill();
+                this.ctx.stroke();
+            };
+            
+            drawTriangle(v.tlb, v.ridgeL, v.tlf); // Gable Left
+            drawTriangle(v.trb, v.ridgeR, v.trf); // Gable Right
+            
+            drawFace(v.tlf, v.trf, v.ridgeR, v.ridgeL); // Roof Front
+            drawFace(v.trb, v.tlb, v.ridgeL, v.ridgeR); // Roof Back
+            
+            // Door
+            const doorW = 5 * v.frb.scale;
+            const doorH = 11 * v.frb.scale;
+            const pFrontMid = this.project3D(hx, yBase, hz + 12);
+            this.ctx.fillStyle = '#ef4444';
+            this.ctx.fillRect(pFrontMid.x - doorW/2, pFrontMid.y - doorH, doorW, doorH);
+            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.8)';
+            this.ctx.strokeRect(pFrontMid.x - doorW/2, pFrontMid.y - doorH, doorW, doorH);
+            
+            // Windows
+            const winSize = 4 * v.frb.scale;
+            const pWinL = this.project3D(hx - 8, yBase + 10, hz + 12);
+            const pWinR = this.project3D(hx + 8, yBase + 10, hz + 12);
+            this.ctx.fillStyle = 'rgba(253, 224, 71, 0.45)';
+            this.ctx.fillRect(pWinL.x - winSize/2, pWinL.y - winSize/2, winSize, winSize);
+            this.ctx.strokeRect(pWinL.x - winSize/2, pWinL.y - winSize/2, winSize, winSize);
+            this.ctx.fillRect(pWinR.x - winSize/2, pWinR.y - winSize/2, winSize, winSize);
+            this.ctx.strokeRect(pWinR.x - winSize/2, pWinR.y - winSize/2, winSize, winSize);
+        };
+        
+        // --- 3D Blueprint Palm Trees ---
+        const drawPalmTree = (tx, tz, hTree) => {
+            const yBase = 35;
+            const yTop = yBase + hTree;
+            const segments = 5;
+            const trunkPts = [];
+            
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const yVal = yBase + t * hTree;
+                const xVal = tx + Math.sin(t * Math.PI / 2) * 7;
+                const zVal = tz + Math.cos(t * Math.PI / 2) * 3;
+                trunkPts.push(this.project3D(xVal, yVal, zVal));
+            }
+            
+            this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.85)';
+            this.ctx.lineWidth = 2.0 * trunkPts[0].scale;
+            this.ctx.beginPath();
+            this.ctx.moveTo(trunkPts[0].x, trunkPts[0].y);
+            for (let i = 1; i <= segments; i++) {
+                this.ctx.lineTo(trunkPts[i].x, trunkPts[i].y);
+            }
+            this.ctx.stroke();
+            
+            const pTop = trunkPts[segments];
+            if (pTop.scale <= 0) return;
+            
+            const numFronds = 6;
+            this.ctx.strokeStyle = '#10b981';
+            this.ctx.lineWidth = 0.8 * pTop.scale;
+            
+            for (let j = 0; j < numFronds; j++) {
+                const angle = (j / numFronds) * Math.PI * 2 + (tx * 0.05);
+                const frondLength = 14;
+                const fSteps = 4;
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(pTop.x, pTop.y);
+                for (let k = 1; k <= fSteps; k++) {
+                    const pct = k / fSteps;
+                    const xL = tx + Math.sin(pct * Math.PI / 2) * 7 + Math.cos(angle) * (frondLength * pct);
+                    const zL = tz + Math.sin(angle) * (frondLength * pct);
+                    const yL = yTop - Math.pow(pct, 2) * 7;
+                    
+                    const pLeaf = this.project3D(xL, yL, zL);
+                    if (pLeaf.scale > 0) {
+                        this.ctx.lineTo(pLeaf.x, pLeaf.y);
+                    }
+                }
+                this.ctx.stroke();
+            }
+        };
+        
+        // Draw scenery objects
+        drawKeepersHouse();
+        drawPalmTree(-260, -320, 42);
+        drawPalmTree(-205, -310, 36);
+        
+        // --- Technical Blueprint Annotations (Height, diameter, compass ring) ---
+        const drawBlueprintAnnotations = () => {
+            // Height measurement guide
+            const pAltB = this.project3D(xc - 28, 40, zc);
+            const pAltT = this.project3D(xc - 28, 140, zc);
+            
+            if (pAltB.scale > 0 && pAltT.scale > 0) {
+                this.ctx.save();
+                this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)';
+                this.ctx.lineWidth = 0.8;
+                this.ctx.setLineDash([3, 3]);
+                
+                // vertical extension line
+                this.ctx.beginPath();
+                this.ctx.moveTo(pAltB.x, pAltB.y);
+                this.ctx.lineTo(pAltT.x, pAltT.y);
+                this.ctx.stroke();
+                
+                // top/bottom horizontal tick marks
+                this.ctx.setLineDash([]);
+                this.ctx.beginPath();
+                this.ctx.moveTo(pAltB.x - 5, pAltB.y);
+                this.ctx.lineTo(pAltB.x + 5, pAltB.y);
+                this.ctx.moveTo(pAltT.x - 5, pAltT.y);
+                this.ctx.lineTo(pAltT.x + 5, pAltT.y);
+                this.ctx.stroke();
+                
+                // Label text
+                this.ctx.fillStyle = 'rgba(6, 182, 212, 0.7)';
+                this.ctx.font = '6px monospace';
+                this.ctx.fillText("H: 45.0m", pAltT.x - 32, (pAltT.y + pAltB.y) / 2);
+                this.ctx.restore();
+            }
+            
+            // Rotating compass radar circle around lantern room
+            const yLightPos = 122;
+            const pLightPos = this.project3D(xc, yLightPos, zc);
+            if (pLightPos.scale > 0) {
+                this.ctx.save();
+                this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+                this.ctx.lineWidth = 0.8;
+                this.ctx.setLineDash([2, 4]);
+                
+                this.ctx.beginPath();
+                this.ctx.arc(pLightPos.x, pLightPos.y, 45, 0, Math.PI * 2);
+                this.ctx.stroke();
+                
+                // Angle indicators
+                this.ctx.fillStyle = 'rgba(6, 182, 212, 0.35)';
+                this.ctx.font = '5px monospace';
+                this.ctx.fillText("000°", pLightPos.x - 6, pLightPos.y - 48);
+                this.ctx.fillText("090°", pLightPos.x + 48, pLightPos.y + 2);
+                this.ctx.fillText("180°", pLightPos.x - 6, pLightPos.y + 53);
+                this.ctx.fillText("270°", pLightPos.x - 60, pLightPos.y + 2);
+                this.ctx.restore();
+            }
+        };
+        drawBlueprintAnnotations();
+        
         // Draw rotating sweeping light beam
         const yLight = 122; // Center of lantern room
         const pLight = this.project3D(xc, yLight, zc);
