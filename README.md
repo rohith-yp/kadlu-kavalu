@@ -1,4 +1,4 @@
-# Kaadalu Kavalu — Guardian of the Sea 🛡️⚓
+# Kadalu Kavalu — Guardian of the Sea 🛡️⚓
 
 **Real-time Advanced Tactical Maritime Surveillance & Sonar Command Hub**
 

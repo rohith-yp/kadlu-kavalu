@@ -1,5 +1,5 @@
 /**
- * Kaadalu Kavalu - Guardian of the Sea
+ * Kadalu Kavalu - Guardian of the Sea
  * Tactical Surveillance & Coastal Security Platform Simulation Engine
  */
 
@@ -836,6 +836,233 @@ class Ocean3DAnimation {
             }
         }
         
+        // 2.5 Draw Shore & Lighthouse on top of the waves in the back-left corner
+        const xc = -300;
+        const zc = -300;
+        
+        // Helper to draw rocky layer
+        const drawRockLayer = (yBottom, yTop, radius, noiseSeed) => {
+            const numSides = 8;
+            const ptsBottom = [];
+            const ptsTop = [];
+            
+            for (let i = 0; i < numSides; i++) {
+                const angle = (i / numSides) * Math.PI * 2;
+                const rNoiseBottom = radius * (0.85 + Math.sin(angle * 3 + noiseSeed) * 0.15);
+                const rNoiseTop = (radius * 0.8) * (0.85 + Math.cos(angle * 2 - noiseSeed) * 0.15);
+                
+                const xb = xc + Math.cos(angle) * rNoiseBottom;
+                const zb = zc + Math.sin(angle) * rNoiseBottom;
+                const xt = xc + Math.cos(angle) * rNoiseTop;
+                const zt = zc + Math.sin(angle) * rNoiseTop;
+                
+                ptsBottom.push(this.project3D(xb, yBottom, zb));
+                ptsTop.push(this.project3D(xt, yTop, zt));
+            }
+            
+            // Draw the sides of the rocks
+            for (let i = 0; i < numSides; i++) {
+                const next = (i + 1) % numSides;
+                const pB1 = ptsBottom[i];
+                const pB2 = ptsBottom[next];
+                const pT2 = ptsTop[next];
+                const pT1 = ptsTop[i];
+                
+                if (pB1.scale <= 0 || pB2.scale <= 0 || pT2.scale <= 0 || pT1.scale <= 0) continue;
+                
+                const angle = ((i + 0.5) / numSides) * Math.PI * 2;
+                const faceNormal = { x: Math.cos(angle), y: 0.2, z: Math.sin(angle) };
+                const dot = faceNormal.x * this.lightSource.x + faceNormal.y * this.lightSource.y + faceNormal.z * this.lightSource.z;
+                const shade = Math.max(0.15, (dot + 1) / 2);
+                
+                this.ctx.fillStyle = `rgba(${Math.floor(15 * shade + 12)}, ${Math.floor(23 * shade + 18)}, ${Math.floor(42 * shade + 28)}, 0.98)`;
+                this.ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 * shade})`;
+                this.ctx.lineWidth = 1;
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(pB1.x, pB1.y);
+                this.ctx.lineTo(pB2.x, pB2.y);
+                this.ctx.lineTo(pT2.x, pT2.y);
+                this.ctx.lineTo(pT1.x, pT1.y);
+                this.ctx.closePath();
+                this.ctx.fill();
+                this.ctx.stroke();
+            }
+            
+            // Draw top face of the rocks
+            this.ctx.fillStyle = 'rgba(12, 18, 33, 0.98)';
+            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+            this.ctx.beginPath();
+            this.ctx.moveTo(ptsTop[0].x, ptsTop[0].y);
+            for (let i = 1; i < numSides; i++) {
+                this.ctx.lineTo(ptsTop[i].x, ptsTop[i].y);
+            }
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+        };
+
+        // Helper to draw lighthouse cylinder sections
+        const drawLighthouseCylinder = (yBottom, yTop, rBottom, rTop, isRed) => {
+            const dx = -Math.sin(this.cameraYaw);
+            const dz = Math.cos(this.cameraYaw);
+            
+            const xLB = xc + dx * rBottom;
+            const zLB = zc - dz * rBottom;
+            const xRB = xc - dx * rBottom;
+            const zRB = zc + dz * rBottom;
+            
+            const xLT = xc + dx * rTop;
+            const zLT = zc - dz * rTop;
+            const xRT = xc - dx * rTop;
+            const zRT = zc + dz * rTop;
+            
+            const pLB = this.project3D(xLB, yBottom, zLB);
+            const pRB = this.project3D(xRB, yBottom, zRB);
+            const pLT = this.project3D(xLT, yTop, zLT);
+            const pRT = this.project3D(xRT, yTop, zRT);
+            
+            if (pLB.scale <= 0 || pRB.scale <= 0 || pLT.scale <= 0 || pRT.scale <= 0) return;
+            
+            const grad = this.ctx.createLinearGradient(pLB.x, pLB.y, pRB.x, pRB.y);
+            if (isRed) {
+                grad.addColorStop(0, '#5f1212');
+                grad.addColorStop(0.3, '#ef4444');
+                grad.addColorStop(0.7, '#b91c1c');
+                grad.addColorStop(1, '#5f1212');
+            } else {
+                grad.addColorStop(0, '#334155');
+                grad.addColorStop(0.3, '#f8fafc');
+                grad.addColorStop(0.7, '#cbd5e1');
+                grad.addColorStop(1, '#334155');
+            }
+            
+            this.ctx.fillStyle = grad;
+            this.ctx.beginPath();
+            this.ctx.moveTo(pLB.x, pLB.y);
+            this.ctx.lineTo(pRB.x, pRB.y);
+            this.ctx.lineTo(pRT.x, pRT.y);
+            this.ctx.lineTo(pLT.x, pLT.y);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Highlight upper ellipse ring
+            this.ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(pLT.x, pLT.y);
+            this.ctx.quadraticCurveTo((pLT.x + pRT.x)/2, (pLT.y + pRT.y)/2 + (rTop * pLT.scale * 0.22), pRT.x, pRT.y);
+            this.ctx.stroke();
+        };
+
+        // Draw the shore island rocks
+        drawRockLayer(0, 18, 52, 1.2);
+        drawRockLayer(18, 34, 36, 2.5);
+        drawRockLayer(34, 40, 25, 3.8);
+        
+        // Draw Lighthouse Tower sections
+        drawLighthouseCylinder(40, 58, 17, 15, true);  // Red
+        drawLighthouseCylinder(58, 76, 15, 13, false); // White
+        drawLighthouseCylinder(76, 94, 13, 11, true);  // Red
+        drawLighthouseCylinder(94, 112, 11, 9, false); // White
+        
+        // Draw black gallery/balcony platform
+        drawLighthouseCylinder(112, 115, 13, 13, false); 
+        this.ctx.fillStyle = '#0f172a';
+        
+        // Draw lantern room glass cylinder
+        const yGlassBottom = 115;
+        const yGlassTop = 130;
+        const rGlass = 7;
+        const dxG = -Math.sin(this.cameraYaw);
+        const dzG = Math.cos(this.cameraYaw);
+        const pGLB = this.project3D(xc + dxG * rGlass, yGlassBottom, zc - dzG * rGlass);
+        const pGRB = this.project3D(xc - dxG * rGlass, yGlassBottom, zc + dzG * rGlass);
+        const pGLT = this.project3D(xc + dxG * rGlass, yGlassTop, zc - dzG * rGlass);
+        const pGRT = this.project3D(xc - dxG * rGlass, yGlassTop, zc + dzG * rGlass);
+        
+        if (pGLB.scale > 0 && pGRB.scale > 0 && pGLT.scale > 0 && pGRT.scale > 0) {
+            // Draw glass fill
+            this.ctx.fillStyle = 'rgba(6, 182, 212, 0.25)';
+            this.ctx.beginPath();
+            this.ctx.moveTo(pGLB.x, pGLB.y);
+            this.ctx.lineTo(pGRB.x, pGRB.y);
+            this.ctx.lineTo(pGRT.x, pGRT.y);
+            this.ctx.lineTo(pGLT.x, pGLT.y);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Draw dark vertical struts/pillars for realism
+            this.ctx.strokeStyle = '#0f172a';
+            this.ctx.lineWidth = 1.2 * pGLB.scale;
+            
+            // Draw left, center, right struts
+            const anglesStrut = [0, Math.PI/3, Math.PI*2/3, Math.PI, Math.PI*4/3, Math.PI*5/3];
+            anglesStrut.forEach(ang => {
+                const xS = xc + Math.cos(ang) * rGlass;
+                const zS = zc + Math.sin(ang) * rGlass;
+                const pSBottom = this.project3D(xS, yGlassBottom, zS);
+                const pSTop = this.project3D(xS, yGlassTop, zS);
+                if (pSBottom.scale > 0 && pSTop.scale > 0) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pSBottom.x, pSBottom.y);
+                    this.ctx.lineTo(pSTop.x, pSTop.y);
+                    this.ctx.stroke();
+                }
+            });
+        }
+        
+        // Draw dome roof
+        drawLighthouseCylinder(130, 140, 7, 0, true);
+        
+        // Draw rotating sweeping light beam
+        const yLight = 122; // Center of lantern room
+        const pLight = this.project3D(xc, yLight, zc);
+        const lightAngle = (time * 0.0006) % (Math.PI * 2);
+        const beamLength = 700;
+        const spread = 0.12;
+        
+        const xEndL = xc + Math.cos(lightAngle - spread) * beamLength;
+        const zEndL = zc + Math.sin(lightAngle - spread) * beamLength;
+        const xEndR = xc + Math.cos(lightAngle + spread) * beamLength;
+        const zEndR = zc + Math.sin(lightAngle + spread) * beamLength;
+        const xEndC = xc + Math.cos(lightAngle) * beamLength;
+        const zEndC = zc + Math.sin(lightAngle) * beamLength;
+        
+        const pEndL = this.project3D(xEndL, 20, zEndL);
+        const pEndR = this.project3D(xEndR, 20, zEndR);
+        const pEndC = this.project3D(xEndC, 20, zEndC);
+        
+        if (pLight.scale > 0 && pEndL.scale > 0 && pEndR.scale > 0 && pEndC.scale > 0) {
+            this.ctx.save();
+            const beamGrad = this.ctx.createLinearGradient(pLight.x, pLight.y, pEndC.x, pEndC.y);
+            beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.82)');      // core bulb
+            beamGrad.addColorStop(0.08, 'rgba(253, 224, 71, 0.65)');   // bright yellow beam
+            beamGrad.addColorStop(0.25, 'rgba(6, 182, 212, 0.35)');   // cyan scatter glow
+            beamGrad.addColorStop(0.65, 'rgba(6, 182, 212, 0.12)');   // fading cyan
+            beamGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');          // vanish
+
+            this.ctx.fillStyle = beamGrad;
+            this.ctx.beginPath();
+            this.ctx.moveTo(pLight.x, pLight.y);
+            this.ctx.lineTo(pEndL.x, pEndL.y);
+            this.ctx.lineTo(pEndR.x, pEndR.y);
+            this.ctx.closePath();
+            this.ctx.fill();
+            
+            // Add light flare at the lantern source
+            const flareGrad = this.ctx.createRadialGradient(pLight.x, pLight.y, 1, pLight.x, pLight.y, 16 * pLight.scale);
+            flareGrad.addColorStop(0, '#ffffff');
+            flareGrad.addColorStop(0.2, 'rgba(253, 224, 71, 0.85)');
+            flareGrad.addColorStop(0.6, 'rgba(6, 182, 212, 0.35)');
+            flareGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+            this.ctx.fillStyle = flareGrad;
+            this.ctx.beginPath();
+            this.ctx.arc(pLight.x, pLight.y, 16 * pLight.scale, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.restore();
+        }
+        
         // 3. Draw Wake Particles floating on waves
         this.particles.forEach(p => {
             const h = this.getWaveHeight(p.x, p.z, time);
@@ -1024,22 +1251,6 @@ class Ocean3DAnimation {
             this.ctx.font = '6px monospace';
             this.ctx.fillText(`TARGET LOCK: ${calcLat}°N / ${calcLon}°E`, closestPt.proj.x + 15, closestPt.proj.y + 3);
         }
-        
-        // 7. Tactical command telemetry (Corners of canvas)
-        this.ctx.fillStyle = 'rgba(6, 182, 212, 0.45)';
-        this.ctx.font = '8px monospace';
-        
-        // Top-Left corner status
-        this.ctx.fillText('RADAR SENSOR: COASTAL SCANNER ACTIVE', 32, 40);
-        this.ctx.fillText('SEA WAVE HEIGHT (SIG): 2.4m (MODERATE)', 32, 52);
-        this.ctx.fillText('SURFACE WIND: NE 16.4 kts', 32, 64);
-        
-        // Top-Right corner status
-        this.ctx.textAlign = 'right';
-        this.ctx.fillText('SECTOR: INDIA-SRI LANKA CHN [ACTIVE]', this.width - 32, 40);
-        this.ctx.fillText(`GEO COORDINATES: 09°12'N / 78°45'E`, this.width - 32, 52);
-        this.ctx.fillText('SURVEILLANCE MODE: REAL-TIME SONAR', this.width - 32, 64);
-        this.ctx.textAlign = 'left';
     }
 }
 
@@ -2816,14 +3027,14 @@ function appendAiBubble(sender, content) {
 const TIMELINE_LOGS = [
     { type: "info", text: "Automated weather alert: Wind speeds reaching 20 kts near Gulf of Mannar." },
     { type: "warning", text: "Vessel COSCO SHANGHAI 102 reported speed reduction of 4 kts in shipping lane." },
-    { type: "critical", text: "Kaadalu Kavalu Alert: Unauthorized Vessel Entered Protected Zone (MV SHENG-HAI in Military Range)." },
-    { type: "suspicious", text: "Kaadalu Kavalu Alert: AIS Signal Lost for FV JAL-DEV-II in Coral Reserve." },
+    { type: "critical", text: "Kadalu Kavalu Alert: Unauthorized Vessel Entered Protected Zone (MV SHENG-HAI in Military Range)." },
+    { type: "suspicious", text: "Kadalu Kavalu Alert: AIS Signal Lost for FV JAL-DEV-II in Coral Reserve." },
     { type: "info", text: "Patrol Vessel ICGS SAMARATH reporting visual contact confirmed with suspicious cargo target." },
     { type: "info", text: "Air surveillance flight CG-782 returned to base. Sector surveillance data synced." },
     { type: "warning", text: "Radar scan detected unidentified drift pattern 14 nm south of Minicoy Island." },
-    { type: "suspicious", text: "Kaadalu Kavalu Alert: Illegal Fishing Activity Detected in Gujarat Coastal Zone (Trawler cluster)." },
+    { type: "suspicious", text: "Kadalu Kavalu Alert: Illegal Fishing Activity Detected in Gujarat Coastal Zone (Trawler cluster)." },
     { type: "info", text: "Rescue helicopter launched from Cochin air station for emergency search sweep." },
-    { type: "critical", text: "Kaadalu Kavalu Alert: Threat Score escalation on MV SHENG-HAI from 48% to 82%." }
+    { type: "critical", text: "Kadalu Kavalu Alert: Threat Score escalation on MV SHENG-HAI from 48% to 82%." }
 ];
 
 function addEventToTimeline(eventObj = null, isInitial = false) {
