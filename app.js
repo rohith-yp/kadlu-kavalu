@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Kadalu Kavalu - Guardian of the Sea
  * Tactical Surveillance & Coastal Security Platform Simulation Engine
  */
@@ -51,7 +51,7 @@ const lakshadweep = [
 ];
 
 const maldives = [
-    {lon: 73.5, lat: 4.2, label: "MalÃƒÂ©"},
+    {lon: 73.5, lat: 4.2, label: "MalÃ©"},
     {lon: 73.4, lat: 6.8, label: "Haa Alif"},
     {lon: 73.0, lat: 5.3, label: "Lhaviyani"},
     {lon: 73.6, lat: 2.0, label: "Laamu"},
@@ -121,12 +121,12 @@ const PORTS = [
 ];
 
 const COUNTRIES = [
-    {code: "IN", flag: "Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³", name: "India"},
-    {code: "LK", flag: "Ã°Å¸â€¡Â±Ã°Å¸â€¡Â°", name: "Sri Lanka"},
-    {code: "MV", flag: "Ã°Å¸â€¡Â²Ã°Å¸â€¡Â»", name: "Maldives"},
-    {code: "PA", flag: "Ã°Å¸â€¡ÂµÃ°Å¸â€¡Â¦", name: "Panama"},
-    {code: "CN", flag: "Ã°Å¸â€¡Â¨Ã°Å¸â€¡Â³", name: "China"},
-    {code: "LR", flag: "Ã°Å¸â€¡Â±Ã°Å¸â€¡Â·", name: "Liberia"}
+    {code: "IN", flag: "ðŸ‡®ðŸ‡³", name: "India"},
+    {code: "LK", flag: "ðŸ‡±ðŸ‡°", name: "Sri Lanka"},
+    {code: "MV", flag: "ðŸ‡²ðŸ‡»", name: "Maldives"},
+    {code: "PA", flag: "ðŸ‡µðŸ‡¦", name: "Panama"},
+    {code: "CN", flag: "ðŸ‡¨ðŸ‡³", name: "China"},
+    {code: "LR", flag: "ðŸ‡±ðŸ‡·", name: "Liberia"}
 ];
 
 // Data lists for simulation populator
@@ -241,7 +241,7 @@ function generateInitialVessels() {
             type: "coastguard",
             class: "Offshore Patrol Vessel",
             country: "IN",
-            flag: "Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³",
+            flag: "ðŸ‡®ðŸ‡³",
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -272,7 +272,7 @@ function generateInitialVessels() {
             type: "emergency",
             class: "Rapid Response SAR Vessel",
             country: "IN",
-            flag: "Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³",
+            flag: "ðŸ‡®ðŸ‡³",
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -301,7 +301,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Substandard Bulk Carrier",
         country: "PA",
-        flag: "Ã°Å¸â€¡ÂµÃ°Å¸â€¡Â¦",
+        flag: "ðŸ‡µðŸ‡¦",
         threatScore: 82,
         lat: 19.3,
         lon: 87.2,
@@ -328,7 +328,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Unregulated Trawler",
         country: "IN",
-        flag: "Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³",
+        flag: "ðŸ‡®ðŸ‡³",
         threatScore: 78,
         lat: 8.9,
         lon: 78.4,
@@ -355,7 +355,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Wooden Vessel",
         country: "MV",
-        flag: "Ã°Å¸â€¡Â²Ã°Å¸â€¡Â»",
+        flag: "ðŸ‡²ðŸ‡»",
         threatScore: 56,
         lat: 5.5,
         lon: 72.8,
@@ -404,7 +404,7 @@ function generateInitialVessels() {
             type: "suspicious",
             class: "Unidentified Vessel",
             country: "??",
-            flag: "Ã°Å¸ÂÂ´",
+            flag: "ðŸ´",
             threatScore: tScore,
             lat: up.lat + (Math.random() - 0.5) * 0.5,
             lon: up.lon + (Math.random() - 0.5) * 0.5,
@@ -425,9 +425,9 @@ function generateInitialVessels() {
 
     // 7. Distress / Engine-Halted Vessels (stationary, distress beacon active)
     const DISTRESS_VESSELS = [
-        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug SAMUDRA SHAKTI from Kochi port. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER VARUNA 1 (4.2 nm)"},
-        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "Ã°Å¸â€¡Â±Ã°Å¸â€¡Â°", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12Ã‚Â° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter CG-17 on alert. Notify MRCC Chennai.", cgAsset: "SAR CUTTER VARUNA 2 (6.1 nm)"},
-        {id: "distress-03", name: "MT INDUS SPIRIT", lon: 85.7, lat: 19.4, flag: "Ã°Å¸â€¡ÂµÃ°Å¸â€¡Â¦", country: "PA", mmsi: "352001182", class: "Tanker (Engine Failure)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted military zone boundary. 31 crew aboard. Risk of grounding if not assisted within 4 hrs. Chemical cargo declared hazardous.", action: "CRITICAL: Dispatch ocean-going tug BHARAT SHAKTI from Paradip. Alert Oil Spill Response unit. Naval coordination required.", cgAsset: "ICGS SAMARATH (9.8 nm)"},
+        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "ðŸ‡®ðŸ‡³", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug SAMUDRA SHAKTI from Kochi port. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER VARUNA 1 (4.2 nm)"},
+        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "ðŸ‡±ðŸ‡°", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12Â° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter CG-17 on alert. Notify MRCC Chennai.", cgAsset: "SAR CUTTER VARUNA 2 (6.1 nm)"},
+        {id: "distress-03", name: "MT INDUS SPIRIT", lon: 85.7, lat: 19.4, flag: "ðŸ‡µðŸ‡¦", country: "PA", mmsi: "352001182", class: "Tanker (Engine Failure)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted military zone boundary. 31 crew aboard. Risk of grounding if not assisted within 4 hrs. Chemical cargo declared hazardous.", action: "CRITICAL: Dispatch ocean-going tug BHARAT SHAKTI from Paradip. Alert Oil Spill Response unit. Naval coordination required.", cgAsset: "ICGS SAMARATH (9.8 nm)"},
     ];
     DISTRESS_VESSELS.forEach(dv => {
         vessels.push({
@@ -442,7 +442,7 @@ function generateInitialVessels() {
             threatScore: 0,
             lat: dv.lat,
             lon: dv.lon,
-            speed: 0,               // HALTED Ã¢â‚¬â€œ no movement
+            speed: 0,               // HALTED â€“ no movement
             heading: Math.floor(Math.random() * 360),
             destination: "ADRIFT",
             eta: "EMERGENCY",
@@ -683,7 +683,6 @@ class Ocean3DAnimation {
                 size: 2.0 + Math.random() * 2.5
             });
         }
-        
         // Update particles
         this.particles.forEach(p => {
             p.opacity -= 0.02; // Decay life
@@ -694,8 +693,8 @@ class Ocean3DAnimation {
     draw(timestamp) {
         const time = timestamp;
         
-        // Deep cyber navy space background
-        this.ctx.fillStyle = '#04070e';
+        // Deep ocean background — realistic midnight navy
+        this.ctx.fillStyle = '#01060f';
         this.ctx.fillRect(0, 0, this.width, this.height);
         
         // --- 2D Blueprint Grid Background Overlay ---
@@ -825,11 +824,11 @@ class Ocean3DAnimation {
                     const sweepDiff = Math.abs(this.sonarSweepAngle - angleToGrid);
                     const insideSonar = sweepDiff < 0.22 || sweepDiff > (Math.PI * 2 - 0.22);
                     
-                    // E. (Lighthouse removed) â€” no beam illumination
+                    // E. (Lighthouse removed) — no beam illumination
                     const inBeam = false;
                     const beamFalloff = 0;
                     
-                    // F. Specular highlight â€” tight lobe on normals facing up toward viewer
+                    // F. Specular highlight — tight lobe on normals facing up toward viewer
                     const viewDot = Math.max(0, ny);
                     const specular = Math.pow(viewDot, 12) * diffuse;
                     
@@ -871,7 +870,7 @@ class Ocean3DAnimation {
                     this.ctx.closePath();
                     this.ctx.fill();
                     
-                    // Draw grid wire lines Ã¢â‚¬â€ golden in beam, cyan in sonar, teal otherwise
+                    // Draw grid wire lines â€” golden in beam, cyan in sonar, teal otherwise
                     const lineAlpha = depthFactor * (insideSonar ? 0.45 : isCrest ? 0.22 : p00.world.y > 6 ? 0.14 : 0.07);
                     const beamLineBoost = inBeam ? beamFalloff * 0.25 : 0;
                     this.ctx.strokeStyle = insideSonar
@@ -886,7 +885,7 @@ class Ocean3DAnimation {
                     this.ctx.lineTo(p01.proj.x, p01.proj.y);
                     this.ctx.stroke();
                     
-                    // H. Foam spray on wave crests Ã¢â‚¬â€ sparse bright white dots painted live
+                    // H. Foam spray on wave crests â€” sparse bright white dots painted live
                     if (isCrest && Math.random() < 0.04) {
                         const fCx = (p00.proj.x + p10.proj.x + p11.proj.x + p01.proj.x) / 4;
                         const fCy = (p00.proj.y + p10.proj.y + p11.proj.y + p01.proj.y) / 4;
@@ -906,55 +905,32 @@ class Ocean3DAnimation {
         }
         
         // 2.5 â€” Cinematic Sailing Boat entering from starboard, bobbing on Gerstner waves
-        // The boat floats statically at first, then sails leftward, revealing the website name dynamically.
+        // The boat sails in from the right edge (high X) and gradually moves to center.
+        // As it nears the center, the site title "Kadlu Kavalu" fades in above it.
         
         if (!this.sailBoat) {
             this.sailBoat = {
-                x: 420,            // Start on the right side
-                z: 60,
-                speed: 1.5,        // Sailing speed multiplier
-                delay: 90,         // 1.5 seconds (90 frames) of initial static floating/bobbing
-                startedMoving: false
+                x: 480,        // Start far right
+                z: 60,         // Slightly toward viewer
+                speed: 0.18,   // World units per frame
+                arrived: false,
+                titleAlpha: 0  // Title fade progress
             };
         }
         
         const boat = this.sailBoat;
         
-        // Wait for start delay to expire before starting to sail
-        if (boat.delay > 0) {
-            boat.delay--;
+        // Move the boat leftward (negative X) each frame if not at destination
+        if (boat.x > -80) {
+            boat.x -= boat.speed;
         } else {
-            // Sail leftward across the ocean
-            if (boat.x > -80) {
-                boat.x -= boat.speed * 0.12;
-                
-                // Trigger website name reveal once the boat starts to move
-                if (!boat.startedMoving) {
-                    boat.startedMoving = true;
-                    
-                    const crest = document.getElementById('login-crest');
-                    const title = document.getElementById('login-title');
-                    const subtitle = document.getElementById('login-subtitle');
-                    const tagline = document.getElementById('login-tagline');
-                    
-                    if (crest) {
-                        crest.style.opacity = '1';
-                        crest.style.transform = 'scale(1) translateY(0)';
-                    }
-                    if (title) {
-                        title.style.opacity = '1';
-                        title.style.transform = 'translateY(0)';
-                    }
-                    if (subtitle) {
-                        subtitle.style.opacity = '1';
-                        subtitle.style.transform = 'translateY(0)';
-                    }
-                    if (tagline) {
-                        tagline.style.opacity = '1';
-                        tagline.style.transform = 'translateY(0)';
-                    }
+            boat.arrived = true;
         }
         
+        // Once arrived, fade the title in
+        if (boat.arrived && boat.titleAlpha < 1) {
+            boat.titleAlpha = Math.min(1, boat.titleAlpha + 0.008);
+        }
         
         // Wave-riding: sample Gerstner height + slope for pitch/roll
         const bh   = this.getWaveHeight(boat.x, boat.z, time);
@@ -977,20 +953,20 @@ class Ocean3DAnimation {
             this.ctx.translate(bx, by);
             
             // === Hull ===
-            // Sleek hull shape Ã¢â‚¬â€ wide midship, pointed bow (left), rounded stern (right)
+            // Sleek hull shape â€” wide midship, pointed bow (left), rounded stern (right)
             const hw = 48 * sc;  // half-width
             const hh = 10 * sc;  // hull depth
             const rollShift = bRoll * 22 * sc;
             const pitchShift = bPitch * 14 * sc;
             
-            // Hull gradient Ã¢â‚¬â€ dark navy with a cyan shimmer at waterline
+            // Hull gradient â€” dark navy with a cyan shimmer at waterline
             const hullGrad = this.ctx.createLinearGradient(0, -hh * 0.5, 0, hh);
             hullGrad.addColorStop(0, '#0e2a45');
             hullGrad.addColorStop(0.4, '#0c1f33');
             hullGrad.addColorStop(1, '#051020');
             
             this.ctx.beginPath();
-            // Hull points: stern(right) Ã¢â€ â€™ keel Ã¢â€ â€™ bow(left), with pitch/roll applied
+            // Hull points: stern(right) â†’ keel â†’ bow(left), with pitch/roll applied
             this.ctx.moveTo( hw + pitchShift,        -hh * 0.25 + rollShift);   // stern top
             this.ctx.bezierCurveTo(
                 hw * 0.5 + pitchShift, hh + rollShift,
@@ -1023,7 +999,7 @@ class Ocean3DAnimation {
             this.ctx.lineWidth = 0.7 * sc;
             this.ctx.stroke();
             
-            // === Wake Ã¢â‚¬â€ V-shaped foam trail to the right (stern) ===
+            // === Wake â€” V-shaped foam trail to the right (stern) ===
             const wakeLen = 80 * sc;
             const wakeSplay = 18 * sc;
             this.ctx.save();
@@ -1060,7 +1036,7 @@ class Ocean3DAnimation {
             this.ctx.lineTo(mastX, mastTop);
             this.ctx.stroke();
             
-            // Masthead light Ã¢â‚¬â€ small glowing dot
+            // Masthead light â€” small glowing dot
             const mastHeadPulse = 0.6 + 0.4 * Math.sin(time * 0.003);
             this.ctx.beginPath();
             this.ctx.arc(mastX, mastTop, 2.5 * sc, 0, Math.PI * 2);
@@ -1139,13 +1115,13 @@ class Ocean3DAnimation {
             this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
             this.ctx.lineWidth = 0.5 * sc;
             
-            // Forestay: mast top Ã¢â€ â€™ bow
+            // Forestay: mast top â†’ bow
             this.ctx.beginPath();
             this.ctx.moveTo(mastX, mastTop);
             this.ctx.lineTo(-hw - pitchShift, mastBase - hh * 0.05 - rollShift);
             this.ctx.stroke();
             
-            // Backstay: mast top Ã¢â€ â€™ stern
+            // Backstay: mast top â†’ stern
             this.ctx.beginPath();
             this.ctx.moveTo(mastX, mastTop);
             this.ctx.lineTo(hw + pitchShift, mastBase - hh * 0.15 + rollShift);
@@ -1168,6 +1144,64 @@ class Ocean3DAnimation {
             
             this.ctx.restore();
             
+            // === "Kadlu Kavalu" title reveal ===
+            // Rises up as the boat sails in; fades in once boat.arrived
+            if (boat.titleAlpha > 0) {
+                const tx2D = pBoat.x;
+                const ty2D = pBoat.y - (75 * sc) - (boat.titleAlpha * 30);
+                
+                this.ctx.save();
+                this.ctx.globalAlpha = boat.titleAlpha;
+                
+                // Subtle glow halo behind text
+                const glowRadius = 200 * boat.titleAlpha;
+                const glowGrad = this.ctx.createRadialGradient(tx2D, ty2D, 10, tx2D, ty2D, glowRadius);
+                glowGrad.addColorStop(0, 'rgba(6, 182, 212, 0.18)');
+                glowGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+                this.ctx.fillStyle = glowGrad;
+                this.ctx.fillRect(tx2D - glowRadius, ty2D - glowRadius, glowRadius * 2, glowRadius * 2);
+                
+                // Site tagline in small caps above
+                this.ctx.font = `${Math.round(11 * sc)}px 'Courier New', monospace`;
+                this.ctx.letterSpacing = '0.18em';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillStyle = `rgba(100, 210, 230, ${boat.titleAlpha * 0.75})`;
+                this.ctx.fillText('MARITIME OPERATIONS', tx2D, ty2D - 28 * sc);
+                
+                // Main title â€” large, bright, with drop shadow
+                const fontSize = Math.max(22, Math.round(32 * sc));
+                this.ctx.font = `700 ${fontSize}px 'Segoe UI', Arial, sans-serif`;
+                this.ctx.letterSpacing = '0.06em';
+                
+                // Shadow layer
+                this.ctx.shadowColor = 'rgba(6, 182, 212, 0.9)';
+                this.ctx.shadowBlur = 22;
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
+                
+                // Second pass â€” cyan overlay for the glow effect
+                this.ctx.shadowBlur = 0;
+                this.ctx.fillStyle = `rgba(6, 200, 230, ${boat.titleAlpha * 0.35})`;
+                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
+                
+                // Decorative underline
+                const titleWidth = this.ctx.measureText('Kadlu Kavalu').width;
+                const ulY = ty2D + 8 * sc;
+                const ulGrad = this.ctx.createLinearGradient(tx2D - titleWidth / 2, ulY, tx2D + titleWidth / 2, ulY);
+                ulGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+                ulGrad.addColorStop(0.5, `rgba(6, 182, 212, ${boat.titleAlpha * 0.85})`);
+                ulGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+                this.ctx.strokeStyle = ulGrad;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.shadowBlur = 0;
+                this.ctx.beginPath();
+                this.ctx.moveTo(tx2D - titleWidth / 2, ulY);
+                this.ctx.lineTo(tx2D + titleWidth / 2, ulY);
+                this.ctx.stroke();
+                
+                this.ctx.restore();
+            }
+        }
         
         // 3. Draw Wake Particles floating on waves
         this.particles.forEach(p => {
@@ -1355,7 +1389,7 @@ class Ocean3DAnimation {
             
             this.ctx.fillStyle = '#06b6d4';
             this.ctx.font = '6px monospace';
-            this.ctx.fillText(`TARGET LOCK: ${calcLat}Ã‚Â°N / ${calcLon}Ã‚Â°E`, closestPt.proj.x + 15, closestPt.proj.y + 3);
+            this.ctx.fillText(`TARGET LOCK: ${calcLat}Â°N / ${calcLon}Â°E`, closestPt.proj.x + 15, closestPt.proj.y + 3);
         }
     }
 }
@@ -1654,7 +1688,7 @@ class MapSurveillanceRenderer {
             this.ctx.moveTo(start.x, 0);
             this.ctx.lineTo(start.x, this.height);
             this.ctx.stroke();
-            this.ctx.fillText(`${lon}Ã‚Â°E`, start.x + 4, this.height - 8);
+            this.ctx.fillText(`${lon}Â°E`, start.x + 4, this.height - 8);
         }
         
         for (let lat = 0; lat <= 25; lat += 5) {
@@ -1663,7 +1697,7 @@ class MapSurveillanceRenderer {
             this.ctx.moveTo(0, start.y);
             this.ctx.lineTo(this.width, start.y);
             this.ctx.stroke();
-            this.ctx.fillText(`${lat}Ã‚Â°N`, 8, start.y - 4);
+            this.ctx.fillText(`${lat}Â°N`, 8, start.y - 4);
         }
         
         // 2.5 Draw Background SLOC (Sea Lines of Communication) Highways
@@ -2331,7 +2365,7 @@ function formatCoords(lat, lon) {
     const lonDeg = Math.floor(Math.abs(lon));
     const lonMin = ((Math.abs(lon) - lonDeg) * 60).toFixed(2);
     const lonDir = lon >= 0 ? 'E' : 'W';
-    return `${String(latDeg).padStart(2, '0')}Ã‚Â° ${latMin}' ${latDir}, ${String(lonDeg).padStart(3, '0')}Ã‚Â° ${lonMin}' ${lonDir}`;
+    return `${String(latDeg).padStart(2, '0')}Â° ${latMin}' ${latDir}, ${String(lonDeg).padStart(3, '0')}Â° ${lonMin}' ${lonDir}`;
 }
 
 // Get filter inputs
@@ -2370,11 +2404,11 @@ function generateVesselHistory(vessel) {
         const t1 = new Date(now.getTime() - 3 * 3600000);
         history.push({ time: t1.toISOString().slice(11, 16) + " UTC", title: "Last Normal Operation", desc: `${vessel.name} last reported normal engine status. Speed: 12.3 kn. All systems nominal.` });
         const t2 = new Date(now.getTime() - 1.5 * 3600000);
-        history.push({ time: t2.toISOString().slice(11, 16) + " UTC", title: "Ã¢Å¡Â Ã¯Â¸Â Engine Warning Alarm", desc: "Main engine cooling system fault detected. Chief Engineer notified. Speed reduced to 4 kn." });
+        history.push({ time: t2.toISOString().slice(11, 16) + " UTC", title: "âš ï¸ Engine Warning Alarm", desc: "Main engine cooling system fault detected. Chief Engineer notified. Speed reduced to 4 kn." });
         const t3 = new Date(now.getTime() - 55 * 60000);
-        history.push({ time: t3.toISOString().slice(11, 16) + " UTC", title: "Ã°Å¸â€Â´ Total Propulsion Loss", desc: "Main engine shutdown. All propulsion lost. Vessel adrift. EPIRB distress beacon activated." });
+        history.push({ time: t3.toISOString().slice(11, 16) + " UTC", title: "ðŸ”´ Total Propulsion Loss", desc: "Main engine shutdown. All propulsion lost. Vessel adrift. EPIRB distress beacon activated." });
         const t4 = new Date(now.getTime() - 40 * 60000);
-        history.push({ time: t4.toISOString().slice(11, 16) + " UTC", title: "Ã°Å¸â€œÂ¡ MAYDAY Issued on Ch.16", desc: `Master issued MAYDAY call on VHF Ch.16 and DSC. Crew mustered at emergency stations. MRCC Chennai acknowledged.` });
+        history.push({ time: t4.toISOString().slice(11, 16) + " UTC", title: "ðŸ“¡ MAYDAY Issued on Ch.16", desc: `Master issued MAYDAY call on VHF Ch.16 and DSC. Crew mustered at emergency stations. MRCC Chennai acknowledged.` });
         return history;
     }
     
@@ -2389,7 +2423,7 @@ function generateVesselHistory(vessel) {
     history.push({
         time: depTimeString,
         title: "Vessel Departed",
-        desc: `Cleared port operations at ${startPortName}. Heading: ${vessel.heading}Ã‚Â°`
+        desc: `Cleared port operations at ${startPortName}. Heading: ${vessel.heading}Â°`
     });
     
     // Event 2: Mid-transit update
@@ -2464,7 +2498,7 @@ function setSelectedVesselGlobal(vesselId) {
     document.getElementById('vessel-mmsi').textContent = vessel.mmsi;
     document.getElementById('vessel-imo').textContent = vessel.imo;
     document.getElementById('vessel-speed').textContent = `${vessel.speed} kn`;
-    document.getElementById('vessel-heading').textContent = `${vessel.heading}Ã‚Â°`;
+    document.getElementById('vessel-heading').textContent = `${vessel.heading}Â°`;
     
     const countryObj = COUNTRIES.find(c => c.code === vessel.country);
     document.getElementById('vessel-country').textContent = countryObj ? countryObj.name : vessel.country;
@@ -2497,7 +2531,7 @@ function setSelectedVesselGlobal(vesselId) {
     anomalyBox.className = 'alert-box-tactical';
     if (vessel.type === 'distress') {
         anomalyBox.classList.add('warning');
-        anomalyTitle.textContent = "Ã°Å¸â€ Ëœ ENGINE FAILURE Ã¢â‚¬â€ DISTRESS";
+        anomalyTitle.textContent = "ðŸ†˜ ENGINE FAILURE â€” DISTRESS";
         anomalyDesc.textContent = vessel.anomaly;
     } else if (vessel.threatScore > 75) {
         anomalyBox.classList.add('critical');
@@ -2616,10 +2650,10 @@ function hideDispatchPanel() {
 function setRescueMissionLabels() {
     const steps = document.querySelectorAll('#dispatch-mission-panel .mission-step');
     const labels = [
-        { title: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Tug Ã‚Â· 16 kn Ã‚Â· Kochi Port', status: 'EN ROUTE Ã¢â€ â€™ CASUALTY' },
+        { title: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Tug Â· 16 kn Â· Kochi Port', status: 'EN ROUTE â†’ CASUALTY' },
         { title: 'Tug Unable to Reach in Time', sub: 'Crew reported worsening water ingress', status: 'AWAITING EVENT' },
-        { title: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Ã‚Â· 28 kn Ã‚Â· Coast Guard Station', status: 'STANDBY' },
-        { title: 'Crew Rescued Ã¢â‚¬â€ Vessel Secured', sub: 'Tow line secured. MRCC notified.', status: 'AWAITING EVENT' }
+        { title: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Â· 28 kn Â· Coast Guard Station', status: 'STANDBY' },
+        { title: 'Crew Rescued â€” Vessel Secured', sub: 'Tow line secured. MRCC notified.', status: 'AWAITING EVENT' }
     ];
     steps.forEach((step, idx) => {
         if (!labels[idx]) return;
@@ -2632,7 +2666,7 @@ function setRescueMissionLabels() {
     });
     const statusMsg = document.getElementById('dispatch-status-msg');
     if (statusMsg) {
-        statusMsg.textContent = 'Ã°Å¸Å¸Â  Rescue tug SAMUDRA SHAKTI is en route to distressed vessel...';
+        statusMsg.textContent = 'ðŸŸ  Rescue tug SAMUDRA SHAKTI is en route to distressed vessel...';
         statusMsg.style.borderLeftColor = '#f97316';
     }
 }
@@ -2645,7 +2679,7 @@ function updateDispatchSimulation(dt) {
     if (!target) return;
     
     sim.timer += dt;
-    const SPEED = 0.0004; // degrees per ms Ã¢â‚¬â€œ fast enough to be clearly visible
+    const SPEED = 0.0004; // degrees per ms â€“ fast enough to be clearly visible
     
     if (sim.phase === 1) {
         // Phase 1: Asset 1 moves toward target for up to 8 seconds before failing
@@ -2664,22 +2698,22 @@ function updateDispatchSimulation(dt) {
             sim.phase = 2;
             sim.timer = 0;
             if (sim.missionType === 'rescue') {
-                addCustomEventToTimeline(`Ã¢Å¡Â Ã¯Â¸Â Rescue Tug SAMUDRA SHAKTI unable to reach ${target.name} in time Ã¢â‚¬â€ sea state too rough. Requesting SAR cutter backup.`, "critical");
+                addCustomEventToTimeline(`âš ï¸ Rescue Tug SAMUDRA SHAKTI unable to reach ${target.name} in time â€” sea state too rough. Requesting SAR cutter backup.`, "critical");
             } else {
-                addCustomEventToTimeline(`Ã¢Å¡Â Ã¯Â¸Â Interceptor C-421 reported engine fault Ã¢â‚¬â€ unable to complete intercept of ${target.name}. Requesting backup.`, "critical");
+                addCustomEventToTimeline(`âš ï¸ Interceptor C-421 reported engine fault â€” unable to complete intercept of ${target.name}. Requesting backup.`, "critical");
             }
             updateDispatchPhaseUI(2);
         }
     }
     
     if (sim.phase === 2 && sim.timer > 2500) {
-        // Phase 2 Ã¢â€ â€™ 3: After 2.5 seconds pause, dispatch backup
+        // Phase 2 â†’ 3: After 2.5 seconds pause, dispatch backup
         sim.phase = 3;
         sim.timer = 0;
         if (sim.missionType === 'rescue') {
-            addCustomEventToTimeline(`Ã°Å¸Å¡Â SAR Cutter VARUNA 2 dispatched from nearest coast guard station to assist ${target.name}.`, "warning");
+            addCustomEventToTimeline(`ðŸš SAR Cutter VARUNA 2 dispatched from nearest coast guard station to assist ${target.name}.`, "warning");
         } else {
-            addCustomEventToTimeline(`Ã°Å¸Å¡Â¢ ICGS SAMARATH dispatched from Chennai base as backup intercept unit for ${target.name}.`, "warning");
+            addCustomEventToTimeline(`ðŸš¢ ICGS SAMARATH dispatched from Chennai base as backup intercept unit for ${target.name}.`, "warning");
         }
         updateDispatchPhaseUI(3);
     }
@@ -2700,9 +2734,9 @@ function updateDispatchSimulation(dt) {
             sim.asset2.success = true;
             sim.phase = 4;
             if (sim.missionType === 'rescue') {
-                addCustomEventToTimeline(`Ã¢Å“â€¦ SAR Cutter VARUNA has reached ${target.name}. Crew rescued. Tow line secured. MRCC notified.`, "info");
+                addCustomEventToTimeline(`âœ… SAR Cutter VARUNA has reached ${target.name}. Crew rescued. Tow line secured. MRCC notified.`, "info");
             } else {
-                addCustomEventToTimeline(`Ã¢Å“â€¦ ICGS SAMARATH has intercepted ${target.name}. Boarding party deployed. Target secured.`, "info");
+                addCustomEventToTimeline(`âœ… ICGS SAMARATH has intercepted ${target.name}. Boarding party deployed. Target secured.`, "info");
             }
             updateDispatchPhaseUI(4);
         }
@@ -2715,32 +2749,32 @@ function updateDispatchPhaseUI(phase) {
     const isRescue = mapRenderer && mapRenderer.dispatchSim && mapRenderer.dispatchSim.missionType === 'rescue';
     
     const interceptMeta = [
-        { name: 'Interceptor C-421 Dispatched', sub: 'Fast Patrol Vessel Ã‚Â· 32 kn Ã‚Â· Tuticorin Base' },
-        { name: 'C-421 Engine Failure', sub: 'Unable to complete intercept Ã¢â‚¬â€ mechanical fault' },
-        { name: 'ICGS SAMARATH Backup Deployed', sub: 'Offshore Patrol Vessel Ã‚Â· 26 kn Ã‚Â· Chennai Base' },
+        { name: 'Interceptor C-421 Dispatched', sub: 'Fast Patrol Vessel Â· 32 kn Â· Tuticorin Base' },
+        { name: 'C-421 Engine Failure', sub: 'Unable to complete intercept â€” mechanical fault' },
+        { name: 'ICGS SAMARATH Backup Deployed', sub: 'Offshore Patrol Vessel Â· 26 kn Â· Chennai Base' },
         { name: 'Target Intercepted & Boarded', sub: 'ICGS SAMARATH boarding party secures vessel' }
     ];
     const rescueMeta = [
-        { name: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Rescue Tug Ã‚Â· 16 kn Ã‚Â· Kochi Port' },
-        { name: 'Tug Unable to Reach in Time', sub: 'Sea state too rough Ã¢â‚¬â€ requesting SAR cutter' },
-        { name: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Ã‚Â· 28 kn Ã‚Â· Coast Guard Station' },
-        { name: 'Crew Rescued Ã¢â‚¬â€ Vessel Secured', sub: 'Tow line secured. MRCC notified.' }
+        { name: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Rescue Tug Â· 16 kn Â· Kochi Port' },
+        { name: 'Tug Unable to Reach in Time', sub: 'Sea state too rough â€” requesting SAR cutter' },
+        { name: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Â· 28 kn Â· Coast Guard Station' },
+        { name: 'Crew Rescued â€” Vessel Secured', sub: 'Tow line secured. MRCC notified.' }
     ];
     const stepMeta = isRescue ? rescueMeta : interceptMeta;
     
     const interceptStatus = {
-        0: { 1: 'EN ROUTE Ã¢â€ â€™ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        1: { 1: 'EN ROUTE Ã¢â€ â€™ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        2: { 1: 'FAILED Ã¢Å“â€¢', 2: 'ENGINE FAULT DETECTED', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        3: { 1: 'FAILED Ã¢Å“â€¢', 2: 'MISSION FAILED', 3: 'EN ROUTE Ã¢â€ â€™ TARGET', 4: 'AWAITING EVENT' },
-        4: { 1: 'FAILED Ã¢Å“â€¢', 2: 'MISSION FAILED', 3: 'INTERCEPT SUCCESS Ã¢Å“â€œ', 4: 'Ã¢Å“â€¦ TARGET SECURED' }
+        0: { 1: 'EN ROUTE â†’ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        1: { 1: 'EN ROUTE â†’ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        2: { 1: 'FAILED âœ•', 2: 'ENGINE FAULT DETECTED', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        3: { 1: 'FAILED âœ•', 2: 'MISSION FAILED', 3: 'EN ROUTE â†’ TARGET', 4: 'AWAITING EVENT' },
+        4: { 1: 'FAILED âœ•', 2: 'MISSION FAILED', 3: 'INTERCEPT SUCCESS âœ“', 4: 'âœ… TARGET SECURED' }
     };
     const rescueStatus = {
-        0: { 1: 'EN ROUTE Ã¢â€ â€™ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        1: { 1: 'EN ROUTE Ã¢â€ â€™ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        2: { 1: 'TUG TURNED BACK Ã¢Å“â€¢', 2: 'SEA STATE TOO ROUGH', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        3: { 1: 'TUG TURNED BACK Ã¢Å“â€¢', 2: 'PRIMARY TUG FAILED', 3: 'EN ROUTE Ã¢â€ â€™ CASUALTY', 4: 'AWAITING EVENT' },
-        4: { 1: 'TUG TURNED BACK Ã¢Å“â€¢', 2: 'PRIMARY TUG FAILED', 3: 'RESCUE SUCCESS Ã¢Å“â€œ', 4: 'Ã¢Å“â€¦ CREW RESCUED' }
+        0: { 1: 'EN ROUTE â†’ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        1: { 1: 'EN ROUTE â†’ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        2: { 1: 'TUG TURNED BACK âœ•', 2: 'SEA STATE TOO ROUGH', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        3: { 1: 'TUG TURNED BACK âœ•', 2: 'PRIMARY TUG FAILED', 3: 'EN ROUTE â†’ CASUALTY', 4: 'AWAITING EVENT' },
+        4: { 1: 'TUG TURNED BACK âœ•', 2: 'PRIMARY TUG FAILED', 3: 'RESCUE SUCCESS âœ“', 4: 'âœ… CREW RESCUED' }
     };
     const statusLabels = isRescue ? rescueStatus : interceptStatus;
     
@@ -2802,16 +2836,16 @@ function updateDispatchPhaseUI(phase) {
     const statusEl = document.getElementById('dispatch-status-msg');
     if (statusEl) {
         const interceptMsgs = {
-            1: 'Ã°Å¸â€Âµ Interceptor C-421 is en route to the target vessel...',
-            2: 'Ã°Å¸â€Â´ C-421 engine failure! Requesting backup unit...',
-            3: 'Ã°Å¸Å¸Â¡ ICGS SAMARATH deploying from Chennai base...',
-            4: 'Ã¢Å“â€¦ Target intercepted & secured by ICGS SAMARATH!'
+            1: 'ðŸ”µ Interceptor C-421 is en route to the target vessel...',
+            2: 'ðŸ”´ C-421 engine failure! Requesting backup unit...',
+            3: 'ðŸŸ¡ ICGS SAMARATH deploying from Chennai base...',
+            4: 'âœ… Target intercepted & secured by ICGS SAMARATH!'
         };
         const rescueMsgs = {
-            1: 'Ã°Å¸Å¸Â  Rescue Tug SAMUDRA SHAKTI is en route to distressed vessel...',
-            2: 'Ã°Å¸â€Â´ Rescue Tug turned back Ã¢â‚¬â€ sea state too rough! Backup requested...',
-            3: 'Ã°Å¸Å¸Â¡ SAR Cutter VARUNA deploying from coast guard station...',
-            4: 'Ã¢Å“â€¦ Crew rescued! Vessel secured and tow line attached!'
+            1: 'ðŸŸ  Rescue Tug SAMUDRA SHAKTI is en route to distressed vessel...',
+            2: 'ðŸ”´ Rescue Tug turned back â€” sea state too rough! Backup requested...',
+            3: 'ðŸŸ¡ SAR Cutter VARUNA deploying from coast guard station...',
+            4: 'âœ… Crew rescued! Vessel secured and tow line attached!'
         };
         const msgs = isRescue ? rescueMsgs : interceptMsgs;
         statusEl.textContent = msgs[phase] || '';
@@ -3092,7 +3126,7 @@ function setupKavaluAISimulation() {
                     if (selVesselId) {
                         const v = vessels.find(item => item.id === selVesselId);
                         reply = `<p><strong>Analyzing route trajectory for ${v.name}...</strong></p>
-                                 <p>Based on heading ${v.heading}Ã‚Â° and course history, estimated destination is <strong>${v.destination}</strong>.</p>
+                                 <p>Based on heading ${v.heading}Â° and course history, estimated destination is <strong>${v.destination}</strong>.</p>
                                  <p>${v.anomaly}</p>`;
                     } else {
                         reply = `<p>No vessel is currently selected. Please select a vessel on the map first to analyze predicted routes.</p>`;
@@ -3351,7 +3385,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Dispatch interceptor / rescue tug button Ã¢â€ â€™ launch simulation
+    // Dispatch interceptor / rescue tug button â†’ launch simulation
     const dispatchBtn = document.getElementById('btn-dispatch');
     if (dispatchBtn) {
         dispatchBtn.addEventListener('click', () => {
@@ -3372,7 +3406,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (isRescue) {
                 setRescueMissionLabels();
                 updateDispatchPhaseUI(1);
-                addCustomEventToTimeline(`Ã°Å¸â€ Ëœ RESCUE ALERT: Dispatching rescue tug to assist ${v.name}. Engine failure reported.`, 'critical');
+                addCustomEventToTimeline(`ðŸ†˜ RESCUE ALERT: Dispatching rescue tug to assist ${v.name}. Engine failure reported.`, 'critical');
             } else {
                 updateDispatchPhaseUI(1);
             }
