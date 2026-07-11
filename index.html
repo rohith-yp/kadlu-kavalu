@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaadalu Kavalu - Guardian of the Sea</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="view-login dark-theme">
+
+    <!-- ============================================ -->
+    <!-- 1. LOGIN SCREEN                              -->
+    <!-- ============================================ -->
+    <div id="login-screen">
+        <div class="login-split-container">
+            <!-- Left Side: 3D Ocean Animation & Branding -->
+            <div class="login-left-panel">
+                <div id="login-backdrop-canvas-container">
+                    <canvas id="login-canvas" style="display: block; width: 100%; height: 100%; background: linear-gradient(180deg, #070a13 0%, #0c1222 100%);"></canvas>
+                </div>
+                <div class="login-left-branding">
+                    <div class="brand-crest-large">
+                        <i data-lucide="shield" class="crest-icon"></i>
+                    </div>
+                    <h1>KAADALU KAVALU</h1>
+                    <span class="sub-logo">GUARDIAN OF THE SEA</span>
+                    <p class="tagline">Real-time Advanced Tactical Maritime Surveillance & Sonar Command Hub</p>
+                </div>
+            </div>
+            
+            <!-- Right Side: Operator Sign In -->
+            <div class="login-right-panel">
+                <div class="login-card-container">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <h2>OPERATOR SIGN IN</h2>
+                            <span class="login-sub">Enter credentials to establish secure command link</span>
+                        </div>
+                        
+                        <div class="login-body">
+                            <div class="welcome-box">
+                                <h3>Welcome back, Captain.</h3>
+                                <p>Kaadalu Kavalu Maritime Intelligence Platform is operational. All surveillance systems are online.</p>
+                            </div>
+                            
+                            <form id="login-form" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="username">Operator ID</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="user" class="input-icon"></i>
+                                        <input type="text" id="username" value="CO-0421" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Security Key</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="lock" class="input-icon"></i>
+                                        <input type="password" id="password" value="••••••••••••" disabled>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-block" id="btn-login">
+                                    <i data-lucide="log-in"></i> Sign In to Workstation
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="login-footer">
+                            <p class="warning-text">⚠️ Authorized Security Personnel Only</p>
+                            <p class="disclaimer">Access is logged and subject to national security protocol.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- 3. MAIN SURVEILLANCE WORKSTATION             -->
+    <!-- ============================================ -->
+    <div id="dashboard-screen">
+        
+        <!-- Header Panel -->
+        <header id="dashboard-header">
+            <div class="logo-area">
+                <div class="authority-crest">
+                    <i data-lucide="shield" class="crest-icon"></i>
+                </div>
+                <div class="branding-text">
+                    <h1>KAADALU KAVALU</h1>
+                    <span class="sub-brand">Guardian of the Sea</span>
+                </div>
+            </div>
+            
+            <!-- Viewport Controls & Time -->
+            <div class="system-controls">
+                <div class="time-readout">
+                    <i data-lucide="clock"></i>
+                    <span id="live-utc">2026-07-11 07:00:00 UTC</span>
+                </div>
+                
+                <div class="zoom-controls" style="display: flex; gap: 4px;">
+                    <button id="btn-header-zoom-in" class="control-btn-theme" title="Zoom In">
+                        <i data-lucide="zoom-in"></i>
+                    </button>
+                    <button id="btn-header-zoom-out" class="control-btn-theme" title="Zoom Out">
+                        <i data-lucide="zoom-out"></i>
+                    </button>
+                </div>
+                
+                <div class="map-style-controls" style="display: flex; gap: 2px; background: rgba(0,0,0,0.15); padding: 2px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    <button id="btn-style-ocean" class="style-toggle-btn active" title="Ocean View">Ocean</button>
+                    <button id="btn-style-satellite" class="style-toggle-btn" title="Satellite View">Satellite</button>
+                </div>
+                
+                <button id="theme-toggle" class="control-btn-theme" title="Toggle Light/Dark Theme">
+                    <i data-lucide="sun" class="sun-icon"></i>
+                    <i data-lucide="moon" class="moon-icon"></i>
+                </button>
+                
+                <button class="btn btn-primary" id="btn-logout" title="Lock Workstation">
+                    <i data-lucide="log-out"></i> Lock
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main id="dashboard-viewport">
+            <!-- Navigation Rail -->
+            <aside class="nav-rail">
+                <nav class="nav-links">
+                    <a href="#" class="nav-item" title="Dashboard Overview"><i data-lucide="layout-dashboard"></i></a>
+                    <a href="#" class="nav-item active" title="Live Tactical Map"><i data-lucide="map"></i></a>
+                    <a href="#" class="nav-item" title="Vessel Databank"><i data-lucide="ship"></i><span class="badge-dot red"></span></a>
+                    <a href="#" class="nav-item" title="Active Alerts"><i data-lucide="bell"></i><span class="badge-count">3</span></a>
+                    <a href="#" class="nav-item" title="Intelligence Reports"><i data-lucide="scan-eye"></i></a>
+                    <a href="#" class="nav-item" title="Meteorological Overlay"><i data-lucide="cloud-lightning"></i></a>
+                    <a href="#" class="nav-item" title="Geofence Zones"><i data-lucide="hexagon"></i></a>
+                    <a href="#" class="nav-item" title="Analytics Engine"><i data-lucide="line-chart"></i></a>
+                </nav>
+                <div class="nav-bottom">
+                    <a href="#" class="nav-item" title="System Settings"><i data-lucide="settings"></i></a>
+                </div>
+            </aside>
+
+            <!-- Workstation Panels & Map -->
+            <div class="workstation-workspace">
+                
+                <!-- Floating Filters (Left) -->
+                <div class="floating-panel filter-panel" id="filter-panel">
+                    <button class="toggle-panel-btn toggle-filter" id="btn-toggle-filter" title="Toggle Filters">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                    <div class="panel-header">
+                        <h3><i data-lucide="sliders-horizontal"></i> Filters</h3>
+                        <button class="btn-icon reset-filters" id="btn-reset-filters" title="Reset Filters"><i data-lucide="rotate-ccw"></i></button>
+                    </div>
+                    <div class="panel-body scrollable">
+                        <!-- Hidden inputs to maintain compatibility with app.js -->
+                        <input type="hidden" id="type" value="all">
+                        <input type="hidden" id="risk" value="all">
+                        <input type="hidden" id="country" value="all">
+                        <input type="hidden" id="threat-range" value="0">
+                        
+                        <!-- 1. Search Box -->
+                        <div class="filter-section">
+                            <label class="filter-label">Search Vessel</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="search" class="input-icon"></i>
+                                <input type="text" id="search" placeholder="Enter Name / MMSI...">
+                            </div>
+                        </div>
+                        
+                        <!-- 2. Vessel Class Buttons (Unique Grid Chips) -->
+                        <div class="filter-section">
+                            <label class="filter-label">Vessel Class</label>
+                            <div class="filter-chips-grid">
+                                <button class="filter-chip active" data-value="all" data-type-btn>All Ships</button>
+                                <button class="filter-chip" data-value="cargo" data-type-btn><i data-lucide="anchor"></i> Cargo</button>
+                                <button class="filter-chip" data-value="fishing" data-type-btn><i data-lucide="hook"></i> Fishing</button>
+                                <button class="filter-chip" data-value="coastguard" data-type-btn><i data-lucide="shield"></i> Patrol</button>
+                                <button class="filter-chip" data-value="suspicious" data-type-btn><i data-lucide="alert-triangle"></i> Unknown</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. Risk Assessment Segmented Control -->
+                        <div class="filter-section">
+                            <label class="filter-label">Risk Profile</label>
+                            <div class="segmented-control">
+                                <button class="segment-btn active" data-value="all" data-risk-btn>All</button>
+                                <button class="segment-btn risk-low" data-value="low" data-risk-btn>Safe</button>
+                                <button class="segment-btn risk-medium" data-value="medium" data-risk-btn>Warn</button>
+                                <button class="segment-btn risk-high" data-value="high" data-risk-btn>Crit</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. Toggle Switch for Lost Signals -->
+                        <div class="filter-section toggle-row">
+                            <span class="filter-label" style="margin-bottom: 0;">AIS Signal Lost</span>
+                            <label class="switch-container">
+                                <input type="checkbox" id="ais-lost" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main GIS Canvas Map Container -->
+                <div class="map-container" id="map-container">
+                    <div class="map-coordinates" id="map-coords">09° 00.00' N, 76° 30.00' E</div>
+                    <canvas id="map-canvas"></canvas>
+                    
+                    <!-- Legend -->
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="dot cg"></span> Coast Guard</div>
+                        <div class="legend-item"><span class="dot cargo"></span> Cargo / Tanker</div>
+                        <div class="legend-item"><span class="dot fishing"></span> Fishing Boat</div>
+                        <div class="legend-item"><span class="dot emergency"></span> Emergency / SAR</div>
+                        <div class="legend-item"><span class="dot suspicious"></span> Suspicious Contact</div>
+                        <div class="legend-item"><span class="dot" style="background:#f97316; box-shadow:0 0 6px #f97316;"></span> 🆘 Distress / SOS</div>
+                        <div class="legend-item"><span class="line-legend geofence-mil"></span> Military Range</div>
+                        <div class="legend-item"><span class="line-legend geofence-eco"></span> Marine Sanctuary</div>
+                    </div>
+                </div>
+
+                <!-- Collapsible Right Panel (Intelligence & Kavalu AI) -->
+                <div class="floating-panel intelligence-panel" id="intel-panel">
+                    <button class="toggle-panel-btn toggle-intel" id="btn-toggle-intel" title="Toggle Intelligence">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                    <div class="panel-header">
+                        <div class="panel-tabs">
+                            <button class="tab-btn active" id="tab-dossier-btn">Ship Details</button>
+                            <button class="tab-btn" id="tab-ai-btn">Kavalu AI</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Content 1: Tactical Dossier -->
+                    <div class="panel-body scrollable" id="tab-dossier">
+                        <div id="intel-no-selection" class="empty-selection-state">
+                            <i data-lucide="ship" class="empty-icon"></i>
+                            <p>No active vessels within the selected region.</p>
+                            <p class="sub-empty">Select a vessel marker on the map to query credentials, sensor logs, and patrol proximity.</p>
+                        </div>
+                        
+                        <div id="intel-details" class="vessel-details-content hidden">
+                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
+                                  <span style="font-size: 10px; font-weight: bold; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">Active Vessel Tracking</span>
+                                  <button id="btn-close-details" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 4px; transition: all 0.2s;" title="Close Details & Show All Ships" onmouseover="this.style.backgroundColor='rgba(239, 68, 68, 0.1)'; this.style.color='var(--danger)';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--text-secondary)';">
+                                      <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                                  </button>
+                             </div>
+                             <div class="vessel-identity-card">
+                                <div class="flag-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span class="vessel-flag" id="vessel-flag">🇵🇦</span>
+                                        <h4 id="vessel-name">MV SHENG-HAI</h4>
+                                    </div>
+                                    <span class="route-badge aligned" id="route-compliance-badge">SLOC ALIGNED</span>
+                                </div>
+                                <span class="vessel-class" id="vessel-class">Bulk Carrier</span>
+                                <div class="info-grid">
+                                    <div><span class="lbl">MMSI</span><span class="val" id="vessel-mmsi">563029110</span></div>
+                                    <div><span class="lbl">IMO</span><span class="val" id="vessel-imo">9304192</span></div>
+                                    <div><span class="lbl">Speed</span><span class="val" id="vessel-speed">8.2 kn</span></div>
+                                    <div><span class="lbl">Heading</span><span class="val" id="vessel-heading">195°</span></div>
+                                    <div><span class="lbl">Country</span><span class="val" id="vessel-country">IN</span></div>
+                                    <div><span class="lbl">AIS Status</span><span class="val" id="vessel-ais-status">Active</span></div>
+                                </div>
+                            </div>
+
+                            <!-- AI Threat Analysis -->
+                            <div class="section-divider">AI Threat Analysis</div>
+                            <div class="threat-guage-block">
+                                <div class="gauge-container">
+                                    <svg viewBox="0 0 100 60" class="gauge-svg">
+                                        <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-linecap="round"></path>
+                                        <path class="gauge-fill" id="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="126"></path>
+                                    </svg>
+                                    <div class="gauge-text">
+                                        <span class="score" id="threat-score">82%</span>
+                                        <span class="lbl">THREAT INDEX</span>
+                                    </div>
+                                </div>
+                                <div class="threat-classification" id="threat-classification">CRITICAL RISK</div>
+                            </div>
+
+                            <!-- Anomalies & Navigation -->
+                            <div class="section-divider">Anomalies &amp; Navigation</div>
+                            <div class="alert-box-tactical critical" id="intel-anomaly-box">
+                                <h5 id="anomaly-title">CRITICAL TARGET ANOMALY</h5>
+                                <p id="anomaly-desc">Deviating from SLOC sea lane. Crossed boundary into Restricted Zone Alpha (Military Range). Failed to reply to port operations VHF hail.</p>
+                            </div>
+
+                            <div class="info-block">
+                                <span class="lbl">Destination / ETA</span>
+                                <span class="val" id="vessel-destination">Port of Karachi (ETA: 2026-07-12)</span>
+                            </div>
+
+                            <!-- Vessel History Logs -->
+                            <div class="section-divider">Vessel History Logs</div>
+                            <div id="vessel-history" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding: 10px; background: var(--bg-sidebar); border: 1px solid var(--border-color); border-radius: 6px;">
+                                <!-- Dynamic timeline steps -->
+                            </div>
+
+                            <div class="section-divider">Tactical Action Plan</div>
+                            <div class="action-card">
+                                <p id="recommended-action">Dispatch ICGS SAMARATH offshore interceptor from Paradip base. Launch Dornier patrol aircraft CG-782 for visual profiling.</p>
+                                <div class="asset-distance-info">
+                                    <i data-lucide="shield-alert"></i>
+                                    <div>
+                                        <div class="title">Nearest Coast Guard Asset</div>
+                                        <div class="value" id="nearest-asset">ICGS SAMARATH (8.4 nm, Intercept Course)</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-block" id="btn-dispatch"><i data-lucide="radio"></i> Dispatch Interceptor</button>
+                            </div>
+
+                            <!-- INLINE DISPATCH MISSION PANEL (shown after dispatch is triggered) -->
+                            <div id="dispatch-mission-panel" class="hidden" style="
+                                margin-top: 12px;
+                                background: rgba(0,0,0,0.25);
+                                border: 1px solid rgba(6, 182, 212, 0.25);
+                                border-radius: 8px;
+                                padding: 12px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 10px;
+                            ">
+                                <!-- Header -->
+                                <div style="display:flex; align-items:center; justify-content:space-between;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <div style="width:8px; height:8px; border-radius:50%; background:#ef4444; animation: pulse-red 1s infinite alternate; flex-shrink:0;"></div>
+                                        <span style="font-size:9.5px; font-weight:700; color:#f8fafc; letter-spacing:0.8px; text-transform:uppercase;">Mission Live</span>
+                                    </div>
+                                    <button id="btn-abort-dispatch" style="
+                                        background: rgba(239,68,68,0.1);
+                                        border: 1px solid rgba(239,68,68,0.3);
+                                        color: #ef4444;
+                                        font-size: 8px;
+                                        font-weight: 700;
+                                        padding: 3px 8px;
+                                        border-radius: 3px;
+                                        cursor: pointer;
+                                        letter-spacing: 0.5px;
+                                        text-transform: uppercase;
+                                    ">✕ Abort</button>
+                                </div>
+
+                                <!-- Status Message -->
+                                <div id="dispatch-status-msg" style="
+                                    font-size:9.5px;
+                                    color: #94a3b8;
+                                    background: rgba(6,182,212,0.05);
+                                    border-left: 2px solid #06b6d4;
+                                    padding: 6px 8px;
+                                    border-radius: 0 4px 4px 0;
+                                    line-height: 1.4;
+                                ">🔵 Interceptor C-421 is en route...</div>
+
+                                <!-- Mission Steps -->
+                                <div style="display:flex; flex-direction:column; gap:0;">
+
+                                    <div class="mission-step active" data-step="1" style="display:flex; gap:10px; align-items:flex-start; padding-bottom:10px;">
+                                        <div style="display:flex; flex-direction:column; align-items:center; min-width:20px;">
+                                            <div class="step-dot" style="width:18px; height:18px; border-radius:50%; background:#06b6d4; display:flex; align-items:center; justify-content:center; font-size:8px; color:#fff; font-weight:700; flex-shrink:0; z-index:1;">1</div>
+                                            <div style="width:1.5px; flex-grow:1; background:rgba(255,255,255,0.07); min-height:24px; margin-top:2px;"></div>
+                                        </div>
+                                        <div>
+                                            <div class="mission-title" style="font-size:9.5px; font-weight:700; color:#f8fafc; margin-bottom:1px;">Interceptor C-421 Dispatched</div>
+                                            <div class="mission-sub" style="font-size:8px; color:#64748b; line-height:1.3;">Fast Patrol · 32 kn · Tuticorin</div>
+                                            <div class="mission-status" style="font-size:7.5px; color:#06b6d4; margin-top:2px; font-weight:600;">EN ROUTE → TARGET</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mission-step pending" data-step="2" style="display:flex; gap:10px; align-items:flex-start; padding-bottom:10px;">
+                                        <div style="display:flex; flex-direction:column; align-items:center; min-width:20px;">
+                                            <div class="step-dot" style="width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.06); border:2px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:8px; color:#475569; font-weight:700; flex-shrink:0; z-index:1;">2</div>
+                                            <div style="width:1.5px; flex-grow:1; background:rgba(255,255,255,0.07); min-height:24px; margin-top:2px;"></div>
+                                        </div>
+                                        <div>
+                                            <div class="mission-title" style="font-size:9.5px; font-weight:700; color:#475569; margin-bottom:1px;">C-421 Engine Failure</div>
+                                            <div class="mission-sub" style="font-size:8px; color:#475569; line-height:1.3;">Mechanical fault — backup requested</div>
+                                            <div class="mission-status" style="font-size:7.5px; color:#475569; margin-top:2px; font-weight:600;">AWAITING EVENT</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mission-step pending" data-step="3" style="display:flex; gap:10px; align-items:flex-start; padding-bottom:10px;">
+                                        <div style="display:flex; flex-direction:column; align-items:center; min-width:20px;">
+                                            <div class="step-dot" style="width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.06); border:2px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:8px; color:#475569; font-weight:700; flex-shrink:0; z-index:1;">3</div>
+                                            <div style="width:1.5px; flex-grow:1; background:rgba(255,255,255,0.07); min-height:24px; margin-top:2px;"></div>
+                                        </div>
+                                        <div>
+                                            <div class="mission-title" style="font-size:9.5px; font-weight:700; color:#475569; margin-bottom:1px;">ICGS SAMARATH Deployed</div>
+                                            <div class="mission-sub" style="font-size:8px; color:#475569; line-height:1.3;">OPV · 26 kn · Chennai Base</div>
+                                            <div class="mission-status" style="font-size:7.5px; color:#475569; margin-top:2px; font-weight:600;">STANDBY</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mission-step pending" data-step="4" style="display:flex; gap:10px; align-items:flex-start;">
+                                        <div style="display:flex; flex-direction:column; align-items:center; min-width:20px;">
+                                            <div class="step-dot" style="width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.06); border:2px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:8px; color:#475569; font-weight:700; flex-shrink:0; z-index:1;">4</div>
+                                        </div>
+                                        <div>
+                                            <div class="mission-title" style="font-size:9.5px; font-weight:700; color:#475569; margin-bottom:1px;">Target Intercepted</div>
+                                            <div class="mission-sub" style="font-size:8px; color:#475569; line-height:1.3;">Boarding party secures vessel</div>
+                                            <div class="mission-status" style="font-size:7.5px; color:#475569; margin-top:2px; font-weight:600;">AWAITING EVENT</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Tab Content 2: Kavalu AI -->
+                    <div class="panel-body scrollable hidden" id="tab-ai">
+                        <div class="ai-assistant-container">
+                            <div class="ai-header-card">
+                                <div class="ai-avatar">
+                                    <i data-lucide="bot"></i>
+                                </div>
+                                <div class="ai-title-details">
+                                    <h4>Kavalu AI</h4>
+                                    <span>Maritime Intelligence Assistant</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Prompt Suggestions -->
+                            <div class="ai-suggestions-list">
+                                <span class="suggestion-label">Suggested Commands:</span>
+                                <button class="ai-chip" data-cmd="reefs">
+                                    <i data-lucide="search-code"></i> Find suspicious vessels near protected reefs
+                                </button>
+                                <button class="ai-chip" data-cmd="destination">
+                                    <i data-lucide="navigation"></i> Predict this vessel's destination
+                                </button>
+                                <button class="ai-chip" data-cmd="highthreat">
+                                    <i data-lucide="shield-alert"></i> Show vessels with high threat scores
+                                </button>
+                                <button class="ai-chip" data-cmd="patrol">
+                                    <i data-lucide="radio"></i> Suggest nearest patrol unit
+                                </button>
+                            </div>
+                            
+                            <!-- Chat dialogue box -->
+                            <div class="ai-dialogue-box" id="ai-dialogue">
+                                <div class="ai-bubble system">
+                                    <p>Welcome to <strong>Kavalu AI</strong>. I provide maritime intelligence, route predictions, environmental scans, and patrol optimization support.</p>
+                                    <p>Select a command above or query me on vessel parameters.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Text Input box -->
+                            <div class="ai-input-row">
+                                <input type="text" id="ai-input-text" placeholder="Ask Kavalu AI..." disabled>
+                                <button class="btn btn-primary btn-icon" id="btn-ai-send" disabled><i data-lucide="send"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <footer class="activity-timeline" id="activity-timeline">
+                <button class="toggle-panel-btn toggle-timeline" id="btn-toggle-timeline" title="Toggle Timeline">
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="timeline-header">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="timeline-title"><i data-lucide="activity"></i> Live Maritime Events Timeline</span>
+                        <span class="timeline-pulse"></span>
+                    </div>
+                    <button class="btn-icon-timeline" id="btn-maximize-timeline" title="Maximize/Minimize">
+                        <i data-lucide="maximize-2"></i>
+                    </button>
+                </div>
+                <div class="timeline-feed scrollable" id="timeline-feed">
+                    <!-- Events will be prepended via JS -->
+                </div>
+            </footer>
+        </div>
+    </main>
+    </div>
+
+    <!-- Script File -->
+    <script src="app.js"></script>
+
+</body>
+</html>
