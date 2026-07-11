@@ -637,6 +637,9 @@ class Ocean3DAnimation {
     }
     
     project3D(x, y, z) {
+        // Negate y so that positive Y coordinates point UP (above sea level)
+        const projectedY = -y;
+        
         // Rotate around Y-axis (Yaw)
         const cosY = Math.cos(this.cameraYaw);
         const sinY = Math.sin(this.cameraYaw);
@@ -646,8 +649,8 @@ class Ocean3DAnimation {
         // Rotate around X-axis (Pitch)
         const cosX = Math.cos(this.cameraPitch);
         const sinX = Math.sin(this.cameraPitch);
-        let ry = y * cosX - rz * sinX;
-        let rz_final = y * sinX + rz * cosX;
+        let ry = projectedY * cosX - rz * sinX;
+        let rz_final = projectedY * sinX + rz * cosX;
         
         // Translate along camera Z axis
         const distance = this.cameraTranslationZ + rz_final;
