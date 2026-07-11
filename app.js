@@ -679,17 +679,17 @@ class Ocean3DAnimation {
     }
     
     update(timestamp) {
+        const time = timestamp;
         if (!this.isDragging) {
-            // Auto spin drift & friction damping
-            this.cameraYaw += 0.0003 + this.dragVelocityX;
+            // Gentle, organic cinematic floating camera drift
+            this.cameraYaw = 0.42 + Math.sin(time * 0.00012) * 0.12 + this.dragVelocityX;
+            this.cameraPitch = 0.58 + Math.cos(time * 0.00008) * 0.05 + this.dragVelocityY;
             this.dragVelocityX *= this.friction;
             this.dragVelocityY *= this.friction;
         }
         
         // Sonar sweep rotation
         this.sonarSweepAngle = (this.sonarSweepAngle + 0.005) % (Math.PI * 2);
-        
-        const time = timestamp;
         
         // Generate ship wake particles
         if (time - this.lastParticleTime > 120) {
@@ -721,6 +721,54 @@ class Ocean3DAnimation {
         // Deep cyber navy space background
         this.ctx.fillStyle = '#04070e';
         this.ctx.fillRect(0, 0, this.width, this.height);
+        
+        // --- 2D Blueprint Grid Background Overlay ---
+        this.ctx.save();
+        this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.02)';
+        this.ctx.lineWidth = 0.6;
+        for (let x = 0; x < this.width; x += 45) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, this.height);
+            this.ctx.stroke();
+        }
+        for (let y = 0; y < this.height; y += 45) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(this.width, y);
+            this.ctx.stroke();
+        }
+        
+        // Corner alignment marks
+        const margin = 20;
+        this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
+        this.ctx.lineWidth = 0.8;
+        
+        // Top-Left
+        this.ctx.beginPath();
+        this.ctx.moveTo(margin, margin + 10);
+        this.ctx.lineTo(margin, margin);
+        this.ctx.lineTo(margin + 10, margin);
+        this.ctx.stroke();
+        // Top-Right
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.width - margin, margin + 10);
+        this.ctx.lineTo(this.width - margin, margin);
+        this.ctx.lineTo(this.width - margin - 10, margin);
+        this.ctx.stroke();
+        // Bottom-Left
+        this.ctx.beginPath();
+        this.ctx.moveTo(margin, this.height - margin - 10);
+        this.ctx.lineTo(margin, this.height - margin);
+        this.ctx.lineTo(margin + 10, this.height - margin);
+        this.ctx.stroke();
+        // Bottom-Right
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.width - margin, this.height - margin - 10);
+        this.ctx.lineTo(this.width - margin, this.height - margin);
+        this.ctx.lineTo(this.width - margin - 10, this.height - margin);
+        this.ctx.stroke();
+        this.ctx.restore();
         
         // Volumetric sonar sweep glow
         const radialGlow = this.ctx.createRadialGradient(
@@ -801,20 +849,47 @@ class Ocean3DAnimation {
                     const sweepDiff = Math.abs(this.sonarSweepAngle - angleToGrid);
                     const insideSonar = sweepDiff < 0.22 || sweepDiff > (Math.PI * 2 - 0.22);
                     
+                    // E. Lighthouse beam ocean surface illumination
+                    const lhAngle = (time * 0.0006) % (Math.PI * 2);
+                    const lhDx = avgX - (-300);
+                    const lhDz = avgZ - (-300);
+                    const quadAngle = Math.atan2(lhDz, lhDx);
+                    const angleDiff = Math.abs(((quadAngle - lhAngle + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+                    const beamSpread = 0.14;
+                    const inBeam = angleDiff < beamSpread;
+                    const beamFalloff = inBeam ? Math.pow(1.0 - angleDiff / beamSpread, 2.0) : 0;
+                    
+                    // F. Specular highlight — tight lobe on normals facing up toward viewer
+                    const viewDot = Math.max(0, ny);
+                    const specular = Math.pow(viewDot, 12) * diffuse;
+                    
+                    // G. Crest detection for foam and bright wire edges
+                    const avgY = (p00.world.y + p10.world.y + p11.world.y + p01.world.y) / 4;
+                    const isCrest = avgY > 9.5;
+                    
                     // Shading color composition
                     const baseR = 7;
                     const baseG = 13;
                     const baseB = 25;
-                    
-                    // Diffuse specular glow on crests
                     const crestGlow = Math.max(0, (p00.world.y + 10) / 25);
                     const lightingFactor = diffuse * 0.4 + crestGlow * 0.6;
                     
-                    const r = Math.floor(baseR + lightingFactor * (insideSonar ? 18 : 6) + (insideSonar ? 12 : 0));
-                    const g = Math.floor(baseG + lightingFactor * (insideSonar ? 90 : 38) + (insideSonar ? 45 : 0));
-                    const b = Math.floor(baseB + lightingFactor * (insideSonar ? 140 : 54) + (insideSonar ? 60 : 0));
+                    // Beam: golden-amber surface splash
+                    const beamR = inBeam ? Math.floor(beamFalloff * 110) : 0;
+                    const beamG = inBeam ? Math.floor(beamFalloff * 72)  : 0;
+                    const beamB = inBeam ? Math.floor(beamFalloff * 12)  : 0;
                     
-                    const alpha = depthFactor * (insideSonar ? 0.38 : 0.24);
+                    // Specular: cyan-white glint
+                    const specR = Math.floor(specular * 180);
+                    const specG = Math.floor(specular * 230);
+                    const specB = Math.floor(specular * 255);
+                    
+                    const r = Math.min(255, Math.floor(baseR + lightingFactor * (insideSonar ? 18 : 6)  + (insideSonar ? 12 : 0)) + beamR + specR);
+                    const g = Math.min(255, Math.floor(baseG + lightingFactor * (insideSonar ? 90 : 38) + (insideSonar ? 45 : 0)) + beamG + specG);
+                    const b = Math.min(255, Math.floor(baseB + lightingFactor * (insideSonar ? 140 : 54)+ (insideSonar ? 60 : 0)) + beamB + specB);
+                    
+                    const beamAlphaBoost = inBeam ? beamFalloff * 0.15 : 0;
+                    const alpha = Math.min(0.92, depthFactor * (insideSonar ? 0.38 : 0.24) + beamAlphaBoost);
                     
                     // Draw filled polygon face
                     this.ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
@@ -826,15 +901,36 @@ class Ocean3DAnimation {
                     this.ctx.closePath();
                     this.ctx.fill();
                     
-                    // Draw grid wire lines (Brighter on crests, faded on troughs)
-                    const lineAlpha = depthFactor * (insideSonar ? 0.45 : p00.world.y > 6 ? 0.16 : 0.08);
-                    this.ctx.strokeStyle = insideSonar ? `rgba(6, 182, 212, ${lineAlpha})` : `rgba(13, 148, 136, ${lineAlpha})`;
-                    this.ctx.lineWidth = p00.world.y > 6 ? 1.0 : 0.7;
+                    // Draw grid wire lines — golden in beam, cyan in sonar, teal otherwise
+                    const lineAlpha = depthFactor * (insideSonar ? 0.45 : isCrest ? 0.22 : p00.world.y > 6 ? 0.14 : 0.07);
+                    const beamLineBoost = inBeam ? beamFalloff * 0.25 : 0;
+                    this.ctx.strokeStyle = insideSonar
+                        ? `rgba(6, 182, 212, ${lineAlpha + beamLineBoost})`
+                        : inBeam
+                            ? `rgba(253, 200, 80, ${lineAlpha + beamLineBoost})`
+                            : `rgba(13, 148, 136, ${lineAlpha})`;
+                    this.ctx.lineWidth = isCrest ? 1.2 : p00.world.y > 6 ? 1.0 : 0.65;
                     this.ctx.beginPath();
                     this.ctx.moveTo(p00.proj.x, p00.proj.y);
                     this.ctx.lineTo(p10.proj.x, p10.proj.y);
                     this.ctx.lineTo(p01.proj.x, p01.proj.y);
                     this.ctx.stroke();
+                    
+                    // H. Foam spray on wave crests — sparse bright white dots painted live
+                    if (isCrest && Math.random() < 0.04) {
+                        const fCx = (p00.proj.x + p10.proj.x + p11.proj.x + p01.proj.x) / 4;
+                        const fCy = (p00.proj.y + p10.proj.y + p11.proj.y + p01.proj.y) / 4;
+                        const fScale = p00.proj.scale;
+                        const fOpacity = Math.min(0.7, crestGlow * 0.85);
+                        this.ctx.beginPath();
+                        this.ctx.arc(
+                            fCx + (Math.random() - 0.5) * 4,
+                            fCy + (Math.random() - 0.5) * 4,
+                            (0.8 + Math.random() * 1.2) * fScale, 0, Math.PI * 2
+                        );
+                        this.ctx.fillStyle = `rgba(220, 240, 255, ${fOpacity})`;
+                        this.ctx.fill();
+                    }
                 }
             }
         }
