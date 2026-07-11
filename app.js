@@ -51,7 +51,7 @@ const lakshadweep = [
 ];
 
 const maldives = [
-    {lon: 73.5, lat: 4.2, label: "Malé"},
+    {lon: 73.5, lat: 4.2, label: "MalÃ©"},
     {lon: 73.4, lat: 6.8, label: "Haa Alif"},
     {lon: 73.0, lat: 5.3, label: "Lhaviyani"},
     {lon: 73.6, lat: 2.0, label: "Laamu"},
@@ -121,12 +121,12 @@ const PORTS = [
 ];
 
 const COUNTRIES = [
-    {code: "IN", flag: "🇮🇳", name: "India"},
-    {code: "LK", flag: "🇱🇰", name: "Sri Lanka"},
-    {code: "MV", flag: "🇲🇻", name: "Maldives"},
-    {code: "PA", flag: "🇵🇦", name: "Panama"},
-    {code: "CN", flag: "🇨🇳", name: "China"},
-    {code: "LR", flag: "🇱🇷", name: "Liberia"}
+    {code: "IN", flag: "ðŸ‡®ðŸ‡³", name: "India"},
+    {code: "LK", flag: "ðŸ‡±ðŸ‡°", name: "Sri Lanka"},
+    {code: "MV", flag: "ðŸ‡²ðŸ‡»", name: "Maldives"},
+    {code: "PA", flag: "ðŸ‡µðŸ‡¦", name: "Panama"},
+    {code: "CN", flag: "ðŸ‡¨ðŸ‡³", name: "China"},
+    {code: "LR", flag: "ðŸ‡±ðŸ‡·", name: "Liberia"}
 ];
 
 // Data lists for simulation populator
@@ -241,7 +241,7 @@ function generateInitialVessels() {
             type: "coastguard",
             class: "Offshore Patrol Vessel",
             country: "IN",
-            flag: "🇮🇳",
+            flag: "ðŸ‡®ðŸ‡³",
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -272,7 +272,7 @@ function generateInitialVessels() {
             type: "emergency",
             class: "Rapid Response SAR Vessel",
             country: "IN",
-            flag: "🇮🇳",
+            flag: "ðŸ‡®ðŸ‡³",
             threatScore: 0,
             lat: lat,
             lon: lon,
@@ -301,7 +301,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Substandard Bulk Carrier",
         country: "PA",
-        flag: "🇵🇦",
+        flag: "ðŸ‡µðŸ‡¦",
         threatScore: 82,
         lat: 19.3,
         lon: 87.2,
@@ -328,7 +328,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Unregulated Trawler",
         country: "IN",
-        flag: "🇮🇳",
+        flag: "ðŸ‡®ðŸ‡³",
         threatScore: 78,
         lat: 8.9,
         lon: 78.4,
@@ -355,7 +355,7 @@ function generateInitialVessels() {
         type: "suspicious",
         class: "Wooden Vessel",
         country: "MV",
-        flag: "🇲🇻",
+        flag: "ðŸ‡²ðŸ‡»",
         threatScore: 56,
         lat: 5.5,
         lon: 72.8,
@@ -404,7 +404,7 @@ function generateInitialVessels() {
             type: "suspicious",
             class: "Unidentified Vessel",
             country: "??",
-            flag: "🏴",
+            flag: "ðŸ´",
             threatScore: tScore,
             lat: up.lat + (Math.random() - 0.5) * 0.5,
             lon: up.lon + (Math.random() - 0.5) * 0.5,
@@ -425,9 +425,9 @@ function generateInitialVessels() {
 
     // 7. Distress / Engine-Halted Vessels (stationary, distress beacon active)
     const DISTRESS_VESSELS = [
-        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "🇮🇳", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug SAMUDRA SHAKTI from Kochi port. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER VARUNA 1 (4.2 nm)"},
-        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "🇱🇰", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter CG-17 on alert. Notify MRCC Chennai.", cgAsset: "SAR CUTTER VARUNA 2 (6.1 nm)"},
-        {id: "distress-03", name: "MT INDUS SPIRIT", lon: 85.7, lat: 19.4, flag: "🇵🇦", country: "PA", mmsi: "352001182", class: "Tanker (Engine Failure)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted military zone boundary. 31 crew aboard. Risk of grounding if not assisted within 4 hrs. Chemical cargo declared hazardous.", action: "CRITICAL: Dispatch ocean-going tug BHARAT SHAKTI from Paradip. Alert Oil Spill Response unit. Naval coordination required.", cgAsset: "ICGS SAMARATH (9.8 nm)"},
+        {id: "distress-01", name: "MV KAVERI STAR", lon: 76.5, lat: 11.2, flag: "ðŸ‡®ðŸ‡³", country: "IN", mmsi: "419800001", class: "Bulk Carrier (Engine Failure)", anomaly: "ENGINE FAILURE: Vessel has lost propulsion. Distress beacon (EPIRB) activated. Vessel adrift in busy shipping lane. Crew of 24 aboard. Requesting immediate tow assistance.", action: "Dispatch rescue tug SAMUDRA SHAKTI from Kochi port. Notify Maritime Rescue Coordination Centre (MRCC).", cgAsset: "SAR CUTTER VARUNA 1 (4.2 nm)"},
+        {id: "distress-02", name: "FV BLUE MOON", lon: 80.1, lat: 8.6, flag: "ðŸ‡±ðŸ‡°", country: "LK", mmsi: "413200045", class: "Fishing Vessel (Engine Failure)", anomaly: "DISTRESS: Engine failure reported via VHF Channel 16. Vessel listing 12Â° starboard. 8 crew members aboard. Taking on minor water ingress. Immediate assistance required.", action: "Dispatch nearest SAR cutter. Coast Guard helicopter CG-17 on alert. Notify MRCC Chennai.", cgAsset: "SAR CUTTER VARUNA 2 (6.1 nm)"},
+        {id: "distress-03", name: "MT INDUS SPIRIT", lon: 85.7, lat: 19.4, flag: "ðŸ‡µðŸ‡¦", country: "PA", mmsi: "352001182", class: "Tanker (Engine Failure)", anomaly: "EMERGENCY: Main engine failure on oil tanker. Vessel drifting toward restricted military zone boundary. 31 crew aboard. Risk of grounding if not assisted within 4 hrs. Chemical cargo declared hazardous.", action: "CRITICAL: Dispatch ocean-going tug BHARAT SHAKTI from Paradip. Alert Oil Spill Response unit. Naval coordination required.", cgAsset: "ICGS SAMARATH (9.8 nm)"},
     ];
     DISTRESS_VESSELS.forEach(dv => {
         vessels.push({
@@ -442,7 +442,7 @@ function generateInitialVessels() {
             threatScore: 0,
             lat: dv.lat,
             lon: dv.lon,
-            speed: 0,               // HALTED – no movement
+            speed: 0,               // HALTED â€“ no movement
             heading: Math.floor(Math.random() * 360),
             destination: "ADRIFT",
             eta: "EMERGENCY",
@@ -520,27 +520,8 @@ class Ocean3DAnimation {
         this.lightSource.y /= len;
         this.lightSource.z /= len;
         
-        // Simulated ships with physical bobbing, pitch/roll, and custom vector geometries
-        this.entities = [
-            { 
-                type: 'cargo', 
-                x: -240, z: -80, 
-                name: 'MV OCEAN SENTINEL', speed: '14.2 kn', mmsi: '419000108',
-                color: '#10b981', id: 'CARGO-01', radarAngle: 0 
-            },
-            { 
-                type: 'cg', 
-                x: 100, z: 120, 
-                name: 'ICGS SHOURYA', speed: '24.0 kn', mmsi: '419900012',
-                color: '#06b6d4', id: 'PATROL-04', radarAngle: 0 
-            },
-            { 
-                type: 'distress', 
-                x: -60, z: 180, 
-                name: 'FV SEA BREEZE (SOS)', speed: '0.0 kn', mmsi: '419300045',
-                color: '#f97316', id: 'DISTRESS-01', pulse: 0, radarAngle: 0 
-            }
-        ];
+        // Simulated ships with physical bobbing, pitch/roll, and custom vector geometries (removed for clean login view)
+        this.entities = [];
         
         // Wake foam particle array
         this.particles = [];
@@ -691,20 +672,15 @@ class Ocean3DAnimation {
         // Sonar sweep rotation
         this.sonarSweepAngle = (this.sonarSweepAngle + 0.005) % (Math.PI * 2);
         
-        // Generate ship wake particles
-        if (time - this.lastParticleTime > 120) {
+        // Generate sailing boat wake particles
+        if (this.sailBoat && !this.sailBoat.arrived && time - this.lastParticleTime > 100) {
             this.lastParticleTime = time;
-            this.entities.forEach(ship => {
-                if (ship.type !== 'distress') {
-                    // Emit particle behind the stern of ship
-                    const radDir = Math.atan2(ship.z, ship.x);
-                    this.particles.push({
-                        x: ship.x - Math.cos(radDir) * 12,
-                        z: ship.z - Math.sin(radDir) * 12,
-                        opacity: 1.0,
-                        size: 2.5 + Math.random() * 2
-                    });
-                }
+            // Emit foam bubble particle behind the stern (to the right, positive X)
+            this.particles.push({
+                x: this.sailBoat.x + 35,
+                z: this.sailBoat.z + (Math.random() - 0.5) * 8,
+                opacity: 1.0,
+                size: 2.0 + Math.random() * 2.5
             });
         }
         
@@ -849,15 +825,9 @@ class Ocean3DAnimation {
                     const sweepDiff = Math.abs(this.sonarSweepAngle - angleToGrid);
                     const insideSonar = sweepDiff < 0.22 || sweepDiff > (Math.PI * 2 - 0.22);
                     
-                    // E. Lighthouse beam ocean surface illumination
-                    const lhAngle = (time * 0.0006) % (Math.PI * 2);
-                    const lhDx = avgX - (-300);
-                    const lhDz = avgZ - (-300);
-                    const quadAngle = Math.atan2(lhDz, lhDx);
-                    const angleDiff = Math.abs(((quadAngle - lhAngle + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
-                    const beamSpread = 0.14;
-                    const inBeam = angleDiff < beamSpread;
-                    const beamFalloff = inBeam ? Math.pow(1.0 - angleDiff / beamSpread, 2.0) : 0;
+                    // E. (Lighthouse removed) — no beam illumination
+                    const inBeam = false;
+                    const beamFalloff = 0;
                     
                     // F. Specular highlight — tight lobe on normals facing up toward viewer
                     const viewDot = Math.max(0, ny);
@@ -874,10 +844,10 @@ class Ocean3DAnimation {
                     const crestGlow = Math.max(0, (p00.world.y + 10) / 25);
                     const lightingFactor = diffuse * 0.4 + crestGlow * 0.6;
                     
-                    // Beam: golden-amber surface splash
-                    const beamR = inBeam ? Math.floor(beamFalloff * 110) : 0;
-                    const beamG = inBeam ? Math.floor(beamFalloff * 72)  : 0;
-                    const beamB = inBeam ? Math.floor(beamFalloff * 12)  : 0;
+                    // Beam: zeroed (no lighthouse)
+                    const beamR = 0;
+                    const beamG = 0;
+                    const beamB = 0;
                     
                     // Specular: cyan-white glint
                     const specR = Math.floor(specular * 180);
@@ -901,7 +871,7 @@ class Ocean3DAnimation {
                     this.ctx.closePath();
                     this.ctx.fill();
                     
-                    // Draw grid wire lines — golden in beam, cyan in sonar, teal otherwise
+                    // Draw grid wire lines â€” golden in beam, cyan in sonar, teal otherwise
                     const lineAlpha = depthFactor * (insideSonar ? 0.45 : isCrest ? 0.22 : p00.world.y > 6 ? 0.14 : 0.07);
                     const beamLineBoost = inBeam ? beamFalloff * 0.25 : 0;
                     this.ctx.strokeStyle = insideSonar
@@ -916,7 +886,7 @@ class Ocean3DAnimation {
                     this.ctx.lineTo(p01.proj.x, p01.proj.y);
                     this.ctx.stroke();
                     
-                    // H. Foam spray on wave crests — sparse bright white dots painted live
+                    // H. Foam spray on wave crests â€” sparse bright white dots painted live
                     if (isCrest && Math.random() < 0.04) {
                         const fCx = (p00.proj.x + p10.proj.x + p11.proj.x + p01.proj.x) / 4;
                         const fCy = (p00.proj.y + p10.proj.y + p11.proj.y + p01.proj.y) / 4;
@@ -935,430 +905,303 @@ class Ocean3DAnimation {
             }
         }
         
-        // 2.5 Draw Shore & Lighthouse on top of the waves in the back-left corner
-        const xc = -300;
-        const zc = -300;
+        // 2.5 â€” Cinematic Sailing Boat entering from starboard, bobbing on Gerstner waves
+        // The boat sails in from the right edge (high X) and gradually moves to center.
+        // As it nears the center, the site title "Kadlu Kavalu" fades in above it.
         
-        // Helper to draw rocky layer
-        const drawRockLayer = (yBottom, yTop, radius, noiseSeed) => {
-            const numSides = 8;
-            const ptsBottom = [];
-            const ptsTop = [];
-            
-            for (let i = 0; i < numSides; i++) {
-                const angle = (i / numSides) * Math.PI * 2;
-                const rNoiseBottom = radius * (0.85 + Math.sin(angle * 3 + noiseSeed) * 0.15);
-                const rNoiseTop = (radius * 0.8) * (0.85 + Math.cos(angle * 2 - noiseSeed) * 0.15);
-                
-                const xb = xc + Math.cos(angle) * rNoiseBottom;
-                const zb = zc + Math.sin(angle) * rNoiseBottom;
-                const xt = xc + Math.cos(angle) * rNoiseTop;
-                const zt = zc + Math.sin(angle) * rNoiseTop;
-                
-                ptsBottom.push(this.project3D(xb, yBottom, zb));
-                ptsTop.push(this.project3D(xt, yTop, zt));
-            }
-            
-            // Draw the sides of the rocks
-            for (let i = 0; i < numSides; i++) {
-                const next = (i + 1) % numSides;
-                const pB1 = ptsBottom[i];
-                const pB2 = ptsBottom[next];
-                const pT2 = ptsTop[next];
-                const pT1 = ptsTop[i];
-                
-                if (pB1.scale <= 0 || pB2.scale <= 0 || pT2.scale <= 0 || pT1.scale <= 0) continue;
-                
-                const angle = ((i + 0.5) / numSides) * Math.PI * 2;
-                const faceNormal = { x: Math.cos(angle), y: 0.2, z: Math.sin(angle) };
-                const dot = faceNormal.x * this.lightSource.x + faceNormal.y * this.lightSource.y + faceNormal.z * this.lightSource.z;
-                const shade = Math.max(0.15, (dot + 1) / 2);
-                
-                this.ctx.fillStyle = `rgba(${Math.floor(15 * shade + 12)}, ${Math.floor(23 * shade + 18)}, ${Math.floor(42 * shade + 28)}, 0.98)`;
-                this.ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 * shade})`;
-                this.ctx.lineWidth = 1;
-                
-                this.ctx.beginPath();
-                this.ctx.moveTo(pB1.x, pB1.y);
-                this.ctx.lineTo(pB2.x, pB2.y);
-                this.ctx.lineTo(pT2.x, pT2.y);
-                this.ctx.lineTo(pT1.x, pT1.y);
-                this.ctx.closePath();
-                this.ctx.fill();
-                this.ctx.stroke();
-            }
-            
-            // Draw top face of the rocks
-            this.ctx.fillStyle = 'rgba(12, 18, 33, 0.98)';
-            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
-            this.ctx.beginPath();
-            this.ctx.moveTo(ptsTop[0].x, ptsTop[0].y);
-            for (let i = 1; i < numSides; i++) {
-                this.ctx.lineTo(ptsTop[i].x, ptsTop[i].y);
-            }
-            this.ctx.closePath();
-            this.ctx.fill();
-            this.ctx.stroke();
-        };
-
-        // Helper to draw lighthouse cylinder sections
-        const drawLighthouseCylinder = (yBottom, yTop, rBottom, rTop, isRed) => {
-            const dx = -Math.sin(this.cameraYaw);
-            const dz = Math.cos(this.cameraYaw);
-            
-            const xLB = xc + dx * rBottom;
-            const zLB = zc - dz * rBottom;
-            const xRB = xc - dx * rBottom;
-            const zRB = zc + dz * rBottom;
-            
-            const xLT = xc + dx * rTop;
-            const zLT = zc - dz * rTop;
-            const xRT = xc - dx * rTop;
-            const zRT = zc + dz * rTop;
-            
-            const pLB = this.project3D(xLB, yBottom, zLB);
-            const pRB = this.project3D(xRB, yBottom, zRB);
-            const pLT = this.project3D(xLT, yTop, zLT);
-            const pRT = this.project3D(xRT, yTop, zRT);
-            
-            if (pLB.scale <= 0 || pRB.scale <= 0 || pLT.scale <= 0 || pRT.scale <= 0) return;
-            
-            const grad = this.ctx.createLinearGradient(pLB.x, pLB.y, pRB.x, pRB.y);
-            if (isRed) {
-                grad.addColorStop(0, '#5f1212');
-                grad.addColorStop(0.3, '#ef4444');
-                grad.addColorStop(0.7, '#b91c1c');
-                grad.addColorStop(1, '#5f1212');
-            } else {
-                grad.addColorStop(0, '#334155');
-                grad.addColorStop(0.3, '#f8fafc');
-                grad.addColorStop(0.7, '#cbd5e1');
-                grad.addColorStop(1, '#334155');
-            }
-            
-            this.ctx.fillStyle = grad;
-            this.ctx.beginPath();
-            this.ctx.moveTo(pLB.x, pLB.y);
-            this.ctx.lineTo(pRB.x, pRB.y);
-            this.ctx.lineTo(pRT.x, pRT.y);
-            this.ctx.lineTo(pLT.x, pLT.y);
-            this.ctx.closePath();
-            this.ctx.fill();
-            
-            // Highlight upper ellipse ring
-            this.ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-            this.ctx.lineWidth = 1;
-            this.ctx.beginPath();
-            this.ctx.moveTo(pLT.x, pLT.y);
-            this.ctx.quadraticCurveTo((pLT.x + pRT.x)/2, (pLT.y + pRT.y)/2 + (rTop * pLT.scale * 0.22), pRT.x, pRT.y);
-            this.ctx.stroke();
-        };
-
-        // Draw the shore island rocks
-        drawRockLayer(0, 18, 52, 1.2);
-        drawRockLayer(18, 34, 36, 2.5);
-        drawRockLayer(34, 40, 25, 3.8);
-        
-        // Draw Lighthouse Tower sections
-        drawLighthouseCylinder(40, 58, 17, 15, true);  // Red
-        drawLighthouseCylinder(58, 76, 15, 13, false); // White
-        drawLighthouseCylinder(76, 94, 13, 11, true);  // Red
-        drawLighthouseCylinder(94, 112, 11, 9, false); // White
-        
-        // Draw black gallery/balcony platform
-        drawLighthouseCylinder(112, 115, 13, 13, false); 
-        this.ctx.fillStyle = '#0f172a';
-        
-        // Draw lantern room glass cylinder
-        const yGlassBottom = 115;
-        const yGlassTop = 130;
-        const rGlass = 7;
-        const dxG = -Math.sin(this.cameraYaw);
-        const dzG = Math.cos(this.cameraYaw);
-        const pGLB = this.project3D(xc + dxG * rGlass, yGlassBottom, zc - dzG * rGlass);
-        const pGRB = this.project3D(xc - dxG * rGlass, yGlassBottom, zc + dzG * rGlass);
-        const pGLT = this.project3D(xc + dxG * rGlass, yGlassTop, zc - dzG * rGlass);
-        const pGRT = this.project3D(xc - dxG * rGlass, yGlassTop, zc + dzG * rGlass);
-        
-        if (pGLB.scale > 0 && pGRB.scale > 0 && pGLT.scale > 0 && pGRT.scale > 0) {
-            // Draw glass fill
-            this.ctx.fillStyle = 'rgba(6, 182, 212, 0.25)';
-            this.ctx.beginPath();
-            this.ctx.moveTo(pGLB.x, pGLB.y);
-            this.ctx.lineTo(pGRB.x, pGRB.y);
-            this.ctx.lineTo(pGRT.x, pGRT.y);
-            this.ctx.lineTo(pGLT.x, pGLT.y);
-            this.ctx.closePath();
-            this.ctx.fill();
-            
-            // Draw dark vertical struts/pillars for realism
-            this.ctx.strokeStyle = '#0f172a';
-            this.ctx.lineWidth = 1.2 * pGLB.scale;
-            
-            // Draw left, center, right struts
-            const anglesStrut = [0, Math.PI/3, Math.PI*2/3, Math.PI, Math.PI*4/3, Math.PI*5/3];
-            anglesStrut.forEach(ang => {
-                const xS = xc + Math.cos(ang) * rGlass;
-                const zS = zc + Math.sin(ang) * rGlass;
-                const pSBottom = this.project3D(xS, yGlassBottom, zS);
-                const pSTop = this.project3D(xS, yGlassTop, zS);
-                if (pSBottom.scale > 0 && pSTop.scale > 0) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(pSBottom.x, pSBottom.y);
-                    this.ctx.lineTo(pSTop.x, pSTop.y);
-                    this.ctx.stroke();
-                }
-            });
+        if (!this.sailBoat) {
+            this.sailBoat = {
+                x: 480,        // Start far right
+                z: 60,         // Slightly toward viewer
+                speed: 0.18,   // World units per frame
+                arrived: false,
+                titleAlpha: 0  // Title fade progress
+            };
         }
         
-        // Draw dome roof
-        drawLighthouseCylinder(130, 140, 7, 0, true);
+        const boat = this.sailBoat;
         
-        // --- Keeper's House (3D Blueprint building next to Lighthouse) ---
-        const drawKeepersHouse = () => {
-            const hx = -232;
-            const hz = -285;
-            const yBase = 35;
-            const yWall = 60;
-            const yRidge = 74;
-            
-            const v = {
-                blb: this.project3D(hx - 16, yBase, hz - 12),
-                brb: this.project3D(hx + 16, yBase, hz - 12),
-                frb: this.project3D(hx + 16, yBase, hz + 12),
-                flb: this.project3D(hx - 16, yBase, hz + 12),
-                
-                tlb: this.project3D(hx - 16, yWall, hz - 12),
-                trb: this.project3D(hx + 16, yWall, hz - 12),
-                trf: this.project3D(hx + 16, yWall, hz + 12),
-                tlf: this.project3D(hx - 16, yWall, hz + 12),
-                
-                ridgeL: this.project3D(hx - 16, yRidge, hz),
-                ridgeR: this.project3D(hx + 16, yRidge, hz)
-            };
-            
-            const allProj = Object.values(v);
-            if (allProj.some(p => p.scale <= 0)) return;
-            
-            this.ctx.fillStyle = 'rgba(12, 18, 33, 0.95)';
-            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.65)';
-            this.ctx.lineWidth = 1.0;
-            
-            const drawFace = (p1, p2, p3, p4) => {
-                this.ctx.beginPath();
-                this.ctx.moveTo(p1.x, p1.y);
-                this.ctx.lineTo(p2.x, p2.y);
-                this.ctx.lineTo(p3.x, p3.y);
-                this.ctx.lineTo(p4.x, p4.y);
-                this.ctx.closePath();
-                this.ctx.fill();
-                this.ctx.stroke();
-            };
-            
-            drawFace(v.blb, v.brb, v.trb, v.tlb); // Back
-            drawFace(v.brb, v.frb, v.trf, v.trb); // Right
-            drawFace(v.frb, v.flb, v.tlf, v.trf); // Front
-            drawFace(v.flb, v.blb, v.tlb, v.tlf); // Left
-            
-            const drawTriangle = (p1, p2, p3) => {
-                this.ctx.beginPath();
-                this.ctx.moveTo(p1.x, p1.y);
-                this.ctx.lineTo(p2.x, p2.y);
-                this.ctx.lineTo(p3.x, p3.y);
-                this.ctx.closePath();
-                this.ctx.fill();
-                this.ctx.stroke();
-            };
-            
-            drawTriangle(v.tlb, v.ridgeL, v.tlf); // Gable Left
-            drawTriangle(v.trb, v.ridgeR, v.trf); // Gable Right
-            
-            drawFace(v.tlf, v.trf, v.ridgeR, v.ridgeL); // Roof Front
-            drawFace(v.trb, v.tlb, v.ridgeL, v.ridgeR); // Roof Back
-            
-            // Door
-            const doorW = 5 * v.frb.scale;
-            const doorH = 11 * v.frb.scale;
-            const pFrontMid = this.project3D(hx, yBase, hz + 12);
-            this.ctx.fillStyle = '#ef4444';
-            this.ctx.fillRect(pFrontMid.x - doorW/2, pFrontMid.y - doorH, doorW, doorH);
-            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.8)';
-            this.ctx.strokeRect(pFrontMid.x - doorW/2, pFrontMid.y - doorH, doorW, doorH);
-            
-            // Windows
-            const winSize = 4 * v.frb.scale;
-            const pWinL = this.project3D(hx - 8, yBase + 10, hz + 12);
-            const pWinR = this.project3D(hx + 8, yBase + 10, hz + 12);
-            this.ctx.fillStyle = 'rgba(253, 224, 71, 0.45)';
-            this.ctx.fillRect(pWinL.x - winSize/2, pWinL.y - winSize/2, winSize, winSize);
-            this.ctx.strokeRect(pWinL.x - winSize/2, pWinL.y - winSize/2, winSize, winSize);
-            this.ctx.fillRect(pWinR.x - winSize/2, pWinR.y - winSize/2, winSize, winSize);
-            this.ctx.strokeRect(pWinR.x - winSize/2, pWinR.y - winSize/2, winSize, winSize);
-        };
+        // Move the boat leftward (negative X) each frame if not at destination
+        if (boat.x > -80) {
+            boat.x -= boat.speed;
+        } else {
+            boat.arrived = true;
+        }
         
-        // --- 3D Blueprint Palm Trees ---
-        const drawPalmTree = (tx, tz, hTree) => {
-            const yBase = 35;
-            const yTop = yBase + hTree;
-            const segments = 5;
-            const trunkPts = [];
+        // Once arrived, fade the title in
+        if (boat.arrived && boat.titleAlpha < 1) {
+            boat.titleAlpha = Math.min(1, boat.titleAlpha + 0.008);
+        }
+        
+        // Wave-riding: sample Gerstner height + slope for pitch/roll
+        const bh   = this.getWaveHeight(boat.x, boat.z, time);
+        const bOff = 12;
+        const bhL  = this.getWaveHeight(boat.x - bOff, boat.z, time);
+        const bhR  = this.getWaveHeight(boat.x + bOff, boat.z, time);
+        const bhF  = this.getWaveHeight(boat.x, boat.z - bOff, time);
+        const bhB  = this.getWaveHeight(boat.x, boat.z + bOff, time);
+        const bPitch = (bhF - bhB) / (bOff * 2); // forward tilt
+        const bRoll  = (bhR - bhL) / (bOff * 2); // side tilt
+        
+        const pBoat = this.project3D(boat.x, bh, boat.z);
+        
+        if (pBoat.scale > 0) {
+            const sc = pBoat.scale;
+            const bx = pBoat.x;
+            const by = pBoat.y;
             
-            for (let i = 0; i <= segments; i++) {
-                const t = i / segments;
-                const yVal = yBase + t * hTree;
-                const xVal = tx + Math.sin(t * Math.PI / 2) * 7;
-                const zVal = tz + Math.cos(t * Math.PI / 2) * 3;
-                trunkPts.push(this.project3D(xVal, yVal, zVal));
-            }
+            this.ctx.save();
+            this.ctx.translate(bx, by);
             
-            this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.85)';
-            this.ctx.lineWidth = 2.0 * trunkPts[0].scale;
+            // === Hull ===
+            // Sleek hull shape â€” wide midship, pointed bow (left), rounded stern (right)
+            const hw = 48 * sc;  // half-width
+            const hh = 10 * sc;  // hull depth
+            const rollShift = bRoll * 22 * sc;
+            const pitchShift = bPitch * 14 * sc;
+            
+            // Hull gradient â€” dark navy with a cyan shimmer at waterline
+            const hullGrad = this.ctx.createLinearGradient(0, -hh * 0.5, 0, hh);
+            hullGrad.addColorStop(0, '#0e2a45');
+            hullGrad.addColorStop(0.4, '#0c1f33');
+            hullGrad.addColorStop(1, '#051020');
+            
             this.ctx.beginPath();
-            this.ctx.moveTo(trunkPts[0].x, trunkPts[0].y);
-            for (let i = 1; i <= segments; i++) {
-                this.ctx.lineTo(trunkPts[i].x, trunkPts[i].y);
-            }
+            // Hull points: stern(right) â†’ keel â†’ bow(left), with pitch/roll applied
+            this.ctx.moveTo( hw + pitchShift,        -hh * 0.25 + rollShift);   // stern top
+            this.ctx.bezierCurveTo(
+                hw * 0.5 + pitchShift, hh + rollShift,
+                -hw * 0.5 - pitchShift, hh - rollShift,
+                -hw - pitchShift, -hh * 0.1 - rollShift   // bow top
+            );
+            this.ctx.bezierCurveTo(
+                -hw * 0.6 - pitchShift, -hh * 0.55 - rollShift,
+                hw * 0.3 + pitchShift, -hh * 0.55 + rollShift,
+                hw + pitchShift, -hh * 0.25 + rollShift   // back to stern
+            );
+            this.ctx.closePath();
+            this.ctx.fillStyle = hullGrad;
+            this.ctx.fill();
+            
+            // Hull outline
+            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.7)';
+            this.ctx.lineWidth = 1.2 * sc;
             this.ctx.stroke();
             
-            const pTop = trunkPts[segments];
-            if (pTop.scale <= 0) return;
-            
-            const numFronds = 6;
-            this.ctx.strokeStyle = '#10b981';
-            this.ctx.lineWidth = 0.8 * pTop.scale;
-            
-            for (let j = 0; j < numFronds; j++) {
-                const angle = (j / numFronds) * Math.PI * 2 + (tx * 0.05);
-                const frondLength = 14;
-                const fSteps = 4;
-                
-                this.ctx.beginPath();
-                this.ctx.moveTo(pTop.x, pTop.y);
-                for (let k = 1; k <= fSteps; k++) {
-                    const pct = k / fSteps;
-                    const xL = tx + Math.sin(pct * Math.PI / 2) * 7 + Math.cos(angle) * (frondLength * pct);
-                    const zL = tz + Math.sin(angle) * (frondLength * pct);
-                    const yL = yTop - Math.pow(pct, 2) * 7;
-                    
-                    const pLeaf = this.project3D(xL, yL, zL);
-                    if (pLeaf.scale > 0) {
-                        this.ctx.lineTo(pLeaf.x, pLeaf.y);
-                    }
-                }
-                this.ctx.stroke();
-            }
-        };
-        
-        // Draw scenery objects
-        drawKeepersHouse();
-        drawPalmTree(-260, -320, 42);
-        drawPalmTree(-205, -310, 36);
-        
-        // --- Technical Blueprint Annotations (Height, diameter, compass ring) ---
-        const drawBlueprintAnnotations = () => {
-            // Height measurement guide
-            const pAltB = this.project3D(xc - 28, 40, zc);
-            const pAltT = this.project3D(xc - 28, 140, zc);
-            
-            if (pAltB.scale > 0 && pAltT.scale > 0) {
-                this.ctx.save();
-                this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)';
-                this.ctx.lineWidth = 0.8;
-                this.ctx.setLineDash([3, 3]);
-                
-                // vertical extension line
-                this.ctx.beginPath();
-                this.ctx.moveTo(pAltB.x, pAltB.y);
-                this.ctx.lineTo(pAltT.x, pAltT.y);
-                this.ctx.stroke();
-                
-                // top/bottom horizontal tick marks
-                this.ctx.setLineDash([]);
-                this.ctx.beginPath();
-                this.ctx.moveTo(pAltB.x - 5, pAltB.y);
-                this.ctx.lineTo(pAltB.x + 5, pAltB.y);
-                this.ctx.moveTo(pAltT.x - 5, pAltT.y);
-                this.ctx.lineTo(pAltT.x + 5, pAltT.y);
-                this.ctx.stroke();
-                
-                // Label text
-                this.ctx.fillStyle = 'rgba(6, 182, 212, 0.7)';
-                this.ctx.font = '6px monospace';
-                this.ctx.fillText("H: 45.0m", pAltT.x - 32, (pAltT.y + pAltB.y) / 2);
-                this.ctx.restore();
-            }
-            
-            // Rotating compass radar circle around lantern room
-            const yLightPos = 122;
-            const pLightPos = this.project3D(xc, yLightPos, zc);
-            if (pLightPos.scale > 0) {
-                this.ctx.save();
-                this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
-                this.ctx.lineWidth = 0.8;
-                this.ctx.setLineDash([2, 4]);
-                
-                this.ctx.beginPath();
-                this.ctx.arc(pLightPos.x, pLightPos.y, 45, 0, Math.PI * 2);
-                this.ctx.stroke();
-                
-                // Angle indicators
-                this.ctx.fillStyle = 'rgba(6, 182, 212, 0.35)';
-                this.ctx.font = '5px monospace';
-                this.ctx.fillText("000°", pLightPos.x - 6, pLightPos.y - 48);
-                this.ctx.fillText("090°", pLightPos.x + 48, pLightPos.y + 2);
-                this.ctx.fillText("180°", pLightPos.x - 6, pLightPos.y + 53);
-                this.ctx.fillText("270°", pLightPos.x - 60, pLightPos.y + 2);
-                this.ctx.restore();
-            }
-        };
-        drawBlueprintAnnotations();
-        
-        // Draw rotating sweeping light beam
-        const yLight = 122; // Center of lantern room
-        const pLight = this.project3D(xc, yLight, zc);
-        const lightAngle = (time * 0.0006) % (Math.PI * 2);
-        const beamLength = 700;
-        const spread = 0.12;
-        
-        const xEndL = xc + Math.cos(lightAngle - spread) * beamLength;
-        const zEndL = zc + Math.sin(lightAngle - spread) * beamLength;
-        const xEndR = xc + Math.cos(lightAngle + spread) * beamLength;
-        const zEndR = zc + Math.sin(lightAngle + spread) * beamLength;
-        const xEndC = xc + Math.cos(lightAngle) * beamLength;
-        const zEndC = zc + Math.sin(lightAngle) * beamLength;
-        
-        const pEndL = this.project3D(xEndL, 20, zEndL);
-        const pEndR = this.project3D(xEndR, 20, zEndR);
-        const pEndC = this.project3D(xEndC, 20, zEndC);
-        
-        if (pLight.scale > 0 && pEndL.scale > 0 && pEndR.scale > 0 && pEndC.scale > 0) {
-            this.ctx.save();
-            const beamGrad = this.ctx.createLinearGradient(pLight.x, pLight.y, pEndC.x, pEndC.y);
-            beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.82)');      // core bulb
-            beamGrad.addColorStop(0.08, 'rgba(253, 224, 71, 0.65)');   // bright yellow beam
-            beamGrad.addColorStop(0.25, 'rgba(6, 182, 212, 0.35)');   // cyan scatter glow
-            beamGrad.addColorStop(0.65, 'rgba(6, 182, 212, 0.12)');   // fading cyan
-            beamGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');          // vanish
-
-            this.ctx.fillStyle = beamGrad;
+            // Waterline highlight stripe
             this.ctx.beginPath();
-            this.ctx.moveTo(pLight.x, pLight.y);
-            this.ctx.lineTo(pEndL.x, pEndL.y);
-            this.ctx.lineTo(pEndR.x, pEndR.y);
+            this.ctx.moveTo(-hw - pitchShift, -hh * 0.1 - rollShift);
+            this.ctx.bezierCurveTo(
+                -hw * 0.3 - pitchShift, -hh * 0.45 - rollShift,
+                hw * 0.4 + pitchShift,  -hh * 0.45 + rollShift,
+                hw + pitchShift,        -hh * 0.25 + rollShift
+            );
+            this.ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+            this.ctx.lineWidth = 0.7 * sc;
+            this.ctx.stroke();
+            
+            // === Wake â€” V-shaped foam trail to the right (stern) ===
+            const wakeLen = 80 * sc;
+            const wakeSplay = 18 * sc;
+            this.ctx.save();
+            this.ctx.globalAlpha = 0.18;
+            const wakeGrad = this.ctx.createLinearGradient(hw, 0, hw + wakeLen, 0);
+            wakeGrad.addColorStop(0, 'rgba(180, 230, 255, 0.9)');
+            wakeGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+            this.ctx.fillStyle = wakeGrad;
+            this.ctx.beginPath();
+            this.ctx.moveTo(hw + pitchShift, rollShift);
+            this.ctx.lineTo(hw + wakeLen, -wakeSplay);
+            this.ctx.lineTo(hw + wakeLen,  wakeSplay);
             this.ctx.closePath();
             this.ctx.fill();
-            
-            // Add light flare at the lantern source
-            const flareGrad = this.ctx.createRadialGradient(pLight.x, pLight.y, 1, pLight.x, pLight.y, 16 * pLight.scale);
-            flareGrad.addColorStop(0, '#ffffff');
-            flareGrad.addColorStop(0.2, 'rgba(253, 224, 71, 0.85)');
-            flareGrad.addColorStop(0.6, 'rgba(6, 182, 212, 0.35)');
-            flareGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
-            this.ctx.fillStyle = flareGrad;
-            this.ctx.beginPath();
-            this.ctx.arc(pLight.x, pLight.y, 16 * pLight.scale, 0, Math.PI * 2);
-            this.ctx.fill();
             this.ctx.restore();
+            
+            // === Deck area ===
+            this.ctx.fillStyle = 'rgba(12, 28, 48, 0.85)';
+            this.ctx.beginPath();
+            this.ctx.ellipse(0, -hh * 0.3, hw * 0.78, hh * 0.35, 0, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // === Mast ===
+            // Position mast 1/4 from bow (left side)
+            const mastX  = -hw * 0.25 - pitchShift;
+            const mastBase  = -hh * 0.4 - rollShift * 0.4;
+            const mastH  = 85 * sc;   // mast height
+            const mastTop = mastBase - mastH;
+            
+            this.ctx.strokeStyle = '#94a3b8';
+            this.ctx.lineWidth = 1.8 * sc;
+            this.ctx.beginPath();
+            this.ctx.moveTo(mastX, mastBase);
+            this.ctx.lineTo(mastX, mastTop);
+            this.ctx.stroke();
+            
+            // Masthead light â€” small glowing dot
+            const mastHeadPulse = 0.6 + 0.4 * Math.sin(time * 0.003);
+            this.ctx.beginPath();
+            this.ctx.arc(mastX, mastTop, 2.5 * sc, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(253, 224, 71, ${mastHeadPulse})`;
+            this.ctx.fill();
+            const mhGrad = this.ctx.createRadialGradient(mastX, mastTop, 0, mastX, mastTop, 8 * sc);
+            mhGrad.addColorStop(0, 'rgba(253, 224, 71, 0.45)');
+            mhGrad.addColorStop(1, 'rgba(253, 224, 71, 0)');
+            this.ctx.fillStyle = mhGrad;
+            this.ctx.beginPath();
+            this.ctx.arc(mastX, mastTop, 8 * sc, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // === Main Sail (billowing to right / downwind) ===
+            // Sail runs from mastTop down to the boom, bowing out to starboard (right)
+            const boomEnd = hw * 0.35 + pitchShift;
+            const boomY   = mastBase - mastH * 0.12;
+            const sailBow = mastX + hw * 0.55;  // how far sail bellies out
+            
+            const sailGrad = this.ctx.createLinearGradient(mastX, mastTop, boomEnd, boomY);
+            sailGrad.addColorStop(0, 'rgba(230, 245, 255, 0.90)');
+            sailGrad.addColorStop(0.5, 'rgba(180, 220, 255, 0.78)');
+            sailGrad.addColorStop(1, 'rgba(100, 170, 220, 0.55)');
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(mastX, mastTop);
+            this.ctx.quadraticCurveTo(sailBow, mastBase - mastH * 0.5, boomEnd, boomY);
+            this.ctx.lineTo(mastX, mastBase);
+            this.ctx.closePath();
+            this.ctx.fillStyle = sailGrad;
+            this.ctx.fill();
+            this.ctx.strokeStyle = 'rgba(180, 210, 240, 0.55)';
+            this.ctx.lineWidth = 0.8 * sc;
+            this.ctx.stroke();
+            
+            // Sail panel seam lines (gives it real cloth detail)
+            const nSeams = 3;
+            for (let si = 1; si < nSeams; si++) {
+                const t = si / nSeams;
+                const sx1 = mastX;
+                const sy1 = mastTop + (mastBase - mastTop) * t;
+                const sx2 = mastX + (boomEnd - mastX) * t;
+                const sy2 = mastTop + (boomY - mastTop) * t;
+                const scpx = mastX + (sailBow - mastX) * t;
+                const scpy = mastBase - mastH * 0.5;
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(sx1, sy1);
+                this.ctx.quadraticCurveTo(scpx, scpy, sx2, sy2);
+                this.ctx.strokeStyle = 'rgba(150, 190, 225, 0.25)';
+                this.ctx.lineWidth = 0.5 * sc;
+                this.ctx.stroke();
+            }
+            
+            // === Jib sail (smaller foresail) ===
+            const jibTop  = mastTop + mastH * 0.18;
+            const jibBow  = -hw - pitchShift + 8 * sc;   // far bow point
+            const jibBase = mastX;
+            
+            const jibGrad = this.ctx.createLinearGradient(jibBow, jibTop, mastX, mastBase);
+            jibGrad.addColorStop(0, 'rgba(210, 235, 255, 0.75)');
+            jibGrad.addColorStop(1, 'rgba(130, 180, 220, 0.45)');
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(mastX, jibTop);
+            this.ctx.lineTo(jibBow, mastBase - hh * 0.1);
+            this.ctx.lineTo(mastX, mastBase);
+            this.ctx.closePath();
+            this.ctx.fillStyle = jibGrad;
+            this.ctx.fill();
+            this.ctx.strokeStyle = 'rgba(170, 205, 235, 0.4)';
+            this.ctx.lineWidth = 0.7 * sc;
+            this.ctx.stroke();
+            
+            // === Rigging lines ===
+            this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+            this.ctx.lineWidth = 0.5 * sc;
+            
+            // Forestay: mast top â†’ bow
+            this.ctx.beginPath();
+            this.ctx.moveTo(mastX, mastTop);
+            this.ctx.lineTo(-hw - pitchShift, mastBase - hh * 0.05 - rollShift);
+            this.ctx.stroke();
+            
+            // Backstay: mast top â†’ stern
+            this.ctx.beginPath();
+            this.ctx.moveTo(mastX, mastTop);
+            this.ctx.lineTo(hw + pitchShift, mastBase - hh * 0.15 + rollShift);
+            this.ctx.stroke();
+            
+            // === Navigation lights ===
+            // Port (left/bow) = red; Starboard (right/stern) = green
+            const portPulse = 0.7 + 0.3 * Math.sin(time * 0.0025);
+            const strbPulse = 0.7 + 0.3 * Math.sin(time * 0.0025 + Math.PI);
+            
+            this.ctx.beginPath();
+            this.ctx.arc(-hw - pitchShift + 3*sc, -hh*0.05 - rollShift, 2.5*sc, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(239, 68, 68, ${portPulse})`;
+            this.ctx.fill();
+            
+            this.ctx.beginPath();
+            this.ctx.arc(hw + pitchShift - 3*sc, -hh*0.15 + rollShift, 2.5*sc, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(34, 197, 94, ${strbPulse})`;
+            this.ctx.fill();
+            
+            this.ctx.restore();
+            
+            // === "Kadlu Kavalu" title reveal ===
+            // Rises up as the boat sails in; fades in once boat.arrived
+            if (boat.titleAlpha > 0) {
+                const tx2D = pBoat.x;
+                const ty2D = pBoat.y - (75 * sc) - (boat.titleAlpha * 30);
+                
+                this.ctx.save();
+                this.ctx.globalAlpha = boat.titleAlpha;
+                
+                // Subtle glow halo behind text
+                const glowRadius = 200 * boat.titleAlpha;
+                const glowGrad = this.ctx.createRadialGradient(tx2D, ty2D, 10, tx2D, ty2D, glowRadius);
+                glowGrad.addColorStop(0, 'rgba(6, 182, 212, 0.18)');
+                glowGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+                this.ctx.fillStyle = glowGrad;
+                this.ctx.fillRect(tx2D - glowRadius, ty2D - glowRadius, glowRadius * 2, glowRadius * 2);
+                
+                // Site tagline in small caps above
+                this.ctx.font = `${Math.round(11 * sc)}px 'Courier New', monospace`;
+                this.ctx.letterSpacing = '0.18em';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillStyle = `rgba(100, 210, 230, ${boat.titleAlpha * 0.75})`;
+                this.ctx.fillText('MARITIME OPERATIONS', tx2D, ty2D - 28 * sc);
+                
+                // Main title â€” large, bright, with drop shadow
+                const fontSize = Math.max(22, Math.round(32 * sc));
+                this.ctx.font = `700 ${fontSize}px 'Segoe UI', Arial, sans-serif`;
+                this.ctx.letterSpacing = '0.06em';
+                
+                // Shadow layer
+                this.ctx.shadowColor = 'rgba(6, 182, 212, 0.9)';
+                this.ctx.shadowBlur = 22;
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
+                
+                // Second pass â€” cyan overlay for the glow effect
+                this.ctx.shadowBlur = 0;
+                this.ctx.fillStyle = `rgba(6, 200, 230, ${boat.titleAlpha * 0.35})`;
+                this.ctx.fillText('Kadlu Kavalu', tx2D, ty2D);
+                
+                // Decorative underline
+                const titleWidth = this.ctx.measureText('Kadlu Kavalu').width;
+                const ulY = ty2D + 8 * sc;
+                const ulGrad = this.ctx.createLinearGradient(tx2D - titleWidth / 2, ulY, tx2D + titleWidth / 2, ulY);
+                ulGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+                ulGrad.addColorStop(0.5, `rgba(6, 182, 212, ${boat.titleAlpha * 0.85})`);
+                ulGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+                this.ctx.strokeStyle = ulGrad;
+                this.ctx.lineWidth = 1.5;
+                this.ctx.shadowBlur = 0;
+                this.ctx.beginPath();
+                this.ctx.moveTo(tx2D - titleWidth / 2, ulY);
+                this.ctx.lineTo(tx2D + titleWidth / 2, ulY);
+                this.ctx.stroke();
+                
+                this.ctx.restore();
+            }
         }
         
         // 3. Draw Wake Particles floating on waves
@@ -1547,7 +1390,7 @@ class Ocean3DAnimation {
             
             this.ctx.fillStyle = '#06b6d4';
             this.ctx.font = '6px monospace';
-            this.ctx.fillText(`TARGET LOCK: ${calcLat}°N / ${calcLon}°E`, closestPt.proj.x + 15, closestPt.proj.y + 3);
+            this.ctx.fillText(`TARGET LOCK: ${calcLat}Â°N / ${calcLon}Â°E`, closestPt.proj.x + 15, closestPt.proj.y + 3);
         }
     }
 }
@@ -1846,7 +1689,7 @@ class MapSurveillanceRenderer {
             this.ctx.moveTo(start.x, 0);
             this.ctx.lineTo(start.x, this.height);
             this.ctx.stroke();
-            this.ctx.fillText(`${lon}°E`, start.x + 4, this.height - 8);
+            this.ctx.fillText(`${lon}Â°E`, start.x + 4, this.height - 8);
         }
         
         for (let lat = 0; lat <= 25; lat += 5) {
@@ -1855,7 +1698,7 @@ class MapSurveillanceRenderer {
             this.ctx.moveTo(0, start.y);
             this.ctx.lineTo(this.width, start.y);
             this.ctx.stroke();
-            this.ctx.fillText(`${lat}°N`, 8, start.y - 4);
+            this.ctx.fillText(`${lat}Â°N`, 8, start.y - 4);
         }
         
         // 2.5 Draw Background SLOC (Sea Lines of Communication) Highways
@@ -2523,7 +2366,7 @@ function formatCoords(lat, lon) {
     const lonDeg = Math.floor(Math.abs(lon));
     const lonMin = ((Math.abs(lon) - lonDeg) * 60).toFixed(2);
     const lonDir = lon >= 0 ? 'E' : 'W';
-    return `${String(latDeg).padStart(2, '0')}° ${latMin}' ${latDir}, ${String(lonDeg).padStart(3, '0')}° ${lonMin}' ${lonDir}`;
+    return `${String(latDeg).padStart(2, '0')}Â° ${latMin}' ${latDir}, ${String(lonDeg).padStart(3, '0')}Â° ${lonMin}' ${lonDir}`;
 }
 
 // Get filter inputs
@@ -2562,11 +2405,11 @@ function generateVesselHistory(vessel) {
         const t1 = new Date(now.getTime() - 3 * 3600000);
         history.push({ time: t1.toISOString().slice(11, 16) + " UTC", title: "Last Normal Operation", desc: `${vessel.name} last reported normal engine status. Speed: 12.3 kn. All systems nominal.` });
         const t2 = new Date(now.getTime() - 1.5 * 3600000);
-        history.push({ time: t2.toISOString().slice(11, 16) + " UTC", title: "⚠️ Engine Warning Alarm", desc: "Main engine cooling system fault detected. Chief Engineer notified. Speed reduced to 4 kn." });
+        history.push({ time: t2.toISOString().slice(11, 16) + " UTC", title: "âš ï¸ Engine Warning Alarm", desc: "Main engine cooling system fault detected. Chief Engineer notified. Speed reduced to 4 kn." });
         const t3 = new Date(now.getTime() - 55 * 60000);
-        history.push({ time: t3.toISOString().slice(11, 16) + " UTC", title: "🔴 Total Propulsion Loss", desc: "Main engine shutdown. All propulsion lost. Vessel adrift. EPIRB distress beacon activated." });
+        history.push({ time: t3.toISOString().slice(11, 16) + " UTC", title: "ðŸ”´ Total Propulsion Loss", desc: "Main engine shutdown. All propulsion lost. Vessel adrift. EPIRB distress beacon activated." });
         const t4 = new Date(now.getTime() - 40 * 60000);
-        history.push({ time: t4.toISOString().slice(11, 16) + " UTC", title: "📡 MAYDAY Issued on Ch.16", desc: `Master issued MAYDAY call on VHF Ch.16 and DSC. Crew mustered at emergency stations. MRCC Chennai acknowledged.` });
+        history.push({ time: t4.toISOString().slice(11, 16) + " UTC", title: "ðŸ“¡ MAYDAY Issued on Ch.16", desc: `Master issued MAYDAY call on VHF Ch.16 and DSC. Crew mustered at emergency stations. MRCC Chennai acknowledged.` });
         return history;
     }
     
@@ -2581,7 +2424,7 @@ function generateVesselHistory(vessel) {
     history.push({
         time: depTimeString,
         title: "Vessel Departed",
-        desc: `Cleared port operations at ${startPortName}. Heading: ${vessel.heading}°`
+        desc: `Cleared port operations at ${startPortName}. Heading: ${vessel.heading}Â°`
     });
     
     // Event 2: Mid-transit update
@@ -2656,7 +2499,7 @@ function setSelectedVesselGlobal(vesselId) {
     document.getElementById('vessel-mmsi').textContent = vessel.mmsi;
     document.getElementById('vessel-imo').textContent = vessel.imo;
     document.getElementById('vessel-speed').textContent = `${vessel.speed} kn`;
-    document.getElementById('vessel-heading').textContent = `${vessel.heading}°`;
+    document.getElementById('vessel-heading').textContent = `${vessel.heading}Â°`;
     
     const countryObj = COUNTRIES.find(c => c.code === vessel.country);
     document.getElementById('vessel-country').textContent = countryObj ? countryObj.name : vessel.country;
@@ -2689,7 +2532,7 @@ function setSelectedVesselGlobal(vesselId) {
     anomalyBox.className = 'alert-box-tactical';
     if (vessel.type === 'distress') {
         anomalyBox.classList.add('warning');
-        anomalyTitle.textContent = "🆘 ENGINE FAILURE — DISTRESS";
+        anomalyTitle.textContent = "ðŸ†˜ ENGINE FAILURE â€” DISTRESS";
         anomalyDesc.textContent = vessel.anomaly;
     } else if (vessel.threatScore > 75) {
         anomalyBox.classList.add('critical');
@@ -2808,10 +2651,10 @@ function hideDispatchPanel() {
 function setRescueMissionLabels() {
     const steps = document.querySelectorAll('#dispatch-mission-panel .mission-step');
     const labels = [
-        { title: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Tug · 16 kn · Kochi Port', status: 'EN ROUTE → CASUALTY' },
+        { title: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Tug Â· 16 kn Â· Kochi Port', status: 'EN ROUTE â†’ CASUALTY' },
         { title: 'Tug Unable to Reach in Time', sub: 'Crew reported worsening water ingress', status: 'AWAITING EVENT' },
-        { title: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response · 28 kn · Coast Guard Station', status: 'STANDBY' },
-        { title: 'Crew Rescued — Vessel Secured', sub: 'Tow line secured. MRCC notified.', status: 'AWAITING EVENT' }
+        { title: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Â· 28 kn Â· Coast Guard Station', status: 'STANDBY' },
+        { title: 'Crew Rescued â€” Vessel Secured', sub: 'Tow line secured. MRCC notified.', status: 'AWAITING EVENT' }
     ];
     steps.forEach((step, idx) => {
         if (!labels[idx]) return;
@@ -2824,7 +2667,7 @@ function setRescueMissionLabels() {
     });
     const statusMsg = document.getElementById('dispatch-status-msg');
     if (statusMsg) {
-        statusMsg.textContent = '🟠 Rescue tug SAMUDRA SHAKTI is en route to distressed vessel...';
+        statusMsg.textContent = 'ðŸŸ  Rescue tug SAMUDRA SHAKTI is en route to distressed vessel...';
         statusMsg.style.borderLeftColor = '#f97316';
     }
 }
@@ -2837,7 +2680,7 @@ function updateDispatchSimulation(dt) {
     if (!target) return;
     
     sim.timer += dt;
-    const SPEED = 0.0004; // degrees per ms – fast enough to be clearly visible
+    const SPEED = 0.0004; // degrees per ms â€“ fast enough to be clearly visible
     
     if (sim.phase === 1) {
         // Phase 1: Asset 1 moves toward target for up to 8 seconds before failing
@@ -2856,22 +2699,22 @@ function updateDispatchSimulation(dt) {
             sim.phase = 2;
             sim.timer = 0;
             if (sim.missionType === 'rescue') {
-                addCustomEventToTimeline(`⚠️ Rescue Tug SAMUDRA SHAKTI unable to reach ${target.name} in time — sea state too rough. Requesting SAR cutter backup.`, "critical");
+                addCustomEventToTimeline(`âš ï¸ Rescue Tug SAMUDRA SHAKTI unable to reach ${target.name} in time â€” sea state too rough. Requesting SAR cutter backup.`, "critical");
             } else {
-                addCustomEventToTimeline(`⚠️ Interceptor C-421 reported engine fault — unable to complete intercept of ${target.name}. Requesting backup.`, "critical");
+                addCustomEventToTimeline(`âš ï¸ Interceptor C-421 reported engine fault â€” unable to complete intercept of ${target.name}. Requesting backup.`, "critical");
             }
             updateDispatchPhaseUI(2);
         }
     }
     
     if (sim.phase === 2 && sim.timer > 2500) {
-        // Phase 2 → 3: After 2.5 seconds pause, dispatch backup
+        // Phase 2 â†’ 3: After 2.5 seconds pause, dispatch backup
         sim.phase = 3;
         sim.timer = 0;
         if (sim.missionType === 'rescue') {
-            addCustomEventToTimeline(`🚁 SAR Cutter VARUNA 2 dispatched from nearest coast guard station to assist ${target.name}.`, "warning");
+            addCustomEventToTimeline(`ðŸš SAR Cutter VARUNA 2 dispatched from nearest coast guard station to assist ${target.name}.`, "warning");
         } else {
-            addCustomEventToTimeline(`🚢 ICGS SAMARATH dispatched from Chennai base as backup intercept unit for ${target.name}.`, "warning");
+            addCustomEventToTimeline(`ðŸš¢ ICGS SAMARATH dispatched from Chennai base as backup intercept unit for ${target.name}.`, "warning");
         }
         updateDispatchPhaseUI(3);
     }
@@ -2892,9 +2735,9 @@ function updateDispatchSimulation(dt) {
             sim.asset2.success = true;
             sim.phase = 4;
             if (sim.missionType === 'rescue') {
-                addCustomEventToTimeline(`✅ SAR Cutter VARUNA has reached ${target.name}. Crew rescued. Tow line secured. MRCC notified.`, "info");
+                addCustomEventToTimeline(`âœ… SAR Cutter VARUNA has reached ${target.name}. Crew rescued. Tow line secured. MRCC notified.`, "info");
             } else {
-                addCustomEventToTimeline(`✅ ICGS SAMARATH has intercepted ${target.name}. Boarding party deployed. Target secured.`, "info");
+                addCustomEventToTimeline(`âœ… ICGS SAMARATH has intercepted ${target.name}. Boarding party deployed. Target secured.`, "info");
             }
             updateDispatchPhaseUI(4);
         }
@@ -2907,32 +2750,32 @@ function updateDispatchPhaseUI(phase) {
     const isRescue = mapRenderer && mapRenderer.dispatchSim && mapRenderer.dispatchSim.missionType === 'rescue';
     
     const interceptMeta = [
-        { name: 'Interceptor C-421 Dispatched', sub: 'Fast Patrol Vessel · 32 kn · Tuticorin Base' },
-        { name: 'C-421 Engine Failure', sub: 'Unable to complete intercept — mechanical fault' },
-        { name: 'ICGS SAMARATH Backup Deployed', sub: 'Offshore Patrol Vessel · 26 kn · Chennai Base' },
+        { name: 'Interceptor C-421 Dispatched', sub: 'Fast Patrol Vessel Â· 32 kn Â· Tuticorin Base' },
+        { name: 'C-421 Engine Failure', sub: 'Unable to complete intercept â€” mechanical fault' },
+        { name: 'ICGS SAMARATH Backup Deployed', sub: 'Offshore Patrol Vessel Â· 26 kn Â· Chennai Base' },
         { name: 'Target Intercepted & Boarded', sub: 'ICGS SAMARATH boarding party secures vessel' }
     ];
     const rescueMeta = [
-        { name: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Rescue Tug · 16 kn · Kochi Port' },
-        { name: 'Tug Unable to Reach in Time', sub: 'Sea state too rough — requesting SAR cutter' },
-        { name: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response · 28 kn · Coast Guard Station' },
-        { name: 'Crew Rescued — Vessel Secured', sub: 'Tow line secured. MRCC notified.' }
+        { name: 'Rescue Tug SAMUDRA SHAKTI Dispatched', sub: 'Ocean Rescue Tug Â· 16 kn Â· Kochi Port' },
+        { name: 'Tug Unable to Reach in Time', sub: 'Sea state too rough â€” requesting SAR cutter' },
+        { name: 'SAR Cutter VARUNA Backup Deployed', sub: 'Rapid Response Â· 28 kn Â· Coast Guard Station' },
+        { name: 'Crew Rescued â€” Vessel Secured', sub: 'Tow line secured. MRCC notified.' }
     ];
     const stepMeta = isRescue ? rescueMeta : interceptMeta;
     
     const interceptStatus = {
-        0: { 1: 'EN ROUTE → TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        1: { 1: 'EN ROUTE → TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        2: { 1: 'FAILED ✕', 2: 'ENGINE FAULT DETECTED', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        3: { 1: 'FAILED ✕', 2: 'MISSION FAILED', 3: 'EN ROUTE → TARGET', 4: 'AWAITING EVENT' },
-        4: { 1: 'FAILED ✕', 2: 'MISSION FAILED', 3: 'INTERCEPT SUCCESS ✓', 4: '✅ TARGET SECURED' }
+        0: { 1: 'EN ROUTE â†’ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        1: { 1: 'EN ROUTE â†’ TARGET', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        2: { 1: 'FAILED âœ•', 2: 'ENGINE FAULT DETECTED', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        3: { 1: 'FAILED âœ•', 2: 'MISSION FAILED', 3: 'EN ROUTE â†’ TARGET', 4: 'AWAITING EVENT' },
+        4: { 1: 'FAILED âœ•', 2: 'MISSION FAILED', 3: 'INTERCEPT SUCCESS âœ“', 4: 'âœ… TARGET SECURED' }
     };
     const rescueStatus = {
-        0: { 1: 'EN ROUTE → CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        1: { 1: 'EN ROUTE → CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        2: { 1: 'TUG TURNED BACK ✕', 2: 'SEA STATE TOO ROUGH', 3: 'STANDBY', 4: 'AWAITING EVENT' },
-        3: { 1: 'TUG TURNED BACK ✕', 2: 'PRIMARY TUG FAILED', 3: 'EN ROUTE → CASUALTY', 4: 'AWAITING EVENT' },
-        4: { 1: 'TUG TURNED BACK ✕', 2: 'PRIMARY TUG FAILED', 3: 'RESCUE SUCCESS ✓', 4: '✅ CREW RESCUED' }
+        0: { 1: 'EN ROUTE â†’ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        1: { 1: 'EN ROUTE â†’ CASUALTY', 2: 'AWAITING EVENT', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        2: { 1: 'TUG TURNED BACK âœ•', 2: 'SEA STATE TOO ROUGH', 3: 'STANDBY', 4: 'AWAITING EVENT' },
+        3: { 1: 'TUG TURNED BACK âœ•', 2: 'PRIMARY TUG FAILED', 3: 'EN ROUTE â†’ CASUALTY', 4: 'AWAITING EVENT' },
+        4: { 1: 'TUG TURNED BACK âœ•', 2: 'PRIMARY TUG FAILED', 3: 'RESCUE SUCCESS âœ“', 4: 'âœ… CREW RESCUED' }
     };
     const statusLabels = isRescue ? rescueStatus : interceptStatus;
     
@@ -2994,16 +2837,16 @@ function updateDispatchPhaseUI(phase) {
     const statusEl = document.getElementById('dispatch-status-msg');
     if (statusEl) {
         const interceptMsgs = {
-            1: '🔵 Interceptor C-421 is en route to the target vessel...',
-            2: '🔴 C-421 engine failure! Requesting backup unit...',
-            3: '🟡 ICGS SAMARATH deploying from Chennai base...',
-            4: '✅ Target intercepted & secured by ICGS SAMARATH!'
+            1: 'ðŸ”µ Interceptor C-421 is en route to the target vessel...',
+            2: 'ðŸ”´ C-421 engine failure! Requesting backup unit...',
+            3: 'ðŸŸ¡ ICGS SAMARATH deploying from Chennai base...',
+            4: 'âœ… Target intercepted & secured by ICGS SAMARATH!'
         };
         const rescueMsgs = {
-            1: '🟠 Rescue Tug SAMUDRA SHAKTI is en route to distressed vessel...',
-            2: '🔴 Rescue Tug turned back — sea state too rough! Backup requested...',
-            3: '🟡 SAR Cutter VARUNA deploying from coast guard station...',
-            4: '✅ Crew rescued! Vessel secured and tow line attached!'
+            1: 'ðŸŸ  Rescue Tug SAMUDRA SHAKTI is en route to distressed vessel...',
+            2: 'ðŸ”´ Rescue Tug turned back â€” sea state too rough! Backup requested...',
+            3: 'ðŸŸ¡ SAR Cutter VARUNA deploying from coast guard station...',
+            4: 'âœ… Crew rescued! Vessel secured and tow line attached!'
         };
         const msgs = isRescue ? rescueMsgs : interceptMsgs;
         statusEl.textContent = msgs[phase] || '';
@@ -3284,7 +3127,7 @@ function setupKavaluAISimulation() {
                     if (selVesselId) {
                         const v = vessels.find(item => item.id === selVesselId);
                         reply = `<p><strong>Analyzing route trajectory for ${v.name}...</strong></p>
-                                 <p>Based on heading ${v.heading}° and course history, estimated destination is <strong>${v.destination}</strong>.</p>
+                                 <p>Based on heading ${v.heading}Â° and course history, estimated destination is <strong>${v.destination}</strong>.</p>
                                  <p>${v.anomaly}</p>`;
                     } else {
                         reply = `<p>No vessel is currently selected. Please select a vessel on the map first to analyze predicted routes.</p>`;
@@ -3543,7 +3386,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Dispatch interceptor / rescue tug button → launch simulation
+    // Dispatch interceptor / rescue tug button â†’ launch simulation
     const dispatchBtn = document.getElementById('btn-dispatch');
     if (dispatchBtn) {
         dispatchBtn.addEventListener('click', () => {
@@ -3564,7 +3407,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (isRescue) {
                 setRescueMissionLabels();
                 updateDispatchPhaseUI(1);
-                addCustomEventToTimeline(`🆘 RESCUE ALERT: Dispatching rescue tug to assist ${v.name}. Engine failure reported.`, 'critical');
+                addCustomEventToTimeline(`ðŸ†˜ RESCUE ALERT: Dispatching rescue tug to assist ${v.name}. Engine failure reported.`, 'critical');
             } else {
                 updateDispatchPhaseUI(1);
             }
